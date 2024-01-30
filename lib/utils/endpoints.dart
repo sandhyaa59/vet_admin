@@ -4,9 +4,9 @@ class EndPoints {
   static const String LOCAL="http://localhost:8080";
   static const String PROD="https://backend.purwanchalagro.trackyoe.com/";
   static const String appNameLocals="";
-  static const String appNameServer="nationalvet";
+  static const String appNameServer="purwanchalagro";
   
-  static const String BASEURL = "${LOCAL}${appNameLocals}/v1/api";
+  static const String BASEURL = "${LOCAL}${appNameServer}/v1/api";
   static const String LOGIN = "$BASEURL/admin/login";
   //report..
 
