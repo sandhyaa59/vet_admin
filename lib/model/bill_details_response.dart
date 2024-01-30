@@ -14,7 +14,7 @@ class BillDetailsResponse {
     int? id;
     String? customerName;
     String? customerEmail;
-    String?customerPan;
+    
     OrderResponse? orderResponse;
     String? customerMobileNo;
     int? grandTotal;
@@ -32,7 +32,7 @@ class BillDetailsResponse {
          this.id,
          this.customerName,
          this.customerEmail,
-         this.customerPan,
+         
          this.orderResponse,
          this.customerMobileNo,
          this.grandTotal,
@@ -51,7 +51,7 @@ class BillDetailsResponse {
         id: json["id"],
         customerName: json["customerName"],
         customerEmail: json["customerEmail"],
-        customerPan:json["customerPan"],
+       
         orderResponse: OrderResponse.fromJson(json["orderResponse"]),
         customerMobileNo: json["customerMobileNo"],
         grandTotal: json["grandTotal"],
