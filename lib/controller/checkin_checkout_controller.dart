@@ -8,7 +8,7 @@ class CheckInCheckOutController extends GetxController {
   var checkInOutResponse = CheckInOutResponse().obs;
   var checkInOut = <CheckInOut>[].obs;
   var currentPage = 1.obs;
-  var pageSize = 3.obs;
+  var pageSize = 15.obs;
   @override
   void onInit() {
     super.onInit();
@@ -46,6 +46,7 @@ class CheckInCheckOutController extends GetxController {
     PaginationRequest request = PaginationRequest();
     request.page = currentPage.value;
     request.pageSize = pageSize.value;
+    request.sortParameter="checkoutAddedDateTime";
     return request;
   }
 }

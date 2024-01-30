@@ -37,7 +37,6 @@ class OrderScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20.0),
                     Center(child: organizationDetails()),
                     const SizedBox(
                       height: 50.0,
@@ -47,18 +46,17 @@ class OrderScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return Padding(
-                padding: const EdgeInsets.all(kPadding),
-                child: Column(
+              return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(child: organizationDetails()),
-                    const SizedBox(
-                      height: 50.0,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Center(child: organizationDetails()),
                     ),
+                   
                      orderTable()
                   ],
-                ),
+               
               );
             }
           })),
@@ -73,9 +71,10 @@ class OrderScreen extends StatelessWidget {
         child: SizedBox(
            width: Get.size.width,
           child: PaginatedDataTable(
-            header: const Text("Order",
-             style:
-                              TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),),
+           header: const Text(
+              "Order",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+            ),
             source: MyDataSource(controller.orderList,
                 controller.orderResponse.value.totalData ?? 0),
             initialFirstRowIndex: 0,
@@ -125,13 +124,7 @@ class OrderScreen extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-              const DataColumn(
-                label: Text(
-                  'Ordered Item',
-                  overflow: TextOverflow.visible,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
+
               const DataColumn(
                 label: Text(
                   'Action',
@@ -152,26 +145,35 @@ class MyDataSource extends DataTableSource {
     this.orders,
     this.totalData,
   );
-  OrderController controller = OrderController();
+  OrderController controller = Get.find<OrderController>();
 
   @override
   DataRow? getRow(int index) {
-    if (index >= orders.length) {
+    if (index >=orders.length) {
+      // index=index-1;
       return null;
     }
+    
     return DataRow(
       cells: <DataCell>[
-        DataCell(SizedBox(width: 10, child: Text('${index + 1}'))),
-        DataCell(SizedBox(
-            width: 70,
+        DataCell(SizedBox(width: 20, child: Text('${index + 1}'))),
+        DataCell(
+          SizedBox(
+            //  width: Get.size.width * 0.2,
             child: Text(
               orders[index].employeeName ?? "",
-              overflow: TextOverflow.visible,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ))),
-        DataCell(Text(
-          orders[index].customerName ?? "",
-          overflow: TextOverflow.visible,
+        DataCell(SizedBox(
+            // width: Get.size.width * 0.25,
+          child: Text(
+            orders[index].customerName ?? "",
+            overflow: TextOverflow.ellipsis,
+            maxLines: 3,
+          ),
         )),
+        
         DataCell(Text(
           orders[index].addedDateTime ?? "",
           overflow: TextOverflow.visible,
@@ -180,10 +182,7 @@ class MyDataSource extends DataTableSource {
           orders[index].status ?? "",
           overflow: TextOverflow.visible,
         )),
-        DataCell(Text(
-          orders[index].responses![index].title ?? "",
-          overflow: TextOverflow.visible,
-        )),
+     
         DataCell(IconButton(
             onPressed: () {
               controller.selectedOrder.value = orders[index];

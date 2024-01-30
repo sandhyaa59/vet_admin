@@ -1,5 +1,12 @@
+// ignore_for_file: constant_identifier_names
+
 class EndPoints {
-  static const String BASEURL = "http://localhost:8080/v1/api";
+  static const String LOCAL="http://localhost:8080";
+  static const String PROD="https://backend.purwanchalagro.trackyoe.com/";
+  static const String appNameLocals="";
+  static const String appNameServer="nationalvet";
+  
+  static const String BASEURL = "${LOCAL}${appNameLocals}/v1/api";
   static const String LOGIN = "$BASEURL/admin/login";
   //report..
 
@@ -42,7 +49,10 @@ class EndPoints {
   static const String PAYMENT_LIST = "$BASEURL/admin/payment";
 
   //organization..
-  static const String ORGANIZATION_LIST = "$BASEURL/admin/organization/1";
+  static const String ORGANIZATION_LIST = "$BASEURL/admin/organization";
 
-//cancel o
+//task..
+static const String SAVE_TASK = "$BASEURL/task";
+static const String TASK_LIST = "$BASEURL/task";
+static const String TASK_UPDATE = "$BASEURL/task";
 }

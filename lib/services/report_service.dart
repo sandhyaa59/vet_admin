@@ -20,9 +20,13 @@ class ReportService {
 
       var response = await http.get(uri, headers: headers);
       var res = handleResponse(response);
-      ReportResponse reportResponse = reportResponseFromJson(res);
-
+      if(res!=null){
+        ReportResponse reportResponse = reportResponseFromJson(res);
       return reportResponse;
+      }
+      else{
+        return;
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -40,8 +44,13 @@ class ReportService {
       };
       var response = await http.get(uri, headers: headers);
       var res = handleResponse(response);
-      ReportResponse reportResponse = reportResponseFromJson(res);
+       if(res!=null){
+        ReportResponse reportResponse = reportResponseFromJson(res);
       return reportResponse;
+      }
+      else{
+        return;
+      }
     } catch (e) {
       debugPrint(e.toString());
     }

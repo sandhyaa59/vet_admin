@@ -31,63 +31,11 @@ class ReportScreen extends StatelessWidget {
                     child: reportTable(),
                   ));
             } else {
-              return Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.all(kPadding),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Report ",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff36082B6),
-                                  fontSize: 18.0),
-                            ),
-                            Obx(() {
-                              return Flexible(
-                                child: DropdownButton<EmployeeDetails>(
-                                  value: controller.selectedEmployee.value,
-                                  elevation: 16,
-                                  style: const TextStyle(color: Colors.black),
-                                  onChanged: (EmployeeDetails? value) {
-                                    controller.selectedEmployee.value =
-                                        value ?? EmployeeDetails();
-                                    controller.getSelectedEmployee(
-                                        controller.selectedEmployee.value.id!);
-                                  },
-                                  items: controller.employee.map((value) {
-                                    return DropdownMenuItem<EmployeeDetails>(
-                                      value: value,
-                                      child: Text(
-                                        value.fullName ?? "",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              );
-                            }),
-                          ],
-                        ),
-                        const SizedBox(height: 20.0),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          elevation: 2.0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8)),
-                            child: reportTable(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ));
+              return 
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Center(child: reportTable()),
+              );
             }
           })),
         );
@@ -102,105 +50,108 @@ class ReportScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  "Report ",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff36082B6),
-                      fontSize: 18.0),
-                ),
-                SizedBox(width: 30.0),
-                Obx(() {
-                  return Align(
-                    alignment: Alignment.topRight,
-                    child: DropdownButton<EmployeeDetails>(
-                      value: controller.selectedEmployee.value,
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.black),
-                      onChanged: (EmployeeDetails? value) {
-                        controller.selectedEmployee.value =
-                            value ?? EmployeeDetails();
-                        controller.getSelectedEmployee(
-                            controller.selectedEmployee.value.id!);
-                      },
-                      items: controller.employee.map((value) {
-                        return DropdownMenuItem<EmployeeDetails>(
-                          value: value,
-                          child: Text(
-                            value.fullName ?? "",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  );
-                }),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Report ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff36082B6),
+                        fontSize: 18.0),
+                  ),
+                  SizedBox(width: 30.0),
+                  Obx(() {
+                    return Align(
+                      alignment: Alignment.topRight,
+                      child: DropdownButton<EmployeeDetails>(
+                        value: controller.selectedEmployee.value,
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.black),
+                        onChanged: (EmployeeDetails? value) {
+                          controller.selectedEmployee.value =
+                              value ?? EmployeeDetails();
+                          controller.getSelectedEmployee(
+                              controller.selectedEmployee.value.id!);
+                        },
+                        items: controller.employee.map((value) {
+                          return DropdownMenuItem<EmployeeDetails>(
+                            value: value,
+                            child: Text(
+                              value.fullName ?? "",
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }),
+                ],
+              ),
             ),
             const SizedBox(height: 20.0),
             SizedBox(
-                width: Get.size.width,
-                child: PaginatedDataTable(
-                  // header: const Text("Employee"),
-                  source: MyDataSource(controller.report,
-                      controller.reportList.value.totalData ?? 0),
-                  initialFirstRowIndex: 0,
-                  rowsPerPage: controller.pageSize.value,
-                  // showFirstLastButtons: true,
-                  onPageChanged: (newPage) async {
-                    await controller.loadMore();
-                  },
-                  columns: const <DataColumn>[
-                    DataColumn(
-                      label: Text(
-                        'SN',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+              width: Get.size.width,
+              child: PaginatedDataTable(
+                // header: const Text("Employee"),
+                source: MyDataSource(controller.report,
+                    controller.reportList.value.totalData ?? 0),
+                initialFirstRowIndex: 0,
+                rowsPerPage: controller.pageSize.value,
+                // showFirstLastButtons: true,
+                onPageChanged: (newPage) async {
+                  await controller.loadMore();
+                },
+                columns: const <DataColumn>[
+                  DataColumn(
+                    label: Text(
+                      'SN',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'Employee Name',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Employee Name',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'Customer',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Customer',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'Description',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                  ),
+                  
+                  DataColumn(
+                    label: Text(
+                      'Description',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'Date Time',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Date Time',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'Location',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Location',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'Action',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Action',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            
+            ),
           ],
         ));
   }
@@ -214,7 +165,7 @@ class MyDataSource extends DataTableSource {
     this.report,
     this.totalData,
   );
-  ReportController controller = ReportController();
+  final controller = Get.find<ReportController>();
 
   @override
   DataRow? getRow(int index) {
@@ -223,39 +174,34 @@ class MyDataSource extends DataTableSource {
     }
     return DataRow(
       cells: <DataCell>[
-        DataCell(
-            Align(alignment: Alignment.center, child: Text('${index + 1}'))),
-        DataCell(Align(
-            alignment: Alignment.center,
-            child: Text(report[index].employeeName ?? ""))),
-        DataCell(Align(
-            alignment: Alignment.center,
-            child: Text(report[index].customerName ?? ""))),
-        DataCell(
-          Align(
-              alignment: Alignment.center,
-              child: Text(report[index].description ?? "")),
-        ),
-        DataCell(Align(
-            alignment: Alignment.center,
-            child: Text(report[index].addedDateTime ?? ""))),
-        DataCell(Align(
-            alignment: Alignment.center,
-            child: Text(report[index].address ?? ""))),
-        DataCell(
-          Align(
-              alignment: Alignment.center,
-              child: IconButton(
-                  onPressed: () {
-                    controller.selectedReport.value = report[index];
-                    Get.toNamed(Routes.REPORT_DETAILS);
-                    controller.isLoading.value = false;
-                  },
-                  icon: const Icon(
-                    Icons.remove_red_eye,
-                    color: Color(0xff596cff),
-                  ))),
-        )
+        DataCell(Text('${index + 1}')),
+        DataCell(Text(report[index].employeeName ?? "")),
+        DataCell(Text(report[index].customerName ?? "")),
+        DataCell(SizedBox(
+          width: Get.size.width * 0.12,
+          child: Text(
+            report[index].description ?? "",
+            overflow: TextOverflow.ellipsis,
+          ),
+        )),
+        DataCell(Text(report[index].addedDateTime ?? "")),
+        DataCell(SizedBox(
+            width: Get.size.width * 0.1,
+            child: Text(
+              report[index].address ?? "",
+              overflow: TextOverflow.ellipsis,
+            ))),
+        DataCell(IconButton(
+            onPressed: () {
+              controller.selectedData.value = report[index];
+
+              Get.toNamed(Routes.REPORT_DETAILS);
+            },
+            icon: const Icon(
+              Icons.remove_red_eye,
+              size: 16.0,
+              color: Color(0xff596cff),
+            )))
       ],
     );
   }

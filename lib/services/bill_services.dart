@@ -26,9 +26,14 @@ class BillService {
         headers: headers,
       );
       var res = handleResponse(response);
-      BillResponse billResponse = billResponseFromJson(res);
-
+     if(res!=null){
+       BillResponse billResponse = billResponseFromJson(res);
       return billResponse;
+     }
+
+     else{
+      return;
+     }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -46,8 +51,13 @@ class BillService {
       };
       var response = await http.get(uri, headers: headers);
       var res = handleResponse(response);
-      BillDetailsResponse billResponse = billDetailsResponseFromJson(res);
+      if(res!=null){
+        BillDetailsResponse billResponse = billDetailsResponseFromJson(res);
       return billResponse;
+      }
+      else{
+        return;
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -66,7 +76,12 @@ class BillService {
       var response = await http.post(uri,
           headers: headers, body: billAddRequestToJson(addRequest));
       var res = handleResponse(response);
-      return res;
+      if(res!=null){
+        return res;
+      }
+      else{
+        return;
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -84,8 +99,13 @@ class BillService {
       };
 
       var response = await http.get(uri, headers: headers);
-      var res = handleResponse(response);
-      return res;
+       var res = handleResponse(response);
+      if(res!=null){
+        return res;
+      }
+      else{
+        return;
+      }
     } catch (e) {
       debugPrint(e.toString());
     }

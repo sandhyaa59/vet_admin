@@ -13,7 +13,7 @@ class EmployeeManagementController extends GetxController{
   var isLoading=false.obs;
   var isActive=false.obs;
   var currentPage = 1.obs;
-  var pageSize = 3.obs;
+  var pageSize = 15.obs;
   var employeeManagement=EmployeeManagementResponse().obs;
   var employeeDetailList=<EmployeeDetails>[].obs;
    var selectedEmployeeDetail=EmployeeDetails().obs;
@@ -36,10 +36,12 @@ TextEditingController mobileNumberController = TextEditingController();
     try {
       isLoading.value=true;
        PaginationRequest request = preparePagination();
+       employeeDetailList.clear();
+       
       employeeManagement.value=await EmployeeManagementServices.getEmployeeManagementList(request);
       employeeDetailList.value=employeeManagement.value.data??[];
+      update();
       isLoading.value=false;
-      
     } catch (e) {
       isLoading.value=false;
     }
@@ -57,12 +59,14 @@ TextEditingController mobileNumberController = TextEditingController();
         isLoading.value = false;
       }
     }
-  
 
   Future<dynamic> activate(int id)async{
     try {
       isLoading.value=true;
-      return await EmployeeManagementServices.activateEmployee(id);
+     await EmployeeManagementServices.activateEmployee(id);
+     isLoading.value=false;
+      update();
+     return "success";
     } catch (e) {
        isLoading.value=false;
       
@@ -72,7 +76,10 @@ TextEditingController mobileNumberController = TextEditingController();
   Future <dynamic> deactivate(int id) async{
     try {
       isLoading.value=true;
-      return await EmployeeManagementServices.deactivateEmployee(id);
+       await EmployeeManagementServices.deactivateEmployee(id);
+       update();
+      isLoading.value=false;
+     return "success";
     } catch (e) {
         isLoading.value=false;
     }
@@ -82,7 +89,9 @@ TextEditingController mobileNumberController = TextEditingController();
    Future <dynamic> delete(int id) async{
     try {
       isLoading.value=true;
-      return await EmployeeManagementServices.deleteEmployee(id);
+      var res= await EmployeeManagementServices.deleteEmployee(id);
+      isLoading.value=false;
+      return res;
     } catch (e) {
         isLoading.value=false;
     }
@@ -92,7 +101,9 @@ TextEditingController mobileNumberController = TextEditingController();
    Future<dynamic> saveEmployee(EmployeeAddRequest addRequest)async{
     try {
        isLoading.value=true;
-       return await EmployeeManagementServices.addEmployee(addRequest);
+       var res=  await EmployeeManagementServices.addEmployee(addRequest);
+       isLoading.value=false;
+       return res;
     } catch (e) {
       isLoading.value=false;
     }finally

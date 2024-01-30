@@ -24,8 +24,10 @@ return Get.showSnackbar(GetSnackBar(message: message,backgroundColor: color,titl
         jsonDecode(response.body)["message"],
         "Error",
       );
+      return;
     }else {
       showToastMessage(Colors.red, "Something went Wrong", "Error");
+      return;
     }
     
   }
@@ -34,8 +36,8 @@ return Get.showSnackbar(GetSnackBar(message: message,backgroundColor: color,titl
 
 convertTimeStamp(String dateTimes){
  
-
-    // Parse the timestamp string to DateTime
+if(dateTimes.isNotEmpty){
+  // Parse the timestamp string to DateTime
     final dateTime = DateTime.parse(dateTimes);
 
     // Define the date and time format
@@ -44,6 +46,10 @@ convertTimeStamp(String dateTimes){
     // Format the date and time
     final formattedDate = dateFormat.format(dateTime);
     return formattedDate;
+}else{
+  return "";
+}
+  
 }
  Future<void> openMap(double latitude, double longitude) async {
     String googleUrl = 'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';

@@ -9,7 +9,11 @@ class LoginController extends GetxController{
 
   Future<dynamic> login(String email,String password)async{
     try {
-       return await LoginService.doLogin(email, password);
+      isLoading.value=true;
+       var res= await LoginService.doLogin(email, password);
+       isLoading.value=false;
+       return res;
+
     } catch (e) {
       isLoading.value=false;
     }finally

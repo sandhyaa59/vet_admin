@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:vet_pharma/model/organization_request.dart';
+import 'package:vet_pharma/model/organization_detail_response.dart';
 import 'package:vet_pharma/utils/endpoints.dart';
 import 'package:vet_pharma/utils/helper.dart';
 import 'package:vet_pharma/utils/local_storage.dart';
@@ -19,7 +21,13 @@ class OrganizationServices{
         'authorization': 'Bearer $token'
       };  var response=await http.get(uri,headers: headers,);
         var res=handleResponse(response);
-        return res;
+       if(res!=null){
+         OrganizationDetailResponse detailResponse=OrganizationDetailResponse.fromJson(jsonDecode(res));
+        return detailResponse;
+       }
+       else{
+        return;
+       }
     }
     catch(e){
       debugPrint(e.toString());

@@ -19,12 +19,16 @@ class CustomerAddRequest {
     String? address;
     String? mobileNumber;
     String? name;
+    String? shopName;
+    String?customerPan;
 
     CustomerAddRequest({
         this.email,
         this.address,
         this.mobileNumber,
         this.name,
+        this.shopName,
+        this.customerPan
     });
 
     factory CustomerAddRequest.fromJson(Map<String, dynamic> json) =>  CustomerAddRequest(
@@ -32,6 +36,8 @@ class CustomerAddRequest {
         address: json["address"],
         mobileNumber: json["mobileNumber"],
         name: json["name"],
+        shopName: json["shopName"],
+        customerPan: json["customerPan"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -39,5 +45,8 @@ class CustomerAddRequest {
         "address": address,
         "mobileNumber": mobileNumber,
         "name": name,
+        "shopName":shopName,
+        "customerPan":customerPan
+
     };
 }

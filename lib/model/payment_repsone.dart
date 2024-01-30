@@ -50,6 +50,7 @@ class PaymentListResponse {
 
 class PaymentList {
     int? id;
+    int? billId;
     String? paymentMode;
     String? paymentNumber;
     String? bankName;
@@ -60,6 +61,7 @@ class PaymentList {
 
     PaymentList({
         this.id,
+        this.billId,
         this.paymentMode,
         this.paymentNumber,
         this.bankName,
@@ -71,6 +73,7 @@ class PaymentList {
 
     factory PaymentList.fromJson(Map<String, dynamic> json) =>  PaymentList(
         id: json["id"],
+        billId: json["billId"],
         paymentMode: json["paymentMode"],
         paymentNumber: json["paymentNumber"],
         bankName: json["bankName"],

@@ -1,7 +1,10 @@
 // drawer.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vet_pharma/controller/organization_controller.dart';
+
 import 'package:vet_pharma/utils/constants.dart';
+import 'package:vet_pharma/utils/loading_overlay.dart';
 import 'package:vet_pharma/utils/route.dart';
 
 class MyDrawer extends StatefulWidget {
@@ -11,6 +14,7 @@ class MyDrawer extends StatefulWidget {
 
 class _MyDrawerState extends State<MyDrawer> {
   bool isExpanded = false;
+  OrganizationController controller = Get.put(OrganizationController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,30 +25,43 @@ class _MyDrawerState extends State<MyDrawer> {
         child: ListView(
           children: [
             DrawerHeader(
-              padding: const EdgeInsets.all(kPadding),
-              child: Container(
-                height: 40,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Vet Pharma",
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Color(0xff596cff),
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(height: 10.0),
-                    Text(
-                      "Biratnagar 6, morang",
-                      style: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.grey.shade800,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
-              ),
+              padding: const EdgeInsets.all(12),
+              child: controller.organizationDetail.value.name!=null ? 
+               SingleChildScrollView(
+                 child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          controller.organizationDetail.value.name ?? "",
+                          style: const TextStyle(
+                              fontSize: 20.0,
+                              color: Color(0xff596cff),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Text(
+                          controller.organizationDetail.value.address ?? "",
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey.shade800,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Text(
+                              "Pan Number : ${controller.organizationDetail.value.panNo??""}",
+                              style: const TextStyle(
+                                  fontSize: 16.0, fontWeight: FontWeight.w400)),
+                        const SizedBox(height: 10.0),
+                        Text(controller.organizationDetail.value.phoneNo ?? "",
+                            style: const TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.w400))
+                      ],
+
+                             ),
+               ):const Text("TRACKYOE",
+              style:  TextStyle(color: Color(0xff596cff),
+                              fontSize: 16.0, fontWeight: FontWeight.w800)
+              )
             ),
             ListTile(
               onTap: () {
@@ -56,6 +73,19 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
               title: const Text(
                 ' Dashboard',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(), ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.EMPLOYEE_MANAGEMENT);
+              },
+              leading: const Icon(
+                Icons.track_changes,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                ' Employee Management',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -74,16 +104,30 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             const Divider(),
-            ListTile(
+           
+             ListTile(
               onTap: () {
-                Get.offAndToNamed(Routes.EMPLOYEE_MANAGEMENT);
+                Get.offAndToNamed(Routes.ADD_TASK);
               },
               leading: const Icon(
-                Icons.track_changes,
+                Icons.task,
                 color: Color(0xff596cff),
               ),
               title: const Text(
-                ' Employee Management',
+                ' Add Task',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(),ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.REPORT);
+              },
+              leading: const Icon(
+                Icons.report,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                'Report',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -102,20 +146,7 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             const Divider(),
-            ListTile(
-              onTap: () {
-                Get.offAndToNamed(Routes.REPORT);
-              },
-              leading: const Icon(
-                Icons.report,
-                color: Color(0xff596cff),
-              ),
-              title: const Text(
-                'Report',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Divider(),
+            
             ListTile(
               onTap: () {
                 Get.offAndToNamed(Routes.BILLING);

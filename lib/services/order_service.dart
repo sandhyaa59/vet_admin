@@ -23,9 +23,13 @@ try {
       var response = await http.get(uri,
           headers: headers);
            var res= handleResponse(response);
-           OrderResponse checkInOutResponse=orderResponseFromJson(res);
-           
+           if(res!=null){
+            OrderResponse checkInOutResponse=orderResponseFromJson(res);
  return checkInOutResponse;
+           }
+           else{
+            return;
+           }
 } catch (e) {
   debugPrint(e.toString());
 }
@@ -47,7 +51,13 @@ try {
       var response = await http.get(uri,
           headers: headers);
            var res= handleResponse(response);
- return res;
+           if(res!=null){
+            return res;
+           }
+           else{
+            return;
+           }
+
 } catch (e) {
   debugPrint(e.toString());
 }

@@ -52,6 +52,9 @@ class Report {
     int? id;
     List<StockInHand>? responses;
     String? customerName;
+     String? customerAddress;
+     String?shopName;
+     String?customerPan;
     String? address;
     String? placeOfVisit;
     String? description;
@@ -65,6 +68,9 @@ class Report {
         this.id,
         this.responses,
         this.customerName,
+        this.shopName,
+        this.customerPan,
+        this.customerAddress,
         this.address,
         this.placeOfVisit,
         this.description,
@@ -79,7 +85,10 @@ class Report {
         id: json["id"],
         responses:json["responses"]!=null?  List<StockInHand>.from(json["responses"].map((x) => StockInHand.fromJson(x))).toList():[],
         customerName: json["customerName"],
+        customerAddress:json["customerAddress"],
+        customerPan:json["customerPan"],
         address: json["address"],
+        shopName:json["shopName"],
         placeOfVisit: json["placeOfVisit"],
         description: json["description"],
         longitude: json["longitude"].toDouble(),
@@ -93,6 +102,8 @@ class Report {
         "id": id,
         // "responses": new List<dynamic>.from(responses.map((x) => x.toJson())),
         "customerName": customerName,
+        "shopName":shopName,
+        "customerPan":customerPan,
         "address": address,
         "placeOfVisit": placeOfVisit,
         "description": description,

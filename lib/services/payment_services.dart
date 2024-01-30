@@ -24,8 +24,13 @@ static  Future<dynamic> getPaymentList(PaginationRequest request)async{
 
       var response=await http.get(uri,headers: headers);
       var res=handleResponse(response);
-      PaymentListResponse paymentListResponse=paymentListResponseFromJson(res);
+      if(res!=null){
+        PaymentListResponse paymentListResponse=paymentListResponseFromJson(res);
       return paymentListResponse;
+      }
+      else{
+        return;
+      }
     
   } catch (e) {
       debugPrint(e.toString());
@@ -47,7 +52,12 @@ static  Future<dynamic> savePaymentList(PaymentSaveRequest paymentSaveRequest)as
       var response=await http.post(uri,headers: headers,
       body: paymentSaveRequestToJson(paymentSaveRequest));
     var res=handleResponse(response);
-    return res;
+    if(res!=null){
+      return res;
+    }
+    else{
+      return;
+    }
  
   } catch (e) {
      debugPrint(e.toString());

@@ -36,41 +36,20 @@ class BillingScreen extends StatelessWidget {
                       height: 50.0,
                     ),
                     billingTable()
-                    // Card(
-                    //     shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(8)),
-                    //     elevation: 2.0,
-                    //     child: Container(
-                    //         // width: double.maxFinite,
-                    //         padding: const EdgeInsets.all(12),
-                    //         child: billingTable())),
                   ],
                 ),
               );
             } else {
-              return Padding(
-                padding: const EdgeInsets.all(kPadding),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      organizationDetails(),
-                      const SizedBox(
-                        height: 50.0,
-                      ),
-                      billingTable()
-                      // Card(
-                      //     shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(8)),
-                      //     elevation: 2.0,
-                      //     child: Container(
-                      //         // width: double.maxFinite,
-                      //         padding: const EdgeInsets.all(12),
-                      //         child: billingTable())),
-                    ],
-                  ),
-                ),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                      child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: organizationDetails(),
+                  )),
+                  billingTable()
+                ],
               );
             }
           })),
@@ -89,8 +68,10 @@ class BillingScreen extends StatelessWidget {
             initState: (_) {},
             builder: (_) {
               return PaginatedDataTable(
-                header: const Text("Bill", style:
-                              TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),),
+                header: const Text(
+                  "Bill",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+                ),
                 source: MyDataSource(
                     controller.bill, controller.billResponse.value),
                 initialFirstRowIndex: 0,
@@ -98,7 +79,6 @@ class BillingScreen extends StatelessWidget {
                 // showFirstLastButtons: true,
                 onPageChanged: (newPage) async {
                   await controller.loadMoreData();
-        
                 },
                 // onRowsPerPageChanged: (value) {
                 //   controller.pageSize.value=value!;
@@ -120,13 +100,7 @@ class BillingScreen extends StatelessWidget {
                   ),
                   DataColumn(
                     label: Text(
-                      'Customer Email',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Customer Contact',
+                      'Added At',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -177,15 +151,16 @@ class BillingScreen extends StatelessWidget {
 class MyDataSource extends DataTableSource {
   final List<Bill> bills;
   final BillResponse billResponse;
-  
 
-  MyDataSource(this.bills, this.billResponse,);
+  MyDataSource(
+    this.bills,
+    this.billResponse,
+  );
 
   @override
   DataRow? getRow(int index) {
     if (index >= bills.length) {
       return null;
-      
     }
     return DataRow(
       cells: <DataCell>[
@@ -195,8 +170,7 @@ class MyDataSource extends DataTableSource {
         DataCell(Text(
           bills[index].customerName ?? "",
         )),
-        DataCell(Text(bills[index].customerEmail ?? "")),
-        DataCell(Text(bills[index].customerMobileNo ?? "")),
+        DataCell(Text(bills[index].createdAt ?? "")),
         DataCell(Text(bills[index].tax.toString())),
         DataCell(Text(bills[index].billNo.toString())),
         DataCell(Text(bills[index].subTotal.toString())),
@@ -209,7 +183,8 @@ class MyDataSource extends DataTableSource {
               },
               icon: const Icon(
                 Icons.visibility,
-                size: 14.0,
+                size: 16.0,
+                color: Color(0xff596cff),
               )),
         ),
       ],
@@ -218,8 +193,7 @@ class MyDataSource extends DataTableSource {
 
   @override
   int get rowCount {
-    
-  return billResponse.totalData ?? 0;
+    return billResponse.totalData ?? 0;
   }
 
   @override
@@ -227,8 +201,4 @@ class MyDataSource extends DataTableSource {
 
   @override
   int get selectedRowCount => 0;
-
-
-
-
 }

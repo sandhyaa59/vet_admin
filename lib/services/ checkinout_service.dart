@@ -17,14 +17,16 @@ try {
         'Accept': "*/*",
         'Authorization':"Bearer $token"
       };
-     
-       
       var response = await http.get(uri,
           headers: headers);
            var res= handleResponse(response);
-           CheckInOutResponse checkInOutResponse=checkInOutResponseFromJson(res);
-         
+           if(res!=null){
+            CheckInOutResponse checkInOutResponse=checkInOutResponseFromJson(res);
  return checkInOutResponse;
+           }
+           else{
+            return;
+           }
 } catch (e) {
   debugPrint(e.toString());
 }

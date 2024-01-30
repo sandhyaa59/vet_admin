@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:vet_pharma/controller/payment_controller.dart';
 import 'package:vet_pharma/model/bill_details_response.dart';
-import 'package:vet_pharma/model/bill_repsonse.dart';
+import 'package:vet_pharma/model/customer_list_response.dart';
 import 'package:vet_pharma/services/bill_services.dart';
 
 class BillDetailsController extends GetxController {
@@ -11,12 +11,15 @@ class BillDetailsController extends GetxController {
   var orderResponse = OrderResponse().obs;
   var orderListResponse = OrderResponse().obs;
   final paymentController = PaymentController();
+  var selectedPaymentMethod = 'Cash'.obs;
+  
+
 
 
   @override
   void onInit() {
     super.onInit();
-    var id = Get.arguments;
+    var id = Get.arguments??(-1);
     initData(id);
   }
 
@@ -26,6 +29,7 @@ class BillDetailsController extends GetxController {
       billDetails.value = await BillService.billDetails(id);
 
       billList.value = billDetails.value.orderResponse!.responses ?? [];
+     
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;
@@ -35,7 +39,9 @@ class BillDetailsController extends GetxController {
   Future <dynamic> cancel(int id) async{
     try {
       isLoading.value=true;
-      return await BillService.billCancel(id);
+      var res= await BillService.billCancel(id);
+      isLoading.value=false;
+      return res;
     } catch (e) {
         isLoading.value=false;
     }

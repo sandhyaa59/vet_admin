@@ -17,6 +17,7 @@ class LoginScreen extends StatelessWidget {
   final controller = Get.find<LoginController>();
   @override
   Widget build(BuildContext context) {
+   
     return SafeArea(
       child: Center(
         child: LayoutBuilder(
@@ -47,7 +48,8 @@ class LoginScreen extends StatelessWidget {
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 20),
-                              TextFormField(
+                              TextFormField(textInputAction: TextInputAction.next,
+                        autofocus: true,
                                   controller: emailController,
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -61,7 +63,8 @@ class LoginScreen extends StatelessWidget {
                                     hintText: "abc@gmail.com",
                                   )),
                               const SizedBox(height: 20),
-                              Obx(() => TextFormField(
+                              Obx(() => TextFormField(textInputAction: TextInputAction.done,
+                        autofocus: true,
                                   controller: passwordController,
                                   obscureText:
                                       controller.isVisible.value ? false : true,

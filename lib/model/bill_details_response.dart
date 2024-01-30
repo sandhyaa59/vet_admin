@@ -14,6 +14,7 @@ class BillDetailsResponse {
     int? id;
     String? customerName;
     String? customerEmail;
+    String?customerPan;
     OrderResponse? orderResponse;
     String? customerMobileNo;
     int? grandTotal;
@@ -25,11 +26,13 @@ class BillDetailsResponse {
     dynamic employeeName;
     dynamic createdBy;
     dynamic createdAt;
+    bool ?isVoid;
 
     BillDetailsResponse({
          this.id,
          this.customerName,
          this.customerEmail,
+         this.customerPan,
          this.orderResponse,
          this.customerMobileNo,
          this.grandTotal,
@@ -41,12 +44,14 @@ class BillDetailsResponse {
          this.employeeName,
          this.createdBy,
          this.createdAt,
+         this.isVoid,
     });
 
     factory BillDetailsResponse.fromJson(Map<String, dynamic> json) => BillDetailsResponse(
         id: json["id"],
         customerName: json["customerName"],
         customerEmail: json["customerEmail"],
+        customerPan:json["customerPan"],
         orderResponse: OrderResponse.fromJson(json["orderResponse"]),
         customerMobileNo: json["customerMobileNo"],
         grandTotal: json["grandTotal"],
@@ -57,7 +62,8 @@ class BillDetailsResponse {
         billNo: json["billNo"],
         employeeName: json["employeeName"],
         createdBy: json["createdBy"],
-        createdAt: json["createdAt"],
+        createdAt:convertTimeStamp (json["createdAt"]??""),
+        isVoid: json["isVoid"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -75,6 +81,7 @@ class BillDetailsResponse {
         "employeeName": employeeName,
         "createdBy": createdBy,
         "createdAt": createdAt,
+        "isVoid": isVoid,
     };
 }
 
@@ -90,6 +97,8 @@ class OrderResponse {
     bool? isVoid;
     bool? isDeleted;
     String? status;
+    String?shopName;
+    String?customerPan;
 
     OrderResponse({
          this.id,
@@ -103,6 +112,8 @@ class OrderResponse {
          this.isVoid,
          this.isDeleted,
          this.status,
+         this.shopName,
+         this.customerPan,
     });
 
     factory OrderResponse.fromJson(Map<String, dynamic> json) => OrderResponse(
@@ -117,6 +128,8 @@ class OrderResponse {
         isVoid: json["isVoid"],
         isDeleted: json["isDeleted"],
         status: json["status"],
+        shopName:json["shopName"],
+        customerPan: json["customerPan"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -125,7 +138,7 @@ class OrderResponse {
         "customerName": customerName,
         "placeOfVisit": placeOfVisit,
         "description": description,
-        // "addedDateTime": addedDateTime.toIso8601String(),
+        "addedDateTime": addedDateTime,
         "employeeId": employeeId,
         "employeeName": employeeName,
         "isVoid": isVoid,

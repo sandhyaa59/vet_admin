@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:vet_pharma/utils/helper.dart';
+
 BillResponse billResponseFromJson(String str) {
     final jsonData = json.decode(str);
     return BillResponse.fromJson(jsonData);
@@ -51,6 +53,7 @@ class Bill {
     String? customerName;
     String? customerEmail;
     String? customerMobileNo;
+    String?createdAt;
     int? grandTotal;
     int? subTotal;
     int? discounts;
@@ -60,6 +63,7 @@ class Bill {
 
     Bill({
         this.id,
+        this.createdAt,
         this.customerName,
         this.customerEmail,
         this.customerMobileNo,
@@ -74,6 +78,7 @@ class Bill {
     factory Bill.fromJson(Map<String, dynamic> json) =>  Bill(
         id: json["id"],
         customerName: json["customerName"],
+        createdAt: convertTimeStamp(json["createdAt"]),
         customerEmail: json["customerEmail"],
         customerMobileNo: json["customerMobileNo"],
         grandTotal: json["grandTotal"],

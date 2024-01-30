@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:vet_pharma/utils/helper.dart';
+
 CustomerListResponse customerListResponseFromJson(String str) {
     final jsonData = json.decode(str);
     return CustomerListResponse.fromJson(jsonData);
@@ -52,7 +54,9 @@ class CustomerList {
     String? email;
     String? address;
     String? shopName;
+    String ?customerPan;
     String? mobileNumber;
+    String?addedDateTime;
     bool ?isActive;
     bool? isDeleted;
 
@@ -62,6 +66,8 @@ class CustomerList {
         this.email,
         this.address,
         this.shopName,
+        this.customerPan,
+        this.addedDateTime,
         this.mobileNumber,
         this.isActive,
         this.isDeleted,
@@ -72,7 +78,9 @@ class CustomerList {
         name: json["name"],
         email: json["email"],
         address: json["address"],
+        customerPan: json["customerPan"],
         shopName: json["shopName"],
+        addedDateTime:convertTimeStamp( json["addedDateTime"]),
         mobileNumber: json["mobileNumber"],
         isActive: json["isActive"],
         isDeleted: json["isDeleted"],
@@ -83,6 +91,8 @@ class CustomerList {
         "name": name,
         "email": email,
         "address": address,
+        "customerPan":customerPan,
+        "addedDateTime":addedDateTime,
         "shopName": shopName,
         "mobileNumber": mobileNumber,
         "isActive": isActive,

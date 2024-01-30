@@ -11,7 +11,7 @@ class BillingController extends GetxController {
   var bill = <Bill>[].obs;
   var billDetail = Bill().obs;
   var currentPage = 1.obs;
-  var pageSize = 3.obs;
+  var pageSize = 15.obs;
 
   @override
   void onInit() {
@@ -25,7 +25,6 @@ class BillingController extends GetxController {
       PaginationRequest request = preparePagination();
       billResponse.value = await BillService.billList(request);
       bill.value = billResponse.value.data ?? [];
-
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;

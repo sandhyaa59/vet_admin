@@ -56,6 +56,9 @@ class Order {
   List<OrderedItem>? responses;
   String? customerName;
   String? placeOfVisit;
+  String? customerAddress;
+  String?shopName;
+  String?customerPan;
   String? description;
   String? addedDateTime;
   int? employeeId;
@@ -68,7 +71,10 @@ class Order {
     this.id,
     this.responses,
     this.customerName,
+    this.customerAddress,
+    this.customerPan,
     this.placeOfVisit,
+    this.shopName,
     this.description,
     this.addedDateTime,
     this.employeeId,
@@ -85,6 +91,8 @@ class Order {
                 json["responses"].map((x) => OrderedItem.fromJson(x))).toList()
             : [],
         customerName: json["customerName"],
+        customerAddress: json["customerAddress"],
+        customerPan: json["customerPan"],
         placeOfVisit: json["placeOfVisit"],
         description: json["description"],
         addedDateTime: convertTimeStamp(json["addedDateTime"]),
@@ -93,6 +101,7 @@ class Order {
         isVoid: json["isVoid"],
         isDeleted: json["isDeleted"],
         status: json["status"],
+        shopName: json["shopName"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -107,6 +116,7 @@ class Order {
         "isVoid": isVoid,
         "isDeleted": isDeleted,
         "status": status,
+        "shopName":shopName
       };
 }
 

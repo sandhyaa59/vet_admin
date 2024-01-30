@@ -11,7 +11,7 @@ class OrderController extends GetxController {
   var selectedOrder = Order().obs;
   final billingController = BillingController();
   var currentPage = 1.obs;
-  var pageSize = 3.obs;
+  var pageSize = 15.obs;
 
   @override
   void onInit() {
@@ -25,9 +25,9 @@ class OrderController extends GetxController {
        PaginationRequest request = preparePagination();
       orderResponse.value = await OrderService.orderList(request);
       orderList.value = orderResponse.value.data ?? [];
-      if (orderList.isNotEmpty) {
-        selectedOrder.value = orderList.first;
-      }
+      // if (orderList.isNotEmpty) {
+      //   selectedOrder.value = orderList.first;
+      // }
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;

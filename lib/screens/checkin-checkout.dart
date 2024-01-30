@@ -28,11 +28,8 @@ class CheckInCheckOutScreen extends StatelessWidget {
                     alignment: Alignment.center, child: checkInCheckOutTable()),
               );
             } else {
-              return Padding(
-                padding: const EdgeInsets.all(kPadding),
-                child: Align(
-                    alignment: Alignment.center, child: checkInCheckOutTable()),
-              );
+              return Align(
+                  alignment: Alignment.center, child: checkInCheckOutTable());
             }
           })),
         );
@@ -58,11 +55,14 @@ class CheckInCheckOutScreen extends StatelessWidget {
             onPageChanged: (newPage) async {
               await controller.loadMore();
             },
+            
             columns: const <DataColumn>[
               DataColumn(
-                label: Text(
-                  'SN',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                label: SizedBox(
+                  child: Text(
+                    'SN',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               DataColumn(
@@ -109,33 +109,80 @@ class MyDataSource extends DataTableSource {
     this.check,
     this.totalData,
   );
-  CheckInCheckOutController controller = CheckInCheckOutController();
+  CheckInCheckOutController controller = Get.find<CheckInCheckOutController>();
 
   @override
   DataRow? getRow(int index) {
+    
     if (index >= check.length) {
       return null;
     }
+   
     return DataRow(
+     
       cells: <DataCell>[
+        DataCell(Text('${index + 1}')),
+        DataCell(Text(check[index].employeeName ?? "")),
+        DataCell(Text(check[index].checkInTime ?? "")),
+        DataCell( SizedBox(width: Get.size.width * 0.2,
+          child: InkWell(
+                onTap: () {
+                  Get.dialog(checkInOutDescription(
+                      check[index].checkInDescription ?? ""));
+                },
+                child: Text(check[index].checkInDescription??"")),
+        ),
+        ),
+        DataCell(Text(check[index].checkoutTime ?? "")),
         DataCell(
-         Text('${index + 1}')),
-        
-        DataCell(
-          Text(check[index].employeeName ?? "")),
-        
-        DataCell(
-          Text(check[index].checkInTime ?? "")),
-        
-        DataCell(
-          Text(check[index].checkInDescription ?? "")),
- 
-        DataCell(
-          Text(check[index].checkoutTime ?? "")),
-
-        DataCell( Text(check[index].checkoutDescription ?? ""),
+          SizedBox(
+              width: Get.size.width * 0.2,
+              child: InkWell(
+                  onTap: () {
+                    Get.dialog(checkInOutDescription(
+                        check[index].checkoutDescription ?? ""));
+                  },
+                  child: Text(check[index].checkoutDescription ?? ""))),
         )
       ],
+    );
+  }
+
+  Widget checkInOutDescription(String descritption) {
+    return AlertDialog(
+      titlePadding: const EdgeInsets.all(0),
+      title: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(
+          color: Color(0xff596cff),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("Description",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 18.0)),
+            CircleAvatar(
+                backgroundColor: const Color(0xff596cff),
+                child: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ))),
+          ],
+        ),
+      ),
+      content:  SizedBox(
+            width: Get.size.width * 0.2,
+            height:  Get.size.height * 0.08,
+            child: SingleChildScrollView( scrollDirection: Axis.vertical,child: Text(descritption))),
+      
     );
   }
 

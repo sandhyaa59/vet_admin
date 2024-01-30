@@ -21,6 +21,7 @@ class CustomerUpdateRequest {
     String? mobileNumber;
     int ?id;
     String? shopName;
+    String?customerPan;
 
     CustomerUpdateRequest({
         this.name,
@@ -29,6 +30,7 @@ class CustomerUpdateRequest {
         this.mobileNumber,
         this.id,
         this.shopName,
+        this.customerPan
     });
 
     factory CustomerUpdateRequest.fromJson(Map<String, dynamic> json) =>  CustomerUpdateRequest(
@@ -38,6 +40,7 @@ class CustomerUpdateRequest {
         mobileNumber: json["mobileNumber"],
         id: json["id"],
         shopName: json["shopName"],
+        customerPan:json["customerPan"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -47,5 +50,6 @@ class CustomerUpdateRequest {
         "mobileNumber": mobileNumber,
         "id": id,
         "shopName": shopName,
+        "customerPan":customerPan
     };
 }
