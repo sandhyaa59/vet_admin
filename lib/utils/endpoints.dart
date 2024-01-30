@@ -6,7 +6,7 @@ class EndPoints {
   static const String appNameLocals="";
   static const String appNameServer="nationalvet";
   
-  static const String BASEURL = "${LOCAL}${appNameServer}/v1/api";
+  static const String BASEURL = "${PROD}${appNameServer}/v1/api";
   static const String LOGIN = "$BASEURL/admin/login";
   //report..
 
