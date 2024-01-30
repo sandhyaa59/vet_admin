@@ -220,7 +220,7 @@ class BillDetailsScreen extends StatelessWidget {
                     ),const SizedBox(height: 8.0),
                     showTitleContent(
                       "Customer Pan : ",
-                      controller.billDetails.value.customerPan??"",
+                     controller.billDetails.value.orderResponse?.customerPan ?? ""
                     ),
                   ],
                 ),
@@ -260,7 +260,7 @@ class BillDetailsScreen extends StatelessWidget {
             ),const SizedBox(height: 10.0),
              showTitleContent(
                       "Customer Pan : ",
-                      controller.billDetails.value.customerPan.toString(),
+                      controller.billDetails.value.orderResponse?.customerPan ?? "",
                     ),
           ],
         );

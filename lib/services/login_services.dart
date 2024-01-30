@@ -20,8 +20,14 @@ class LoginService {
       LoginRequest request = LoginRequest(userName: email, password: password);
       var response = await http.post(uri,
           body: loginRequestToJson(request), headers: headers);
-      StorageUtil.saveValue("token", json.decode(response.body)["token"]);
-      return handleResponse(response);
+      var res= handleResponse(response);
+      if(res!=null){
+StorageUtil.saveValue("token", json.decode(response.body)["token"]);
+return res;
+      }
+      else{
+        return;
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
