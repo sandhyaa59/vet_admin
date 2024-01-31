@@ -27,9 +27,12 @@ class ReportController extends GetxController {
       PaginationRequest request = preparePagination();
       reportList.value = await ReportService.reportList(request);
       report.value = reportList.value.data ?? [];
-      selectedData.value=report.first;
+      // selectedData.value=report.first;
       employee.value = await EmployeeManagementServices.getActiveEmployee();
-      selectedEmployee.value = employee.first;
+      if (employee.isNotEmpty) {
+        selectedEmployee.value = employee.first;
+      }
+
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;

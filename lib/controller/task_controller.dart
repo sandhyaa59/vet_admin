@@ -37,7 +37,10 @@ class TaskController extends GetxController {
 
       employeeDetailList.value =
           await EmployeeManagementServices.getActiveEmployee();
-      selectedEmployeeDetail.value = employeeDetailList.first;
+      if (employeeDetailList.isNotEmpty) {
+        selectedEmployeeDetail.value = employeeDetailList.first;
+      }
+
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;
