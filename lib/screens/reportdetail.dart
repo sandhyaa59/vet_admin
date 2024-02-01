@@ -22,9 +22,7 @@ class ReportDetail extends StatelessWidget {
         return LoadingOverlay(
             isLoading: controller.isLoading.value,
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(kPadding),
-                child: Align(
+              child: Align(
                   alignment: Alignment.center,
                   child: Card(
                       elevation: 1.0,
@@ -75,7 +73,7 @@ class ReportDetail extends StatelessWidget {
                         }
                       })),
                 ),
-              ),
+              
             ));
       }),
     ));
@@ -263,7 +261,11 @@ class ReportDetail extends StatelessWidget {
               ],
               rows: List.generate(inHand.length, (index) {
                 return DataRow(cells: <DataCell>[
-                  DataCell(Text(inHand[index].title ?? "")),
+                  DataCell(SizedBox(
+                    child: Text(inHand[index].title ?? "",
+                    overflow: TextOverflow.ellipsis,
+                        maxLines: 3),
+                  )),
                   DataCell(Text(inHand[index].quantity.toString())),
                 ]);
               })),

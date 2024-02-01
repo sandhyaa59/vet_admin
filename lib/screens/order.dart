@@ -83,41 +83,37 @@ class OrderScreen extends StatelessWidget {
             onPageChanged: (newPage) async {
               await controller.loadMore();
             },
-            columns: <DataColumn>[
+            columns: const <DataColumn>[
               DataColumn(
-                label: Container(
-                  width: 20,
-                  child: const Text(
+                label:  Text(
                     'SN',
                     style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+                 
                 ),
               ),
-              const DataColumn(
-                label: SizedBox(
-                  width: 60,
-                  child: Text(
+              DataColumn(
+                label:  Text(
                     overflow: TextOverflow.visible,
                     'Employee Name',
                     style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+                 
                 ),
               ),
-              const DataColumn(
+              DataColumn(
                 label: Text(
                   'Customer',
                   overflow: TextOverflow.visible,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-              const DataColumn(
+              DataColumn(
                 label: Text(
                   'Date Time',
                   overflow: TextOverflow.visible,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-              const DataColumn(
+              DataColumn(
                 label: Text(
                   'Status',
                   overflow: TextOverflow.visible,
@@ -125,7 +121,7 @@ class OrderScreen extends StatelessWidget {
                 ),
               ),
 
-              const DataColumn(
+              DataColumn(
                 label: Text(
                   'Action',
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -156,7 +152,7 @@ class MyDataSource extends DataTableSource {
     
     return DataRow(
       cells: <DataCell>[
-        DataCell(SizedBox(width: 20, child: Text('${index + 1}'))),
+        DataCell(Text('${index + 1}')),
         DataCell(
           SizedBox(
             //  width: Get.size.width * 0.2,

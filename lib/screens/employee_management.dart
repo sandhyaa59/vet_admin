@@ -514,7 +514,8 @@ class EmployeeManagementScreen extends StatelessWidget {
                                   Get.back();
                                   if (res != null) {
                                     await controller.initData();
-                                    Get.offAndToNamed(Routes.EMPLOYEE_MANAGEMENT);
+                                    Get.offAndToNamed(
+                                        Routes.EMPLOYEE_MANAGEMENT);
                                   }
                                   formkey.currentState!.reset();
                                 }
@@ -727,7 +728,6 @@ class MyDataSource extends DataTableSource {
                     children: [
                       TextFormField(
                         textInputAction: TextInputAction.next,
-                        autofocus: true,
                         controller: controller.nameController,
                         decoration: customInputDecoration(labelText: "Name"),
                       ),
@@ -735,8 +735,7 @@ class MyDataSource extends DataTableSource {
                         height: 20.0,
                       ),
                       TextFormField(
-                        textInputAction: TextInputAction.next,
-                        autofocus: true,
+                        textInputAction: TextInputAction.done,
                         controller: controller.mobileNumberController,
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[

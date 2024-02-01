@@ -96,7 +96,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                     orderStatus(false),
                                     const Divider(),
                                     const SizedBox(height: 8.0),
-                                    orderListStockTable(controller
+                                     orderListStockTable(controller
                                             .selectedOrder.value.responses ??
                                         [])
                                   ],
@@ -189,10 +189,13 @@ class OrderDetailsScreen extends StatelessWidget {
         ? Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              SizedBox(width: Get.size.width*0.3,
+              child:
               showTitleContent("Employee Name : ",
-                  controller.selectedOrder.value.employeeName ?? ""),
-              showTitleContent("Place of Visit : ",
-                  controller.selectedOrder.value.placeOfVisit ?? "")
+                  controller.selectedOrder.value.employeeName ?? "")),
+                SizedBox(width: Get.size.width*0.3,
+                 child:showTitleContent("Place of Visit : ",
+                    controller.selectedOrder.value.placeOfVisit ?? "")),
             ],
           )
         : Column(
@@ -286,7 +289,12 @@ class OrderDetailsScreen extends StatelessWidget {
                 ],
                 rows: List.generate(inHand.length, (index) {
                   return DataRow(cells: <DataCell>[
-                    DataCell(Text(inHand[index].title ?? "")),
+                    DataCell(SizedBox(
+                      // width: Get.size.width,
+                      child: Text(inHand[index].title ?? "",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3),
+                    )),
                     DataCell(Text(inHand[index].quantity.toString())),
                   ]);
                 })),

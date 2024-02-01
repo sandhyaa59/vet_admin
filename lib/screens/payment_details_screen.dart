@@ -26,9 +26,7 @@ class PaymentDetailsScreen extends StatelessWidget {
           return LoadingOverlay(
               isLoading: controller.isLoading.value,
               child: SingleChildScrollView(
-                  child: Padding(
-                padding: const EdgeInsets.all(kPadding),
-                child: Align(
+                  child: Align(
                     alignment: Alignment.center,
                     child: Card(
                         elevation: 2.0,
@@ -82,7 +80,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                                 ));
                           }
                         }))),
-              )));
+              ));
         }));
   }
 

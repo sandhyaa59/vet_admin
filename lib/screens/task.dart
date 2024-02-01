@@ -410,7 +410,7 @@ class MyDataSource extends DataTableSource {
       cells: <DataCell>[
         DataCell(Text('${index + 1}')),
         DataCell(SizedBox(
-          width: Get.width * 0.15,
+          // width: Get.width * 0.15,
           child: Text(
             tasklist[index].employeeName ?? "",
             overflow: TextOverflow.ellipsis,
@@ -583,8 +583,8 @@ class MyDataSource extends DataTableSource {
         ),
       ),
       content:  SizedBox(
-            width: Get.size.width * 0.2,
-            height:  Get.size.height * 0.08,
+             width: Get.size.width * 0.2,
+            height:  Get.size.height * 0.15,
             child: SingleChildScrollView( scrollDirection: Axis.vertical,child: Text(task))),
       
     );

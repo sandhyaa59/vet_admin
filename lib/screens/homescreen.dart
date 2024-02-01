@@ -324,7 +324,7 @@ class HomeScreen extends StatelessWidget {
     return AlertDialog(
       titlePadding: const EdgeInsets.all(0),
       title: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(8),
         decoration: const BoxDecoration(
           color: Color(0xff596cff),
         ),
@@ -352,7 +352,7 @@ class HomeScreen extends StatelessWidget {
       ),
       content:SizedBox(
              width: Get.size.width * 0.2,
-            height:  Get.size.height * 0.08,
+            height:  Get.size.height * 0.15,
             child: SingleChildScrollView( scrollDirection: Axis.vertical,child: Text(descritption))),
     );
   }
