@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:vet_pharma/controller/login_controller.dart';
+import 'package:vet_pharma/screens/qr_screen.dart';
 import 'package:vet_pharma/utils/route.dart';
 import 'package:vet_pharma/utils/theme.dart';
 
@@ -120,7 +121,10 @@ class LoginScreen extends StatelessWidget {
                                       "LOGIN",
                                       style: TextStyle(fontSize: 20.0),
                                     )),
-                              ),
+                              ),const SizedBox(height: 10.0,),
+                              ElevatedButton(onPressed: (){
+                                Get.dialog(const Dialog(child: QRscreen(),));
+                              }, child:const Text("Show QR"),)
                             ]),
                       ),
                     ),

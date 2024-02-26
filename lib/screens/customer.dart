@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:vet_pharma/controller/customer_controller.dart';
 import 'package:vet_pharma/model/customer_add_request.dart';
@@ -7,19 +9,19 @@ import 'package:vet_pharma/model/customer_list_response.dart';
 import 'package:vet_pharma/model/customer_update_request.dart';
 import 'package:vet_pharma/utils/constants.dart';
 import 'package:vet_pharma/utils/drawer.dart';
+import 'package:vet_pharma/utils/helper.dart';
 import 'package:vet_pharma/utils/loading_overlay.dart';
 import 'package:vet_pharma/utils/route.dart';
 import 'package:vet_pharma/utils/theme.dart';
 import 'package:vet_pharma/widgets/appbar.dart';
 import 'package:vet_pharma/widgets/cancel.dart';
-import 'package:vet_pharma/widgets/organization.dart';
 
 // ignore: must_be_immutable
 class CustomerScreen extends StatelessWidget {
   CustomerScreen({super.key});
 
   final controller = Get.find<CustomerController>();
-
+  TextEditingController searchController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   TextEditingController nameController = TextEditingController();
@@ -27,8 +29,7 @@ class CustomerScreen extends StatelessWidget {
   TextEditingController mobileNoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController shopNameController = TextEditingController();
-    TextEditingController customerPanNumberController = TextEditingController();
-
+  TextEditingController customerPanNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,27 +49,61 @@ class CustomerScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            Get.dialog(addCustomerForm());
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  side: const BorderSide(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () {
+                                Get.dialog(addCustomerForm());
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      side: const BorderSide(
+                                        color: Color(0xff596cff),
+                                      ))),
+                              child: const Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: Text(
+                                  'Add Customer',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
                                     color: Color(0xff596cff),
-                                  ))),
-                          child: const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text(
-                              'Add Customer',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color: Color(0xff596cff),
-                              ),
-                            ),
-                          )),
+                                  ),
+                                ),
+                              )),
+                          Expanded(child: SizedBox(width: 10.0)),
+                          SizedBox(
+                            width: Get.size.width * 0.3,
+                            child: TextFormField(
+                                controller: searchController,
+                                // onFieldSubmitted: (v) {
+                                //   if (searchController.text.isNotEmpty) {
+                                //     controller.smsController.customerSearch(searchController.text);
+                                //   }
+                                // },
+                                decoration: customInputDecoration(
+                                  hintText: 'Search customer...',
+                                )),
+                          ),
+                         const SizedBox(width: 10.0),
+                          ElevatedButton(
+                              onPressed: () {
+                                if (searchController.text.isEmpty) {
+                                  controller.customerList.value = controller
+                                          .customerListResponse.value.data ??
+                                      [];
+                                }
+                                if (searchController.text.isNotEmpty) {
+                                  controller
+                                      .customerSearch(searchController.text);
+                                }
+                                searchController.clear();
+                              },
+                              child:const Text('Search'))
+                        ],
+                      ),
                       const SizedBox(height: 20.0),
                       customerListTable(),
                     ],
@@ -81,27 +116,67 @@ class CustomerScreen extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.dialog(addCustomerForm());
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                side: const BorderSide(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Get.dialog(addCustomerForm());
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    side: const BorderSide(
+                                      color: Color(0xff596cff),
+                                    ))),
+                            child: const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Text(
+                                'Add Customer',
+                                style: TextStyle(
+                                  fontSize: 16.0,
                                   color: Color(0xff596cff),
-                                ))),
-                        child: const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            'Add Customer',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Color(0xff596cff),
-                            ),
-                          ),
-                        )),
+                                ),
+                              ),
+                            )),
+                        const SizedBox(width: 8.0),
+                        Flexible(
+                          // width: Get.size.width*0.3,
+                          child: TextFormField(
+                              controller: searchController,
+                              onFieldSubmitted: (v) {
+                                if (searchController.text.isNotEmpty) {
+                                  controller
+                                      .customerSearch(searchController.text);
+                                }
+                              },
+                              onChanged: (v) {
+                                if (searchController.text.isEmpty) {
+                                  controller.customerList.value = controller
+                                          .customerListResponse.value.data ??
+                                      [];
+                                }
+                              },
+                              decoration: customInputDecoration(
+                                hintText: 'Search customer...',
+                              )),
+                        ), ElevatedButton(
+                              onPressed: () {
+                                if (searchController.text.isEmpty) {
+                                  controller.customerList.value = controller
+                                          .customerListResponse.value.data ??
+                                      [];
+                                }
+                                if (searchController.text.isNotEmpty) {
+                                  controller
+                                      .customerSearch(searchController.text);
+                                }
+                                searchController.clear();
+                              },
+                              child:const Text('Search'))
+                      ],
+                    ),
                   ),
                   customerListTable(),
                 ],
@@ -116,7 +191,8 @@ class CustomerScreen extends StatelessWidget {
   Widget customerListTable() {
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: GetBuilder<CustomerController>(builder: (controller) {
+        child: GetBuilder<CustomerController>(
+          builder: (controller) {
           return SizedBox(
             width: Get.size.width,
             child: PaginatedDataTable(
@@ -158,7 +234,7 @@ class CustomerScreen extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-                 DataColumn(
+                DataColumn(
                   label: Text(
                     'Pan Number',
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -321,7 +397,7 @@ class CustomerScreen extends StatelessWidget {
                   SizedBox(
                     // width: Get.size.width * 0.3,
                     child: TextFormField(
-                        textInputAction: TextInputAction.done,
+                        textInputAction: TextInputAction.next,
                         autofocus: true,
                         controller: shopNameController,
                         decoration:
@@ -355,7 +431,8 @@ class CustomerScreen extends StatelessWidget {
                                     mobileNoController.text;
                                 addRequest.address = addressController.text;
                                 addRequest.shopName = shopNameController.text;
-                                addRequest.customerPan=customerPanNumberController.text;
+                                addRequest.customerPan =
+                                    customerPanNumberController.text;
                                 var res =
                                     await controller.addCustomers(addRequest);
                                 Get.back();
@@ -502,12 +579,13 @@ class CustomerScreen extends StatelessWidget {
                   SizedBox(
                     // width: Get.size.width * 0.3,
                     child: TextFormField(
-                        textInputAction: TextInputAction.done,
+                        textInputAction: TextInputAction.next,
                         autofocus: true,
                         controller: shopNameController,
                         decoration:
                             customInputDecoration(labelText: "Shop Name")),
-                  ),const SizedBox(height: 20.0),
+                  ),
+                  const SizedBox(height: 20.0),
                   SizedBox(
                     // width: Get.size.width * 0.3,
                     child: TextFormField(
@@ -535,7 +613,8 @@ class CustomerScreen extends StatelessWidget {
                                     mobileNoController.text;
                                 addRequest.address = addressController.text;
                                 addRequest.shopName = shopNameController.text;
-                                addRequest.customerPan=customerPanNumberController.text;
+                                addRequest.customerPan =
+                                    customerPanNumberController.text;
                                 var res =
                                     await controller.addCustomers(addRequest);
                                 Get.back();
@@ -609,7 +688,7 @@ class MyDataSource extends DataTableSource {
             maxLines: 2,
           ),
         )),
-         DataCell(SizedBox(
+        DataCell(SizedBox(
           //width: Get.width * 0.2,
           child: Text(
             customerLists[index].customerPan ?? "",
@@ -642,7 +721,6 @@ class MyDataSource extends DataTableSource {
                             .deactivateCustomers(customerLists[index].id!);
                         Get.back();
                         if (res != null) {
-                         
                           await controller.initData();
                         }
                       },
@@ -713,7 +791,6 @@ class MyDataSource extends DataTableSource {
 
                               Get.back();
                               if (res != null) {
-                               
                                 await controller.initData();
                                 Get.offAndToNamed(Routes.CUSTOMERLIST);
                               }
@@ -738,6 +815,8 @@ class MyDataSource extends DataTableSource {
                       controller.selectedCustomerList.value.shopName ?? "";
                   controller.addressController.text =
                       controller.selectedCustomerList.value.address ?? "";
+                  controller.panNumberController.text =
+                      controller.selectedCustomerList.value.customerPan ?? "";
                   //  var ids= controller.selectedCustomerList.value.id;
                   controller.selectedCustomerList.value = customerLists[index];
                   Get.dialog(updateCUstomer());
@@ -901,7 +980,7 @@ class MyDataSource extends DataTableSource {
                   ),
                   const SizedBox(height: 20.0),
                   TextFormField(
-                      textInputAction: TextInputAction.done,
+                      textInputAction: TextInputAction.next,
                       autofocus: true,
                       controller: controller.shopNameController,
                       validator: (value) {
@@ -918,7 +997,7 @@ class MyDataSource extends DataTableSource {
                     child: TextFormField(
                         textInputAction: TextInputAction.done,
                         autofocus: true,
-                        controller:controller. panNumberController,
+                        controller: controller.panNumberController,
                         decoration:
                             customInputDecoration(labelText: "Pan Number")),
                   ),
@@ -943,15 +1022,18 @@ class MyDataSource extends DataTableSource {
                                   controller.addressController.text;
                               updateRequest.shopName =
                                   controller.shopNameController.text;
+                              updateRequest.customerPan =
+                                  controller.panNumberController.text;
+
                               updateRequest.id =
                                   controller.selectedCustomerList.value.id;
-                                  updateRequest.customerPan=controller.panNumberController.text;
 
                               var res = await controller
                                   .updateCustomers(updateRequest);
                               Get.back();
                               if (res != null) {
-                                Get.offAllNamed(Routes.CUSTOMERLIST);
+                                await controller.initData();
+                                // Get.offAllNamed(Routes.CUSTOMERLIST);
                               }
                               formKey.currentState!.reset();
                             }
@@ -1105,7 +1187,7 @@ class MyDataSource extends DataTableSource {
                   ),
                   const SizedBox(height: 20.0),
                   TextFormField(
-                      textInputAction: TextInputAction.done,
+                      textInputAction: TextInputAction.next,
                       autofocus: true,
                       controller: controller.shopNameController,
                       decoration:
@@ -1115,7 +1197,6 @@ class MyDataSource extends DataTableSource {
                       textInputAction: TextInputAction.done,
                       autofocus: true,
                       controller: controller.panNumberController,
-                     
                       decoration:
                           customInputDecoration(labelText: "Pan Number")),
                   const SizedBox(height: 20.0),
@@ -1140,14 +1221,17 @@ class MyDataSource extends DataTableSource {
                                     controller.addressController.text;
                                 updateRequest.shopName =
                                     controller.shopNameController.text;
+                                updateRequest.customerPan =
+                                    controller.panNumberController.text;
                                 updateRequest.id =
                                     controller.selectedCustomerList.value.id;
-updateRequest.customerPan=controller.panNumberController.text;
+
                                 var res = await controller
                                     .updateCustomers(updateRequest);
                                 Get.back();
                                 if (res != null) {
-                                  Get.offAllNamed(Routes.CUSTOMERLIST);
+                                  await controller.initData();
+                                  // Get.offAllNamed(Routes.CUSTOMERLIST);
                                 }
                                 formKey.currentState!.reset();
                               }

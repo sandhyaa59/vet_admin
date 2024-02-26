@@ -27,4 +27,16 @@ isLoading.value=false;
     }
   }
    
+
+    organization()async{
+    try {
+      isLoading.value=true;
+  organizationDetail.value= await  OrganizationServices.getOrganization();
+isLoading.value=false;
+  return organizationDetail.value;
+    
+    } catch (e) {
+      isLoading.value=false;
+    }
+  }
 }

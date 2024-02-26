@@ -13,6 +13,7 @@ import 'package:vet_pharma/utils/theme.dart';
 import 'package:vet_pharma/widgets/cancel.dart';
 import 'package:vet_pharma/widgets/text.dart';
 
+// ignore: must_be_immutable
 class OrderDetailsScreen extends StatelessWidget {
   OrderDetailsScreen({super.key});
 
@@ -428,6 +429,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         if (val!.isEmpty) {
                           return "Enter Grand Total";
                         }
+                        return null;
                       },
                       controller: grandTotalController,
                       decoration:

@@ -104,21 +104,21 @@ class BillingScreen extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  DataColumn(
-                    label: Text(
-                      'Tax',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                 
                   DataColumn(
                     label: Text(
                       'Bill Number',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
+                  ), DataColumn(
+                    label: Text(
+                      'Due',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                   DataColumn(
                     label: Text(
-                      'Sub Total',
+                      'Received',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -171,9 +171,9 @@ class MyDataSource extends DataTableSource {
           bills[index].customerName ?? "",
         )),
         DataCell(Text(bills[index].createdAt ?? "")),
-        DataCell(Text(bills[index].tax.toString())),
         DataCell(Text(bills[index].billNo.toString())),
-        DataCell(Text(bills[index].subTotal.toString())),
+        DataCell(Text(bills[index].due.toString())),
+        DataCell(Text(bills[index].received.toString())),
         DataCell(Text(bills[index].grandTotal.toString())),
         DataCell(Text(bills[index].discounts.toString())),
         DataCell(

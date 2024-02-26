@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:vet_pharma/controller/admin_controller.dart';
+import 'package:vet_pharma/controller/smscount_controller.dart';
 import 'package:vet_pharma/controller/task_controller.dart';
 import 'package:vet_pharma/controller/bill_details_controller.dart';
 import 'package:vet_pharma/controller/billing_controller.dart';
@@ -12,6 +14,7 @@ import 'package:vet_pharma/controller/organization_controller.dart';
 import 'package:vet_pharma/controller/payment_controller.dart';
 import 'package:vet_pharma/controller/payment_detail_controller.dart';
 import 'package:vet_pharma/controller/report_controller.dart';
+
 
 class LoginBinding extends Bindings {
   @override
@@ -70,6 +73,12 @@ class PaymentBinding extends Bindings {
   }
 }
 
+class MakePaymentBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<PaymentController>(() => PaymentController());
+  }
+}
 class EmployeeManagementBinding extends Bindings {
   @override
   void dependencies() {
@@ -120,3 +129,22 @@ class AddTaskBinding extends Bindings {
     Get.lazyPut<TaskController>(() => TaskController());
   }
 }
+
+
+class SmsCountBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<SmsNotificationCountController>(() => SmsNotificationCountController());
+  }
+}
+
+
+
+class AdminBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<AdminController>(() => AdminController());
+  }
+}
+
+

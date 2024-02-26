@@ -34,4 +34,28 @@ class OrganizationServices{
     }
   }
 
+
+ static Future<dynamic> getOrganization()async{
+
+    try {
+       var token=await StorageUtil.getValue("token");
+      Uri uri=Uri.parse(EndPoints.ORGANIZATION);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "*/*",
+        'authorization': 'Bearer $token'
+      };  var response=await http.get(uri,headers: headers,);
+        var res=handleResponse(response);
+       if(res!=null){
+         OrganizationDetailResponse detailResponse=OrganizationDetailResponse.fromJson(jsonDecode(res));
+        return detailResponse;
+       }
+       else{
+        return;
+       }
+    }
+    catch(e){
+      debugPrint(e.toString());
+    }
+  }
 }

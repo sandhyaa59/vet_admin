@@ -46,7 +46,7 @@ class EmployeeManagementScreen extends StatelessWidget {
                       ElevatedButton(
                           onPressed: () async {
                             Get.dialog(addEmployeeForm(context));
-                            await controller.initData();
+                            // await controller.initData();
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
@@ -80,7 +80,7 @@ class EmployeeManagementScreen extends StatelessWidget {
                     child: ElevatedButton(
                         onPressed: () async {
                           Get.dialog(addEmployeeForm(context));
-                          await controller.initData();
+                          // await controller.initData();
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
@@ -330,19 +330,18 @@ class EmployeeManagementScreen extends StatelessWidget {
                           if (formkey.currentState!.validate()) {
                             if (controller.isLoading.value == false) {
                               controller.isLoading.value = true;
-                              Get.back();
                               EmployeeAddRequest addRequest =
                                   EmployeeAddRequest();
                               addRequest.email = emailController.text;
                               addRequest.password = passwordController.text;
                               addRequest.fullName = nameController.text;
                               addRequest.mobileNumber = mobileNoController.text;
-                              var res =
-                                  await controller.saveEmployee(addRequest);
-                              Get.back();
+                              var res =await controller.saveEmployee(addRequest);
+                                Get.back();
                               if (res != null) {
                                 await controller.initData();
-                                Get.offAndToNamed(Routes.EMPLOYEE_MANAGEMENT);
+                                  // Get.back();
+                                // Get.offAndToNamed(Routes.EMPLOYEE_MANAGEMENT);
                               }
                               formkey.currentState!.reset();
                             }
@@ -362,9 +361,7 @@ class EmployeeManagementScreen extends StatelessWidget {
           ),
         );
       } else {
-        return SizedBox(
-          height: Get.size.height,
-          child: AlertDialog(
+        return  AlertDialog(
             titlePadding: const EdgeInsets.all(0),
             title: Container(
               padding: const EdgeInsets.all(12),
@@ -425,6 +422,7 @@ class EmployeeManagementScreen extends StatelessWidget {
                       child: TextFormField(
                           controller: mobileNoController,
                           keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.next,
                           inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.digitsOnly
                           ],
@@ -499,27 +497,28 @@ class EmployeeManagementScreen extends StatelessWidget {
                         height: 50,
                         child: ElevatedButton(
                             onPressed: () async {
-                              if (formkey.currentState!.validate()) {
-                                if (controller.isLoading.value == false) {
-                                  controller.isLoading.value = true;
-                                  EmployeeAddRequest addRequest =
-                                      EmployeeAddRequest();
-                                  addRequest.email = emailController.text;
-                                  addRequest.password = passwordController.text;
-                                  addRequest.fullName = nameController.text;
-                                  addRequest.mobileNumber =
-                                      mobileNoController.text;
-                                  var res =
-                                      await controller.saveEmployee(addRequest);
-                                  Get.back();
-                                  if (res != null) {
-                                    await controller.initData();
-                                    Get.offAndToNamed(
-                                        Routes.EMPLOYEE_MANAGEMENT);
-                                  }
-                                  formkey.currentState!.reset();
-                                }
+                             if (formkey.currentState!.validate()) {
+                            if (controller.isLoading.value == false) {
+                              controller.isLoading.value = true;
+                              
+
+                              EmployeeAddRequest addRequest =
+                                  EmployeeAddRequest();
+                              addRequest.email = emailController.text;
+                              addRequest.password = passwordController.text;
+                              addRequest.fullName = nameController.text;
+                              addRequest.mobileNumber = mobileNoController.text;
+                              var res =
+                                  await controller.saveEmployee(addRequest);
+                             
+                              if (res != null) {
+                                await controller.initData();
+                                //  Get.back();
+                                // Get.offAndToNamed(Routes.EMPLOYEE_MANAGEMENT);
                               }
+                              formkey.currentState!.reset();
+                            }
+                          }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xff596cff),
@@ -534,7 +533,7 @@ class EmployeeManagementScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+         
         );
       }
     });
@@ -579,7 +578,7 @@ class MyDataSource extends DataTableSource {
                   TextButton(
                       onPressed: () async {
                         var res = await controller
-                            .deactivate(employeeDetails[index].id!);
+                            .deactivate(employeeDetails[index].id??0);
                         Get.back();
                         if (res != null) {
                           await controller.initData();
@@ -597,7 +596,7 @@ class MyDataSource extends DataTableSource {
                   TextButton(
                       onPressed: () async {
                         var res = await controller
-                            .activate(employeeDetails[index].id!);
+                            .activate(employeeDetails[index].id??0);
                         Get.back();
                         if (res != null) {
                           await controller.initData();
@@ -644,7 +643,7 @@ class MyDataSource extends DataTableSource {
                         TextButton(
                             onPressed: () async {
                               var res = await controller
-                                  .delete(employeeDetails[index].id!);
+                                  .delete(employeeDetails[index].id??0);
 
                               Get.back();
                               if (res != null) {

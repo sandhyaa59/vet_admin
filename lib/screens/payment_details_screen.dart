@@ -5,7 +5,7 @@ import 'package:vet_pharma/controller/payment_detail_controller.dart';
 import 'package:vet_pharma/model/bill_details_response.dart';
 import 'package:vet_pharma/utils/constants.dart';
 import 'package:vet_pharma/utils/loading_overlay.dart';
-import 'package:vet_pharma/widgets/appbar.dart';
+
 import 'package:vet_pharma/widgets/text.dart';
 
 class PaymentDetailsScreen extends StatelessWidget {
@@ -26,7 +26,7 @@ class PaymentDetailsScreen extends StatelessWidget {
           return LoadingOverlay(
               isLoading: controller.isLoading.value,
               child: SingleChildScrollView(
-                  child: Align(
+                child: Align(
                     alignment: Alignment.center,
                     child: Card(
                         elevation: 2.0,
@@ -217,11 +217,16 @@ class PaymentDetailsScreen extends StatelessWidget {
                     showTitleContent("Email : ",
                         controller.billDetails.value.customerEmail ?? ""),
                     const SizedBox(height: 8.0),
-                     showTitleContent("Shop Name : ",
-                        controller.billDetails.value.orderResponse?.shopName ?? ""),
+                    showTitleContent(
+                        "Shop Name : ",
+                        controller.billDetails.value.orderResponse?.shopName ??
+                            ""),
                     const SizedBox(height: 8.0),
-                     showTitleContent("Customer Pan : ",
-                        controller.billDetails.value.orderResponse?.customerPan ?? ""),
+                    showTitleContent(
+                        "Customer Pan : ",
+                        controller
+                                .billDetails.value.orderResponse?.customerPan ??
+                            ""),
                   ],
                 ),
                 Column(
@@ -235,7 +240,6 @@ class PaymentDetailsScreen extends StatelessWidget {
                     const SizedBox(height: 8.0),
                     showTitleContent("Contact : ",
                         controller.billDetails.value.customerMobileNo ?? ""),
-
                   ],
                 )
               ],
@@ -254,15 +258,14 @@ class PaymentDetailsScreen extends StatelessWidget {
           showTitleContent("Contact : ",
               controller.billDetails.value.customerMobileNo ?? ""),
           const SizedBox(height: 8.0),
-          
           showTitleContent(
               "Email : ", controller.billDetails.value.customerEmail ?? ""),
           const SizedBox(height: 8.0),
           showTitleContent("Shop Name : ",
-                        controller.billDetails.value.orderResponse?.shopName ?? ""),
-                         const SizedBox(height: 8.0),
-                     showTitleContent("Customer Pan : ",
-                         controller.billDetails.value.orderResponse?.shopName ?? ""),
+              controller.billDetails.value.orderResponse?.shopName ?? ""),
+          const SizedBox(height: 8.0),
+          showTitleContent("Customer Pan : ",
+              controller.billDetails.value.orderResponse?.shopName ?? ""),
         ]);
       }
     });
@@ -278,9 +281,27 @@ class PaymentDetailsScreen extends StatelessWidget {
           controller.billDetails.value.billNo.toString(),
         ),
         const SizedBox(height: 10.0),
-        showTitleContent(
-          "Order Status: ",
-          controller.billDetails.value.orderResponse?.status ?? "",
+        Row(
+          children: [
+            showTitleContent(
+              "Order Status: ",
+              controller.billDetails.value.orderResponse?.status ?? "",
+            ),
+            const SizedBox(width: 10.0),
+            (controller.billDetails.value.isVoid == true)
+                ? Container(
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(6.0)),
+                    padding: const EdgeInsets.all(8.0),
+                    child: const Text(
+                      "Void",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w700),
+                    ),
+                  )
+                : Container(),
+          ],
         ),
         const SizedBox(height: 10.0),
       ],
@@ -361,6 +382,12 @@ class PaymentDetailsScreen extends StatelessWidget {
                 "Tax : ",
                 controller.billDetails.value.tax.toString(),
               ),
+              const SizedBox(height: 8.0),
+              showTitleContent(
+                  "Due : ", controller.billDetails.value.dueAmount.toString()),
+              const SizedBox(height: 8.0),
+              showTitleContent("Received : ",
+                  controller.billDetails.value.received.toString()),
               const SizedBox(height: 8.0),
               showTitleContent(
                 "Grand Total : ",

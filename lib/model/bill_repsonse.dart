@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+
 import 'package:vet_pharma/utils/helper.dart';
 
 BillResponse billResponseFromJson(String str) {
@@ -60,6 +61,9 @@ class Bill {
     int? tax;
     int? orderId;
     String? billNo;
+    
+    double? received;
+    double? due;
 
     Bill({
         this.id,
@@ -73,6 +77,8 @@ class Bill {
         this.tax,
         this.orderId,
         this.billNo,
+        this.due,
+        this.received
     });
 
     factory Bill.fromJson(Map<String, dynamic> json) =>  Bill(
@@ -87,6 +93,8 @@ class Bill {
         tax: json["tax"],
         orderId: json["orderId"],
         billNo: json["billNo"],
+        due: json["dueAmount"],
+        received: json["receivedAmount"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -101,4 +109,6 @@ class Bill {
         "orderId": orderId,
         "billNo": billNo,
     };
+
+  contains(String lowerCase) {}
 }

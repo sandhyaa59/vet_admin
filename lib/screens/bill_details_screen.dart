@@ -445,6 +445,12 @@ class BillDetailsScreen extends StatelessWidget {
               showTitleContent(
                   "Tax : ", controller.billDetails.value.tax.toString()),
               const SizedBox(height: 8.0),
+              showTitleContent(
+                  "Due : ", controller.billDetails.value.dueAmount.toString()),
+              const SizedBox(height: 8.0),
+               showTitleContent(
+                  "Received : ", controller.billDetails.value.received.toString()),
+              const SizedBox(height: 8.0),
               showTitleContent("Grand Total : ",
                   controller.billDetails.value.grandTotal.toString()),
             ],
@@ -531,7 +537,7 @@ class BillDetailsScreen extends StatelessWidget {
                       onChanged: (String? newValue) {
                         controller.selectedPaymentMethod.value = newValue!;
                       },
-                      items: ['Cash', 'Cheque', 'Voucher']
+                      items: ['Cash', 'Cheque', 'Bank Deposit']
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -638,7 +644,8 @@ class BillDetailsScreen extends StatelessWidget {
             ),
           ),
         );
-      } else {
+      } 
+      else {
         return AlertDialog(
           titlePadding: const EdgeInsets.all(0),
           title: Container(
@@ -699,7 +706,7 @@ class BillDetailsScreen extends StatelessWidget {
                       onChanged: (String? newValue) {
                         controller.selectedPaymentMethod.value = newValue!;
                       },
-                      items: ['Cash', 'Cheque', 'Voucher']
+                      items: ['Cash', 'Cheque', 'Bank Deposit']
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,

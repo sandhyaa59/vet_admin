@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:vet_pharma/screens/admin.dart';
 import 'package:vet_pharma/screens/bill_details_screen.dart';
 import 'package:vet_pharma/screens/billing.dart';
 import 'package:vet_pharma/screens/checkin-checkout.dart';
@@ -7,12 +8,15 @@ import 'package:vet_pharma/screens/customer.dart';
 import 'package:vet_pharma/screens/employee_management.dart';
 import 'package:vet_pharma/screens/homescreen.dart';
 import 'package:vet_pharma/screens/login_screen.dart';
+import 'package:vet_pharma/screens/make_payment.dart';
 import 'package:vet_pharma/screens/order.dart';
 import 'package:vet_pharma/screens/order_details_screen.dart';
+import 'package:vet_pharma/screens/organization_screen.dart';
 import 'package:vet_pharma/screens/payment.dart';
 import 'package:vet_pharma/screens/payment_details_screen.dart';
 import 'package:vet_pharma/screens/report_screen.dart';
 import 'package:vet_pharma/screens/reportdetail.dart';
+import 'package:vet_pharma/screens/sms_notification.dart';
 import 'package:vet_pharma/screens/task.dart';
 import 'package:vet_pharma/utils/bindings.dart';
 import 'package:vet_pharma/utils/local_storage.dart';
@@ -74,6 +78,10 @@ class AppPages {
         name: Routes.PAYMENT,
         page: () => PaymentScreen(),
         bindings: [PaymentBinding(), OrganizationBinding()]),
+         GetPage(
+        name: Routes.MAKE_PAYMENT,
+        page: () => MakePayment(),
+        bindings: [PaymentBinding()]),
     GetPage(
         name: Routes.EMPLOYEE_MANAGEMENT,
         page: () => EmployeeManagementScreen(),
@@ -103,6 +111,19 @@ class AppPages {
         name: Routes.ADD_TASK,
         page: () => Task(),
         binding: AddTaskBinding()),
+
+         GetPage(
+        name: Routes.ORGANIZATION ,
+        page: () => OrganozationScreen(),
+        binding: OrganizationBinding()),
+          GetPage(
+        name: Routes.SMSNOTIFICATION_COUNT ,
+        page: () => SmsNoificationCount(),
+        binding: SmsCountBinding()),
+        GetPage(
+        name: Routes.ADMIN ,
+        page: () => AdminList(),
+        binding: AdminBinding()),
     GetPage(
       name: Routes.INITIAL_LOAD,
       page: () => FutureBuilder(
@@ -160,7 +181,13 @@ class Routes {
   static const String ORDER_DETAILS = "/order-details";
   static const String BILL_DETAILS = "/bill-details";
   static const String PAYMENT_DETAILS = "/payment-details";
+  static const String MAKE_PAYMENT = "/make-payment";
 
     static const String ADD_TASK = "/add-task";
+    static const String ORGANIZATION = "/organization";
+    static const String SMSNOTIFICATION_COUNT = "/sms-notification-count";
+
+
+    static const String ADMIN = "/admin";
 
 }

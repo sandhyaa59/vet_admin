@@ -1,39 +1,33 @@
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:vet_pharma/controller/smscount_controller.dart';
-import 'package:vet_pharma/model/customer_add_request.dart';
 import 'package:vet_pharma/model/customer_list_response.dart';
-import 'package:vet_pharma/model/customer_update_request.dart';
 import 'package:vet_pharma/model/pagination_request.dart';
+import 'package:vet_pharma/model/sms_Count_request.dart';
 import 'package:vet_pharma/services/customer_services.dart';
 import 'package:vet_pharma/services/sms_count_services.dart';
 
-class CustomerController extends GetxController {
+class SmsNotificationCountController extends GetxController {
   var isLoading = false.obs;
+  var mobileNumber = SmsCountRequest().obs;
   var customerListResponse = CustomerListResponse().obs;
   var customerList = <CustomerList>[].obs;
-  var selectedCustomerList = CustomerList().obs;
   var currentPage = 1.obs;
-  var pageSize = 15.obs;
-
-  TextEditingController nameController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  TextEditingController mobileNoController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController shopNameController = TextEditingController();
-  TextEditingController panNumberController = TextEditingController();
+  var pageSize = 20.obs;
+  var selectedCustomer = <CustomerList>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    initData();
+    getInitData();
   }
 
-  initData() async {
+  getInitData() async {
     try {
       isLoading.value = true;
       PaginationRequest request = preparePagination();
       customerListResponse.value = await CustomerService.customerList(request);
+      if((customerListResponse.value.data??[]).isNotEmpty){
+    customerList.value=customerListResponse.value.data??[];
+  }
       customerList.value = customerListResponse.value.data ?? [];
       isLoading.value = false;
     } catch (e) {
@@ -60,18 +54,6 @@ class CustomerController extends GetxController {
     }
   }
 
-  Future<dynamic> activateCustomers(int id) async {
-    try {
-      isLoading.value = true;
-      var res = await CustomerService.activateCustomer(id);
-      isLoading.value = false;
-      update();
-      return res;
-    } catch (e) {
-      isLoading.value = false;
-    }
-  }
-
   PaginationRequest preparePagination() {
     PaginationRequest request = PaginationRequest();
     request.page = currentPage.value;
@@ -79,50 +61,15 @@ class CustomerController extends GetxController {
     return request;
   }
 
-  Future<dynamic> deactivateCustomers(int id) async {
+  Future<dynamic> sendSms(SmsCountRequest request) async {
     try {
       isLoading.value = true;
-      var res = await CustomerService.deactivateCustomer(id);
+      var res = await SmsCountServices.sendSms(request);
       isLoading.value = false;
-      update();
       return res;
     } catch (e) {
       isLoading.value = false;
-    }
-  }
-
-  Future<dynamic> deleteCustomers(int id) async {
-    try {
-      isLoading.value = true;
-      var res = await CustomerService.deleteCustomer(id);
-      isLoading.value = false;
-      update();
-      return res;
-    } catch (e) {
-      isLoading.value = false;
-    }
-  }
-
-  Future<dynamic> addCustomers(CustomerAddRequest customerAddRequest) async {
-    try {
-      isLoading.value = true;
-      var result = await CustomerService.addCustomer(customerAddRequest);
-      isLoading.value = false;
-      return result;
-    } catch (e) {
-      isLoading.value = false;
-    }
-  }
-
-  Future<dynamic> updateCustomers(
-      CustomerUpdateRequest customerUpdateRequest) async {
-    try {
-      isLoading.value = true;
-      var result = await CustomerService.updateCustomer(customerUpdateRequest);
-      isLoading.value = false;
-      update();
-      return result;
-    } catch (e) {
+    } finally {
       isLoading.value = false;
     }
   }
@@ -130,7 +77,7 @@ class CustomerController extends GetxController {
   Future<dynamic> customerSearch(String keyword) async {
     try {
       isLoading.value = true;
-      customerListResponse.value =
+    customerListResponse.value =
           await SmsCountServices.searchCustomer(keyword);
       if ((customerListResponse.value.data ?? []).isNotEmpty) {
         customerList.value = customerListResponse.value.data ?? [];

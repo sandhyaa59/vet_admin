@@ -27,6 +27,8 @@ class BillDetailsResponse {
     dynamic createdBy;
     dynamic createdAt;
     bool ?isVoid;
+    double?dueAmount;
+    double?received;
 
     BillDetailsResponse({
          this.id,
@@ -45,6 +47,8 @@ class BillDetailsResponse {
          this.createdBy,
          this.createdAt,
          this.isVoid,
+         this.received,
+          this.dueAmount,
     });
 
     factory BillDetailsResponse.fromJson(Map<String, dynamic> json) => BillDetailsResponse(
@@ -64,6 +68,8 @@ class BillDetailsResponse {
         createdBy: json["createdBy"],
         createdAt:convertTimeStamp (json["createdAt"]??""),
         isVoid: json["isVoid"],
+        dueAmount: json["dueAmount"],
+        received: json["receivedAmount"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -82,6 +88,7 @@ class BillDetailsResponse {
         "createdBy": createdBy,
         "createdAt": createdAt,
         "isVoid": isVoid,
+
     };
 }
 

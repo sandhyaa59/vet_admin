@@ -73,7 +73,7 @@ class CheckInCheckOutScreen extends StatelessWidget {
               ),
               DataColumn(
                 label: Text(
-                  'CheckIn DateTime',
+                  'CheckIn At',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -85,7 +85,7 @@ class CheckInCheckOutScreen extends StatelessWidget {
               ),
               DataColumn(
                 label: Text(
-                  'CheckOut Time',
+                  'CheckOut At',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),

@@ -59,6 +59,7 @@ class CustomerList {
     String?addedDateTime;
     bool ?isActive;
     bool? isDeleted;
+    bool? isSelected;
 
     CustomerList({
         this.id,
@@ -71,6 +72,7 @@ class CustomerList {
         this.mobileNumber,
         this.isActive,
         this.isDeleted,
+        this.isSelected
     });
 
     factory CustomerList.fromJson(Map<String, dynamic> json) =>  CustomerList(
@@ -84,6 +86,7 @@ class CustomerList {
         mobileNumber: json["mobileNumber"],
         isActive: json["isActive"],
         isDeleted: json["isDeleted"],
+        isSelected: false
     );
 
     Map<String, dynamic> toJson() => {

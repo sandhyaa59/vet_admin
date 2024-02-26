@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vet_pharma/controller/organization_controller.dart';
 
-import 'package:vet_pharma/utils/constants.dart';
-import 'package:vet_pharma/utils/loading_overlay.dart';
 import 'package:vet_pharma/utils/route.dart';
 
 class MyDrawer extends StatefulWidget {
@@ -25,44 +23,49 @@ class _MyDrawerState extends State<MyDrawer> {
         child: ListView(
           children: [
             DrawerHeader(
-              padding: const EdgeInsets.all(12),
-              child: controller.organizationDetail.value.name!=null ? 
-               SingleChildScrollView(
-                 child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          controller.organizationDetail.value.name ?? "",
-                          style: const TextStyle(
-                              fontSize: 20.0,
-                              color: Color(0xff596cff),
-                              fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(height: 10.0),
-                        Text(
-                          controller.organizationDetail.value.address ?? "",
-                          style: TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.grey.shade800,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        const SizedBox(height: 10.0),
-                        Text(
-                              "Pan Number : ${controller.organizationDetail.value.panNo??""}",
+                padding: const EdgeInsets.all(12),
+                child: controller.organizationDetail.value.name != null
+                    ? SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              controller.organizationDetail.value.name ?? "",
                               style: const TextStyle(
-                                  fontSize: 16.0, fontWeight: FontWeight.w400)),
-                        const SizedBox(height: 10.0),
-                        Text(controller.organizationDetail.value.phoneNo ?? "",
-                            style: const TextStyle(
-                                fontSize: 16.0, fontWeight: FontWeight.w400))
-                      ],
-
-                             ),
-               ):const Text("TRACKYOE",
-              style:  TextStyle(color: Color(0xff596cff),
-                              fontSize: 16.0, fontWeight: FontWeight.w800)
-              )
-            ),
+                                  fontSize: 20.0,
+                                  color: Color(0xff596cff),
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 10.0),
+                            Text(
+                              controller.organizationDetail.value.address ?? "",
+                              style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.grey.shade800,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            const SizedBox(height: 10.0),
+                            Text(
+                                "Pan Number : ${controller.organizationDetail.value.panNo ?? ""}",
+                                style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w400)),
+                            const SizedBox(height: 10.0),
+                            Text(
+                                controller.organizationDetail.value.phoneNo ??
+                                    "",
+                                style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w400))
+                          ],
+                        ),
+                      )
+                    : const Text("TRACKYOE",
+                        style: TextStyle(
+                            color: Color(0xff596cff),
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w800))),
+                            
             ListTile(
               onTap: () {
                 Get.offAndToNamed(Routes.HOME);
@@ -72,11 +75,26 @@ class _MyDrawerState extends State<MyDrawer> {
                 color: Color(0xff596cff),
               ),
               title: const Text(
-                ' Dashboard',
+                'Dashboard',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            const Divider(), ListTile(
+            const Divider(),
+             ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.ORGANIZATION);
+              },
+              leading: const Icon(
+                Icons.home,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                'Organization',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(),
+            ListTile(
               onTap: () {
                 Get.offAndToNamed(Routes.EMPLOYEE_MANAGEMENT);
               },
@@ -85,92 +103,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 color: Color(0xff596cff),
               ),
               title: const Text(
-                ' Employee Management',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Divider(),
-            ListTile(
-              onTap: () {
-                Get.offAndToNamed(Routes.CHECKINCHECKOUT);
-              },
-              leading: const Icon(
-                Icons.check,
-                color: Color(0xff596cff),
-              ),
-              title: const Text(
-                ' CheckIn - Check Out',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Divider(),
-           
-             ListTile(
-              onTap: () {
-                Get.offAndToNamed(Routes.ADD_TASK);
-              },
-              leading: const Icon(
-                Icons.task,
-                color: Color(0xff596cff),
-              ),
-              title: const Text(
-                ' Add Task',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Divider(),ListTile(
-              onTap: () {
-                Get.offAndToNamed(Routes.REPORT);
-              },
-              leading: const Icon(
-                Icons.report,
-                color: Color(0xff596cff),
-              ),
-              title: const Text(
-                'Report',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Divider(),
-            ListTile(
-              onTap: () {
-                Get.offAndToNamed(Routes.ORDER);
-              },
-              leading: const Icon(
-                Icons.shopping_bag,
-                color: Color(0xff596cff),
-              ),
-              title: const Text(
-                'Order',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Divider(),
-            
-            ListTile(
-              onTap: () {
-                Get.offAndToNamed(Routes.BILLING);
-              },
-              leading: const Icon(
-                Icons.payments_outlined,
-                color: Color(0xff596cff),
-              ),
-              title: const Text(
-                ' Billing',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Divider(),
-            ListTile(
-              onTap: () {
-                Get.offAndToNamed(Routes.PAYMENT);
-              },
-              leading: const Icon(
-                Icons.payment_outlined,
-                color: Color(0xff596cff),
-              ),
-              title: const Text(
-                ' Payment',
+                'Employee Management',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -184,11 +117,123 @@ class _MyDrawerState extends State<MyDrawer> {
                 color: Color(0xff596cff),
               ),
               title: const Text(
-                ' Customer',
+                'Customer Management',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             const Divider(),
+            ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.ADD_TASK);
+              },
+              leading: const Icon(
+                Icons.task,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                ' Task Management',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(),
+            ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.CHECKINCHECKOUT);
+              },
+              leading: const Icon(
+                Icons.check,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                'CheckIn Check Out Management',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(),
+            ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.REPORT);
+              },
+              leading: const Icon(
+                Icons.report,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                'Location Tracking / Customer Stock',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(),
+            ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.ORDER);
+              },
+              leading: const Icon(
+                Icons.shopping_bag,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                'Order Booking',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(),
+            ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.BILLING);
+              },
+              leading: const Icon(
+                Icons.payments_outlined,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                'Customer Billing',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(),
+            ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.PAYMENT);
+              },
+              leading: const Icon(
+                Icons.payment_outlined,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                'Payment Collection',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(),
+            ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.SMSNOTIFICATION_COUNT);
+              },
+              leading: const Icon(
+                Icons.sms,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                'Sms Management',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(),
+            // ListTile(
+            //   onTap: () {
+            //     Get.offAndToNamed(Routes.ADMIN);
+            //   },
+            //   leading: const Icon(
+            //     Icons.person,
+            //     color: Color(0xff596cff),
+            //   ),
+            //   title: const Text(
+            //     'Admin List',
+            //     style: TextStyle(fontWeight: FontWeight.bold),
+            //   ),
+            // ),
+            // const Divider(),
           ],
         ),
       ),

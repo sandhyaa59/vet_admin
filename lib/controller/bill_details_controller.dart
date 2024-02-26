@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:vet_pharma/controller/payment_controller.dart';
 import 'package:vet_pharma/model/bill_details_response.dart';
-import 'package:vet_pharma/model/customer_list_response.dart';
 import 'package:vet_pharma/services/bill_services.dart';
 
 class BillDetailsController extends GetxController {
@@ -27,7 +26,6 @@ class BillDetailsController extends GetxController {
     try {
       isLoading.value = true;
       billDetails.value = await BillService.billDetails(id);
-
       billList.value = billDetails.value.orderResponse!.responses ?? [];
      
       isLoading.value = false;
