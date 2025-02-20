@@ -156,7 +156,11 @@ class OrganozationScreen extends StatelessWidget {
                   const SizedBox(height: 10.0,),
                               ElevatedButton(onPressed: (){
                                 Get.dialog(const Dialog(child: QRscreen(),));
-                              }, child:const Text("Show QR"),)
+                              }, child:const Text("Show QR",
+                              style: TextStyle(
+                color: Colors.white
+              ),),
+                              )
         ],
       ),
     );

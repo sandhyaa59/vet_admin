@@ -100,6 +100,12 @@ class BillingScreen extends StatelessWidget {
                   ),
                   DataColumn(
                     label: Text(
+                      'Shop Name',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
                       'Added At',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -110,15 +116,16 @@ class BillingScreen extends StatelessWidget {
                       'Bill Number',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  ), DataColumn(
+                  ),
+                   DataColumn(
                     label: Text(
-                      'Due',
+                      'Sub Total',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  DataColumn(
+                   DataColumn(
                     label: Text(
-                      'Received',
+                      'Discount',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -130,7 +137,13 @@ class BillingScreen extends StatelessWidget {
                   ),
                   DataColumn(
                     label: Text(
-                      'Discount',
+                      'Due',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Received',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -170,12 +183,17 @@ class MyDataSource extends DataTableSource {
         DataCell(Text(
           bills[index].customerName ?? "",
         )),
+        DataCell(Text(
+          bills[index].shopName ?? "",
+        )),
         DataCell(Text(bills[index].createdAt ?? "")),
         DataCell(Text(bills[index].billNo.toString())),
+         DataCell(Text(bills[index].subTotal.toString())),
+          DataCell(Text(bills[index].discounts.toString())),
+        DataCell(Text(bills[index].grandTotal.toString())),
+       
         DataCell(Text(bills[index].due.toString())),
         DataCell(Text(bills[index].received.toString())),
-        DataCell(Text(bills[index].grandTotal.toString())),
-        DataCell(Text(bills[index].discounts.toString())),
         DataCell(
           IconButton(
               onPressed: () {

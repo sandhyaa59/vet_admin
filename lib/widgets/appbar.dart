@@ -10,8 +10,12 @@ import 'package:vet_pharma/widgets/cancel.dart';
 //   @override
 PreferredSizeWidget AppBars(BuildContext context) {
   return AppBar(
+    actionsIconTheme: const IconThemeData(
+      color: Colors.white
+    ),
     backgroundColor: const Color(0xff596cff),
-    title: const Text('Trackyoe'),
+    title: const Text('Trackyoe',
+   ),
     actions: [
       Padding(
         padding: const EdgeInsets.all(8.0),

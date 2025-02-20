@@ -158,17 +158,20 @@ class BillOrderResponse {
     String? title;
     double? quantity;
     double? price;
+    String?unit;
 
     BillOrderResponse({
         required this.title,
         required this.quantity,
         required this.price,
+        this.unit
     });
 
     factory BillOrderResponse.fromJson(Map<String, dynamic> json) => BillOrderResponse(
         title: json["title"],
         quantity: json["quantity"],
         price: json["price"],
+        unit: json["unit"]
     );
 
     Map<String, dynamic> toJson() => {

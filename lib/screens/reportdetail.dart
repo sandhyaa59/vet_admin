@@ -105,19 +105,21 @@ class ReportDetail extends StatelessWidget {
           controller.selectedData.value.placeOfVisit.toString(),
         ),
         const SizedBox(height: 10.0),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff596cff),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0))),
-              onPressed: () async {
-                openMap(controller.selectedData.value.latitude ?? 22.00,
-                    controller.selectedData.value.longitude ?? 22.00);
-              },
-              child: const Text("Open Map")),
-        ),
+        // Align(
+        //   alignment: Alignment.bottomRight,
+        //   child: ElevatedButton(
+        //       style: ElevatedButton.styleFrom(
+        //           backgroundColor: const Color(0xff596cff),
+        //           shape: RoundedRectangleBorder(
+        //               borderRadius: BorderRadius.circular(8.0))),
+        //       onPressed: () async {
+        //         openMap(controller.selectedData.value.latitude ?? 22.00,
+        //             controller.selectedData.value.longitude ?? 22.00);
+        //       },
+        //       child: const Text("Open Map", style: const TextStyle(
+        //         color: Colors.white
+        //       ))),
+        // ),
       ],
     );
   }
@@ -258,6 +260,11 @@ class ReportDetail extends StatelessWidget {
                   "Quantity",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 )),
+                 DataColumn(
+                    label: Text(
+                  "Unit",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
               ],
               rows: List.generate(inHand.length, (index) {
                 return DataRow(cells: <DataCell>[
@@ -267,6 +274,7 @@ class ReportDetail extends StatelessWidget {
                         maxLines: 3),
                   )),
                   DataCell(Text(inHand[index].quantity.toString())),
+                   DataCell(Text(inHand[index].unit.toString())),
                 ]);
               })),
         ),

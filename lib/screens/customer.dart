@@ -1,15 +1,15 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:vet_pharma/controller/customer_controller.dart';
 import 'package:vet_pharma/model/customer_add_request.dart';
 import 'package:vet_pharma/model/customer_list_response.dart';
 import 'package:vet_pharma/model/customer_update_request.dart';
+import 'package:vet_pharma/services/customer_services.dart';
 import 'package:vet_pharma/utils/constants.dart';
 import 'package:vet_pharma/utils/drawer.dart';
-import 'package:vet_pharma/utils/helper.dart';
 import 'package:vet_pharma/utils/loading_overlay.dart';
 import 'package:vet_pharma/utils/route.dart';
 import 'package:vet_pharma/utils/theme.dart';
@@ -87,7 +87,7 @@ class CustomerScreen extends StatelessWidget {
                                   hintText: 'Search customer...',
                                 )),
                           ),
-                         const SizedBox(width: 10.0),
+                          const SizedBox(width: 10.0),
                           ElevatedButton(
                               onPressed: () {
                                 if (searchController.text.isEmpty) {
@@ -101,9 +101,16 @@ class CustomerScreen extends StatelessWidget {
                                 }
                                 searchController.clear();
                               },
-                              child:const Text('Search'))
+                              child: const Text(
+                                'Search',
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                ),
+                              ))
                         ],
                       ),
+                      // downloadUploadButton(context),
                       const SizedBox(height: 20.0),
                       customerListTable(),
                     ],
@@ -111,57 +118,62 @@ class CustomerScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                            onPressed: () {
-                              Get.dialog(addCustomerForm());
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    side: const BorderSide(
-                                      color: Color(0xff596cff),
-                                    ))),
-                            child: const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Text(
-                                'Add Customer',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  color: Color(0xff596cff),
-                                ),
+              return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            Get.dialog(addCustomerForm());
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  side: const BorderSide(
+                                    color: Color(0xff596cff),
+                                  ))),
+                          child: const Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Text(
+                              'Add Customer',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Color(0xff596cff),
                               ),
-                            )),
-                        const SizedBox(width: 8.0),
-                        Flexible(
-                          // width: Get.size.width*0.3,
-                          child: TextFormField(
-                              controller: searchController,
-                              onFieldSubmitted: (v) {
-                                if (searchController.text.isNotEmpty) {
-                                  controller
-                                      .customerSearch(searchController.text);
-                                }
-                              },
-                              onChanged: (v) {
-                                if (searchController.text.isEmpty) {
-                                  controller.customerList.value = controller
-                                          .customerListResponse.value.data ??
-                                      [];
-                                }
-                              },
-                              decoration: customInputDecoration(
-                                hintText: 'Search customer...',
-                              )),
-                        ), ElevatedButton(
+                            ),
+                          )),
+                      const SizedBox(height: 8.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: TextFormField(
+                                  controller: searchController,
+                                  onFieldSubmitted: (v) {
+                                    if (searchController.text.isNotEmpty) {
+                                      controller.customerSearch(
+                                          searchController.text);
+                                    }
+                                  },
+                                  onChanged: (v) {
+                                    if (searchController.text.isEmpty) {
+                                      controller.customerList.value = controller
+                                              .customerListResponse
+                                              .value
+                                              .data ??
+                                          [];
+                                    }
+                                  },
+                                  decoration: customInputDecoration(
+                                    hintText: 'Search customer...',
+                                  )),
+                            ),
+                          ),
+                          ElevatedButton(
                               onPressed: () {
                                 if (searchController.text.isEmpty) {
                                   controller.customerList.value = controller
@@ -174,13 +186,16 @@ class CustomerScreen extends StatelessWidget {
                                 }
                                 searchController.clear();
                               },
-                              child:const Text('Search'))
-                      ],
-                    ),
-                  ),
-                  customerListTable(),
-                ],
-              );
+                              child: const Text(
+                                'Search',
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        ],
+                      ),
+                      const SizedBox(width: 5.0),
+                      customerListTable(),
+                    ],
+                  ));
             }
           })),
         );
@@ -188,11 +203,37 @@ class CustomerScreen extends StatelessWidget {
     );
   }
 
+  downloadUploadButton(BuildContext context) {
+    return Wrap(
+      // mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        ElevatedButton(
+          onPressed: () async {
+            await CustomerService.downloadCustomerData();
+          },
+          child: Text("Download Excel"),
+        ),
+        SizedBox(width: 20),
+        ElevatedButton(
+          onPressed: () async {
+            FilePickerResult? result = await FilePicker.platform
+                .pickFiles(type: FileType.custom, allowedExtensions: ['xlsx']);
+            if (result != null) {
+              // ignore: use_build_context_synchronously
+              await CustomerService.uploadCustomerData(
+                  context, result.files.first);
+            }
+          },
+          child: Text("Upload Excel File"),
+        ),
+      ],
+    );
+  }
+
   Widget customerListTable() {
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: GetBuilder<CustomerController>(
-          builder: (controller) {
+        child: GetBuilder<CustomerController>(builder: (controller) {
           return SizedBox(
             width: Get.size.width,
             child: PaginatedDataTable(
@@ -289,11 +330,9 @@ class CustomerScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Add Customer",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18.0)),
+                const Text(
+                  "Add Customer",
+                ),
                 CircleAvatar(
                     backgroundColor: const Color(0xff596cff),
                     child: IconButton(
@@ -444,12 +483,12 @@ class CustomerScreen extends StatelessWidget {
                               }
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff596cff),
-                          ),
                           child: const Text(
                             "Add Customer",
-                            style: TextStyle(fontSize: 18.0),
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              color: Colors.white,
+                            ),
                           )),
                     ),
                   )
@@ -469,11 +508,9 @@ class CustomerScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Add Customer",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18.0)),
+                const Text(
+                  "Add Customer",
+                ),
                 CircleAvatar(
                     backgroundColor: const Color(0xff596cff),
                     child: IconButton(
@@ -626,12 +663,12 @@ class CustomerScreen extends StatelessWidget {
                               }
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff596cff),
-                          ),
                           child: const Text(
                             "Add Customer",
-                            style: TextStyle(fontSize: 18.0),
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              color: Colors.white,
+                            ),
                           )),
                     ),
                   )
@@ -856,11 +893,9 @@ class MyDataSource extends DataTableSource {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Update Customer",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18.0)),
+                const Text(
+                  "Update Customer",
+                ),
                 CircleAvatar(
                     backgroundColor: const Color(0xff596cff),
                     child: IconButton(
@@ -1044,7 +1079,7 @@ class MyDataSource extends DataTableSource {
                         ),
                         child: const Text(
                           "Update Customer",
-                          style: TextStyle(fontSize: 18.0),
+                          style: TextStyle(fontSize: 18.0, color: Colors.white),
                         )),
                   )
                 ],
@@ -1063,11 +1098,9 @@ class MyDataSource extends DataTableSource {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Update Customer",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18.0)),
+                const Text(
+                  "Update Customer",
+                ),
                 CircleAvatar(
                     backgroundColor: const Color(0xff596cff),
                     child: IconButton(
@@ -1242,7 +1275,8 @@ class MyDataSource extends DataTableSource {
                           ),
                           child: const Text(
                             "Update Customer",
-                            style: TextStyle(fontSize: 18.0),
+                            style:
+                                TextStyle(fontSize: 18.0, color: Colors.white),
                           )),
                     ),
                   )

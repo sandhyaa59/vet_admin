@@ -10,52 +10,80 @@ final controller = Get.find<OrganizationController>();
 
 Widget organizationDetails() {
   return Obx(() {
-    return  Container(
-        decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color(0xff004792),
-            ),
-            borderRadius: BorderRadius.circular(8.0)),
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            Text(
-              controller.organizationDetail.value.name ?? "",
-              style: const TextStyle(
-                  fontSize: 24.0,
-                  color: Color(0xff004792),
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8.0),
-            Row(mainAxisSize: MainAxisSize.min,
-             children: [
-              Text(controller.organizationDetail.value.email ?? "",
-                  style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Color(0xff004792),
-                      fontWeight: FontWeight.w400)),
-              Text(" | ${controller.organizationDetail.value.phoneNo ?? ""}",
-                  style: const TextStyle(
-                      fontSize: 16.0, fontWeight: FontWeight.w400))
-            ]),
-            const SizedBox(height: 8.0),
-            Row(mainAxisSize: MainAxisSize.min, children: [
-              Text(controller.organizationDetail.value.address ?? "",
-                  style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Color(0xff004792),
-                      fontWeight: FontWeight.w400)),
-              Text(
-                  " |  Pan Number : ${controller.organizationDetail.value.panNo ?? ""}",
-                  style: const TextStyle(
-                      fontSize: 16.0, fontWeight: FontWeight.w400))
-            ])
-          ],
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: const Color(0xff004792),
         ),
-     
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        children: [
+          Text(
+            controller.organizationDetail.value.name ?? "",
+            style: const TextStyle(
+              fontSize: 24.0,
+              color: Color(0xff004792),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8.0),
+          Wrap(
+             crossAxisAlignment:WrapCrossAlignment.center,alignment: WrapAlignment.center,
+            spacing: 8.0,
+            runSpacing: 4.0,
+            children: [
+              Text(
+                controller.organizationDetail.value.email??'',
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  color: Color(0xff004792),
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Text(
+                controller.organizationDetail.value.phoneNo != null
+                    ?"${controller.organizationDetail.value.phoneNo}"
+                    : "",
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8.0),
+          Wrap(
+            crossAxisAlignment:WrapCrossAlignment.start,
+            spacing: 8.0,
+            runSpacing: 4.0,
+            children: [
+              Text(
+                controller.organizationDetail.value.address ?? "",
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  color: Color(0xff004792),
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Text(
+                controller.organizationDetail.value.panNo != null
+                    ? "  Pan Number : ${controller.organizationDetail.value.panNo}"
+                    : "",
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   });
 }
+
 
 final formKey=GlobalKey<FormState>();
 TextEditingController nameController = TextEditingController();

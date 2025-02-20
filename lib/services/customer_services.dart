@@ -1,5 +1,13 @@
+import 'dart:convert';
+// import 'dart:html' as html;
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vet_pharma/model/customer_add_request.dart';
 import 'package:vet_pharma/model/customer_list_response.dart';
 import 'package:vet_pharma/model/customer_update_request.dart';
@@ -145,6 +153,68 @@ class CustomerService {
       } else {
         return;
       }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+   static Future<dynamic> downloadCustomerData(
+      ) async {
+    try {
+      Uri uri = Uri.parse(EndPoints.CUSTOMER_DOWNLOAD);
+      var token = await StorageUtil.getValue("token");
+      var headers = {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        'Accept': "*/*",
+        'Authorization': "Bearer $token"
+      };
+      // Directory tempDir = await getApplicationDocumentsDirectory();
+      //   String savePath = '${tempDir.path}/customers.xlsx';
+      var response = await http.get(uri,
+          headers: headers, );
+      var res = handleResponse(response);
+      if (res != null) {
+       final bytes = response.bodyBytes;
+        // final blob = html.Blob([bytes]);
+        // final url = html.Url.createObjectUrlFromBlob(blob);
+        // final anchor = html.AnchorElement(href: url)
+        //   ..setAttribute("download", "customers.xlsx")
+        //   ..click();
+        // html.Url.revokeObjectUrl(url);
+        return res;
+      } else {
+        return;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  
+   static Future<dynamic> uploadCustomerData(BuildContext context,
+      PlatformFile platformFile) async {
+    try {
+      Uri uri = Uri.parse(EndPoints.CUSTOMER_UPLOAD);
+      var token = await StorageUtil.getValue("token");
+      var headers = {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        'Accept': "*/*",
+        'Authorization': "Bearer $token"
+      };
+      // File selectedFile = File(platformFile.path!);
+      var request = http.MultipartRequest('POST', uri);
+      request.headers.addAll(headers);
+        request.files.add(await http.MultipartFile.fromBytes('file', platformFile.bytes??Uint8List(0),filename: "file"));
+
+  var response = await request.send();
+      // var res = handleResponse(response.);
+     if (response.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("File uploaded successfully")));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Upload failed")));
+        }
     } catch (e) {
       debugPrint(e.toString());
     }

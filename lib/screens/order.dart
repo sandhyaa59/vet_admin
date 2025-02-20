@@ -100,8 +100,23 @@ class OrderScreen extends StatelessWidget {
                 ),
               ),
               DataColumn(
+                label:  Text(
+                    overflow: TextOverflow.visible,
+                    'Job Title',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                 
+                ),
+              ),
+              DataColumn(
                 label: Text(
                   'Customer',
+                  overflow: TextOverflow.visible,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+               DataColumn(
+                label: Text(
+                  'Shop Name',
                   overflow: TextOverflow.visible,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
@@ -114,6 +129,13 @@ class OrderScreen extends StatelessWidget {
                 ),
               ),
               DataColumn(
+                label: Text(
+                  'Amount',
+                  overflow: TextOverflow.visible,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+               DataColumn(
                 label: Text(
                   'Status',
                   overflow: TextOverflow.visible,
@@ -161,6 +183,15 @@ class MyDataSource extends DataTableSource {
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ))),
+            DataCell(
+          SizedBox(
+            //  width: Get.size.width * 0.2,
+            child: Text(
+              orders[index].jobTitle ?? "",
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ))),
+            
         DataCell(SizedBox(
             // width: Get.size.width * 0.25,
           child: Text(
@@ -169,16 +200,22 @@ class MyDataSource extends DataTableSource {
             maxLines: 3,
           ),
         )),
-        
+        DataCell(Text(
+          orders[index].shopName ?? "",
+          overflow: TextOverflow.visible,
+        )),
         DataCell(Text(
           orders[index].addedDateTime ?? "",
           overflow: TextOverflow.visible,
         )),
         DataCell(Text(
+          orders[index].subTotal.toString() ?? "",
+          overflow: TextOverflow.visible,
+        )),
+     DataCell(Text(
           orders[index].status ?? "",
           overflow: TextOverflow.visible,
         )),
-     
         DataCell(IconButton(
             onPressed: () {
               controller.selectedOrder.value = orders[index];

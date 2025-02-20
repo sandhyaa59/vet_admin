@@ -60,3 +60,11 @@ if(dateTimes.isNotEmpty){
       throw 'Could not open the map.';
     }
   }
+
+  convertToTime(String dateTimeString){
+   
+  final dateTime = DateTime.parse(dateTimeString);
+  final timeFormatter = DateFormat('HH:mm:ss');
+  final formattedTime = timeFormatter.format(dateTime);
+  return formattedTime;
+  }

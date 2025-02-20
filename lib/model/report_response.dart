@@ -63,6 +63,7 @@ class Report {
     String? addedDateTime;
     int? employeeId;
     String? employeeName;
+    String? jobTitle;
 
     Report({
         this.id,
@@ -79,6 +80,7 @@ class Report {
         this.addedDateTime,
         this.employeeId,
         this.employeeName,
+        this.jobTitle
     });
 
     factory Report.fromJson(Map<String, dynamic> json) =>  Report(
@@ -96,6 +98,7 @@ class Report {
         addedDateTime:convertTimeStamp(json["addedDateTime"]) ,
         employeeId: json["employeeId"],
         employeeName: json["employeeName"],
+        jobTitle: json["jobTitle"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -118,15 +121,18 @@ class Report {
 class StockInHand {
     String? title;
     int? quantity;
+    String?unit;
 
     StockInHand({
         this.title,
         this.quantity,
+        this.unit
     });
 
     factory StockInHand.fromJson(Map<String, dynamic> json) => new StockInHand(
         title: json["title"],
         quantity: json["quantity"],
+        unit: json["unit"]
     );
 
     Map<String, dynamic> toJson() => {

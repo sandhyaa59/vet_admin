@@ -66,6 +66,28 @@ class EmployeeManagementServices {
       debugPrint(e.toString());
     }
   }
+  static Future<dynamic> getEmployeeLocation(String id,String date) async {
+    try {
+      Uri uri = Uri.parse("${EndPoints.EMPLOYEE_MAP}/$id?date=$date");
+      var token = await StorageUtil.getValue("token");
+      var headers = {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        'Accept': "*/*",
+        'Authorization': "Bearer $token"
+      };
+
+      var response = await http.get(uri, headers: headers);
+      var res = handleResponse(response);
+      if(res!=null){
+      List<dynamic> jsonData = jsonDecode(res);
+        // Ensure the response is a List of Maps
+        return List<Map<String, dynamic>>.from(jsonData.map((item) => item as Map<String, dynamic>));
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   static Future<dynamic> activateEmployee(int id) async {
     try {

@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+
 import 'package:vet_pharma/model/adminList_response.dart';
 import 'package:vet_pharma/model/admin_add_request.dart';
 import 'package:vet_pharma/model/update_admin_request.dart';

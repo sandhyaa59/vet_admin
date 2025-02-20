@@ -57,6 +57,9 @@ class CheckInOut {
     bool? isCompleted;
     bool? isCheckin;
     String? employeeName;
+    String?checkInLocation;
+    String?checkoutLocation;
+    String? jobTitle;
 
     CheckInOut({
         this.id,
@@ -66,7 +69,9 @@ class CheckInOut {
         this.checkoutTime,
         this.isCompleted,
         this.isCheckin,
-        this.employeeName
+        this.employeeName,
+        this.checkInLocation,this.checkoutLocation,
+        this.jobTitle
     });
 
     factory CheckInOut.fromJson(Map<String, dynamic> json) =>  CheckInOut(
@@ -77,6 +82,9 @@ class CheckInOut {
         checkoutTime:json["checkoutTime"]!=null? convertTimeStamp( json["checkoutTime"]):"",
         isCompleted: json["isCompleted"],
         isCheckin: json["isCheckin"],
+        jobTitle: json["jobTitle"],
+        checkInLocation: json["checkInLocation"],
+        checkoutLocation: json["checkoutLocation"],
         employeeName: json["employeeName"]
     );
 

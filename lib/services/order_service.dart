@@ -63,5 +63,32 @@ try {
 }
 }
 
+static Future<dynamic> getOrderReport(String from,String end)async{
+try {
+  var token=await StorageUtil.getValue("token");
+  Uri uri=Uri.parse("${EndPoints.REPORT_STAT}?start=$from&end=$end");
+   var headers = {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        'Accept': "*/*",
+        'Authorization':"Bearer $token"
+      };
+     
+       
+      var response = await http.get(uri,
+          headers: headers);
+           var res= handleResponse(response);
+           if(res!=null){
+            return res;
+           }
+           else{
+            return;
+           }
+
+} catch (e) {
+  debugPrint(e.toString());
+}
+}
+
 
 }

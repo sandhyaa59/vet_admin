@@ -56,6 +56,7 @@ class TaskList {
     dynamic modifiedAt;
     String? employeeName;
     String? employeeEmail;
+    String? jobTitle;
 
     TaskList({
         this.id,
@@ -65,6 +66,7 @@ class TaskList {
         this.modifiedAt,
         this.employeeName,
         this.employeeEmail,
+        this.jobTitle
     });
 
     factory TaskList.fromJson(Map<String, dynamic> json) =>  TaskList(
@@ -75,6 +77,7 @@ class TaskList {
         modifiedAt: json["modifiedAt"],
         employeeName: json["employeeName"],
         employeeEmail: json["employeeEmail"],
+        jobTitle: json["jobTitle"],
     );
 
     Map<String, dynamic> toJson() => {

@@ -19,12 +19,14 @@ class EmployeeUpdateRequest {
     int? id;
     String? mobileNumber;
     String? fullName;
+    String?jobTitle;
 
     EmployeeUpdateRequest({
         this.email,
         this.id,
         this.mobileNumber,
         this.fullName,
+        this.jobTitle,
     });
 
     factory EmployeeUpdateRequest.fromJson(Map<String, dynamic> json) =>  EmployeeUpdateRequest(
@@ -32,6 +34,7 @@ class EmployeeUpdateRequest {
         id: json["id"],
         mobileNumber: json["mobileNumber"],
         fullName: json["fullName"],
+        jobTitle: json["jobTitle"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -39,5 +42,6 @@ class EmployeeUpdateRequest {
         "id": id,
         "mobileNumber": mobileNumber,
         "fullName": fullName,
+        "jobTitle":jobTitle
     };
 }

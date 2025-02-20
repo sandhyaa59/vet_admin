@@ -19,12 +19,14 @@ class EmployeeAddRequest {
     String? password;
     String? mobileNumber;
     String? fullName;
+    String?jobTitle;
 
     EmployeeAddRequest({
         this.email,
         this.password,
         this.mobileNumber,
         this.fullName,
+        this.jobTitle
     });
 
     factory EmployeeAddRequest.fromJson(Map<String, dynamic> json) => EmployeeAddRequest(
@@ -32,6 +34,7 @@ class EmployeeAddRequest {
         password: json["password"],
         mobileNumber: json["mobileNumber"],
         fullName: json["fullName"],
+        jobTitle: json["jobTitle"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -39,5 +42,6 @@ class EmployeeAddRequest {
         "password": password,
         "mobileNumber": mobileNumber,
         "fullName": fullName,
+        "jobTitle":jobTitle
     };
 }

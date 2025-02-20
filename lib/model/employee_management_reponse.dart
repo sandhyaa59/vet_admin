@@ -54,6 +54,7 @@ class EmployeeDetails {
     String? email;
     String? mobileNumber;
     String? createdAt;
+    String?jobTitle;
     bool? isActive;
 
     EmployeeDetails({
@@ -62,6 +63,7 @@ class EmployeeDetails {
         this.email,
         this.mobileNumber,
         this.createdAt,
+        this.jobTitle,
         this.isActive,
     });
 
@@ -71,6 +73,7 @@ class EmployeeDetails {
         email: json["email"],
         mobileNumber: json["mobileNumber"],
         createdAt:convertTimeStamp(json["createdAt"]) ,
+        jobTitle: json["jobTitle"],
         isActive: json["isActive"],
     );
 
@@ -80,6 +83,7 @@ class EmployeeDetails {
         "email": email,
         "mobileNumber": mobileNumber,
         "createdAt": createdAt,
+        "jobTitle":jobTitle,
         "isActive": isActive,
     };
 }

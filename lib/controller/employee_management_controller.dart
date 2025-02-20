@@ -22,6 +22,7 @@ class EmployeeManagementController extends GetxController{
  TextEditingController nameController = TextEditingController();
 TextEditingController emailController = TextEditingController();
 TextEditingController mobileNumberController = TextEditingController();
+TextEditingController jobTitleController = TextEditingController();
 
 
   @override

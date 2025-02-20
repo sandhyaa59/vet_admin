@@ -48,67 +48,76 @@ class BillResponse {
         "hasNext": hasNext,
     };
 }
-
 class Bill {
-    int? id;
-    String? customerName;
-    String? customerEmail;
-    String? customerMobileNo;
-    String?createdAt;
-    int? grandTotal;
-    int? subTotal;
-    int? discounts;
-    int? tax;
-    int? orderId;
-    String? billNo;
-    
-    double? received;
-    double? due;
+  int? id;
+  String? customerName;
+  String? shopName;
+  String? customerEmail;
+  String? customerMobileNo;
+  String? createdAt;
+  double? grandTotal;
+  double? subTotal;
+  double? discounts;
+  double? tax;
+  int? orderId;
+  String? billNo;
+  double? received;
+  double? due;
 
-    Bill({
-        this.id,
-        this.createdAt,
-        this.customerName,
-        this.customerEmail,
-        this.customerMobileNo,
-        this.grandTotal,
-        this.subTotal,
-        this.discounts,
-        this.tax,
-        this.orderId,
-        this.billNo,
-        this.due,
-        this.received
-    });
+  Bill({
+    this.id,
+    this.createdAt,
+    this.customerName,
+    this.shopName,
+    this.customerEmail,
+    this.customerMobileNo,
+    this.grandTotal,
+    this.subTotal,
+    this.discounts,
+    this.tax,
+    this.orderId,
+    this.billNo,
+    this.due,
+    this.received,
+  });
 
-    factory Bill.fromJson(Map<String, dynamic> json) =>  Bill(
-        id: json["id"],
-        customerName: json["customerName"],
-        createdAt: convertTimeStamp(json["createdAt"]),
-        customerEmail: json["customerEmail"],
-        customerMobileNo: json["customerMobileNo"],
-        grandTotal: json["grandTotal"],
-        subTotal: json["subTotal"],
-        discounts: json["discounts"],
-        tax: json["tax"],
-        orderId: json["orderId"],
-        billNo: json["billNo"],
-        due: json["dueAmount"],
-        received: json["receivedAmount"]
-    );
+  factory Bill.fromJson(Map<String, dynamic> json) => Bill(
+        id: json["id"] ?? 0,
+        customerName: json["customerName"] ?? "",
+        shopName: json["shopName"] ?? "",
+        createdAt: json["createdAt"] != null ? convertTimeStamp(json["createdAt"]) : "",
+        customerEmail: json["customerEmail"] ?? "",
+        customerMobileNo: json["customerMobileNo"] ?? "",
+        grandTotal: json["grandTotal"] ?? 0,
+        subTotal: json["subTotal"] ?? 0,
+        discounts: json["discounts"] ?? 0,
+        tax: json["tax"] ?? 0,
+        orderId: json["orderId"] ?? 0,
+        billNo: json["billNo"] ?? "",
+        due: (json["dueAmount"] ?? 0).toDouble(),
+        received: (json["receivedAmount"] ?? 0).toDouble(),
+      );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "customerName": customerName,
-        "customerEmail": customerEmail,
-        "customerMobileNo": customerMobileNo,
-        "grandTotal": grandTotal,
-        "subTotal": subTotal,
-        "discounts": discounts,
-        "tax": tax,
-        "orderId": orderId,
-        "billNo": billNo,
-    };
+  Map<String, dynamic> toJson() => {
+        "id": id ?? 0,
+        "customerName": customerName ?? "",
+        "shopName": shopName ?? "",
+        "customerEmail": customerEmail ?? "",
+        "customerMobileNo": customerMobileNo ?? "",
+        "grandTotal": grandTotal ?? 0,
+        "subTotal": subTotal ?? 0,
+        "discounts": discounts ?? 0,
+        "tax": tax ?? 0,
+        "orderId": orderId ?? 0,
+        "billNo": billNo ?? "",
+        "dueAmount": due ?? 0.0,
+        "receivedAmount": received ?? 0.0,
+      };
 
-  contains(String lowerCase) {}
+  bool contains(String lowerCase) {
+    return (customerName?.toLowerCase().contains(lowerCase) ?? false) ||
+        (shopName?.toLowerCase().contains(lowerCase) ?? false) ||
+        (customerEmail?.toLowerCase().contains(lowerCase) ?? false) ||
+        (billNo?.toLowerCase().contains(lowerCase) ?? false);
+  }
 }

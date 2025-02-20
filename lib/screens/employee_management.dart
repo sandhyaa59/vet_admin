@@ -5,6 +5,7 @@ import 'package:vet_pharma/controller/employee_management_controller.dart';
 import 'package:vet_pharma/model/employee_add_request.dart';
 import 'package:vet_pharma/model/employee_management_reponse.dart';
 import 'package:vet_pharma/model/employee_update_request.dart';
+import 'package:vet_pharma/screens/map_screen.dart';
 import 'package:vet_pharma/utils/constants.dart';
 import 'package:vet_pharma/utils/drawer.dart';
 import 'package:vet_pharma/utils/loading_overlay.dart';
@@ -24,6 +25,7 @@ class EmployeeManagementScreen extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
   TextEditingController mobileNoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController employeePosition = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +152,12 @@ class EmployeeManagementScreen extends StatelessWidget {
                   ),
                   DataColumn(
                     label: Text(
+                      ' Job title',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
                       'Email',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -198,12 +206,10 @@ class EmployeeManagementScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Add Employee",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18.0)),
+                const Text(
+                  "Add Employee",
+                  textAlign: TextAlign.center,
+                ),
                 CircleAvatar(
                     backgroundColor: const Color(0xff596cff),
                     child: IconButton(
@@ -275,6 +281,19 @@ class EmployeeManagementScreen extends StatelessWidget {
                     child: TextFormField(
                         textInputAction: TextInputAction.next,
                         autofocus: true,
+                        controller: employeePosition,
+                        decoration: customInputDecoration(
+                          labelText: "Employee Position",
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  SizedBox(
+                    // width: MediaQuery.of(context).size.width * 0.3,
+                    child: TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: true,
                         controller: emailController,
                         validator: (value) {
                           if (value!.isNotEmpty) {
@@ -336,23 +355,25 @@ class EmployeeManagementScreen extends StatelessWidget {
                               addRequest.password = passwordController.text;
                               addRequest.fullName = nameController.text;
                               addRequest.mobileNumber = mobileNoController.text;
-                              var res =await controller.saveEmployee(addRequest);
-                                Get.back();
+                              addRequest.jobTitle = employeePosition.text;
+                              var res =
+                                  await controller.saveEmployee(addRequest);
+                              Get.back();
                               if (res != null) {
                                 await controller.initData();
-                                  // Get.back();
+                                // Get.back();
                                 // Get.offAndToNamed(Routes.EMPLOYEE_MANAGEMENT);
                               }
                               formkey.currentState!.reset();
                             }
                           }
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff596cff),
-                        ),
+                        // style: ElevatedButton.styleFrom(
+                        //   backgroundColor: const Color(0xff596cff),
+                        // ),
                         child: const Text(
                           "Add Employee",
-                          style: TextStyle(fontSize: 18.0),
+                          style: TextStyle(fontSize: 18.0, color: Colors.white),
                         )),
                   )
                 ],
@@ -361,179 +382,190 @@ class EmployeeManagementScreen extends StatelessWidget {
           ),
         );
       } else {
-        return  AlertDialog(
-            titlePadding: const EdgeInsets.all(0),
-            title: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                color: Color(0xff596cff),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Add Employee",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
+        return AlertDialog(
+          titlePadding: const EdgeInsets.all(0),
+          title: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(
+              color: Color(0xff596cff),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text("Add Employee",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18.0)),
+                CircleAvatar(
+                    backgroundColor: const Color(0xff596cff),
+                    child: IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: const Icon(
+                          Icons.close,
                           color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18.0)),
-                  CircleAvatar(
-                      backgroundColor: const Color(0xff596cff),
-                      child: IconButton(
-                          onPressed: () {
-                            Get.back();
+                        ))),
+              ],
+            ),
+          ),
+          content: Form(
+            key: formkey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10.0),
+                  SizedBox(
+                    // width: MediaQuery.of(context).size.width * 0.3,
+                    child: TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: true,
+                        controller: nameController,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter employee name';
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: customInputDecoration(
+                          labelText: "Name",
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  SizedBox(
+                    // width: MediaQuery.of(context).size.width * 0.3,
+                    child: TextFormField(
+                        controller: mobileNoController,
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.next,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your contact number';
+                          }
+                          return null;
+                        },
+                        decoration: customInputDecoration(
+                          labelText: "Contact",
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  SizedBox(
+                    // width: MediaQuery.of(context).size.width * 0.3,
+                    child: TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: true,
+                        controller: employeePosition,
+                        decoration: customInputDecoration(
+                          labelText: "Employee Position",
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  SizedBox(
+                    // width: MediaQuery.of(context).size.width * 0.3,
+                    child: TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: true,
+                        controller: emailController,
+                        validator: (value) {
+                          if (value!.isNotEmpty) {
+                            String emailPattern =
+                                r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
+                                r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
+                                r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
+                                r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
+                                r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
+                                r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
+                                r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
+                            RegExp regExp = RegExp(emailPattern);
+                            if (!regExp.hasMatch(value)) {
+                              return 'Enter a valid email address';
+                            }
+                          } else if (value.isEmpty) {
+                            return "Enter a  email address";
+                          }
+                        },
+                        decoration: customInputDecoration(
+                          labelText: "Email",
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  SizedBox(
+                    // width: MediaQuery.of(context).size.width * 0.3,
+                    child: TextFormField(
+                        textInputAction: TextInputAction.done,
+                        autofocus: true,
+                        controller: passwordController,
+                        // obscureText: controller.isVisible.value,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your Password ';
+                          }
+                          if (value.length < 6) {
+                            return 'Password should be at least 6 digits';
+                          }
+                          return null;
+                        },
+                        decoration: customInputDecoration(
+                          labelText: "Password",
+                        )),
+                  ),
+                  const SizedBox(height: 20.0),
+                  Center(
+                    child: SizedBox(
+                      // width: Get.size.width * 0.3,
+                      height: 50,
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            if (formkey.currentState!.validate()) {
+                              if (controller.isLoading.value == false) {
+                                controller.isLoading.value = true;
+
+                                EmployeeAddRequest addRequest =
+                                    EmployeeAddRequest();
+                                addRequest.email = emailController.text;
+                                addRequest.password = passwordController.text;
+                                addRequest.fullName = nameController.text;
+                                addRequest.mobileNumber =
+                                    mobileNoController.text;
+                                addRequest.jobTitle = employeePosition.text;
+                                var res =
+                                    await controller.saveEmployee(addRequest);
+
+                                if (res != null) {
+                                  await controller.initData();
+                                  //  Get.back();
+                                  // Get.offAndToNamed(Routes.EMPLOYEE_MANAGEMENT);
+                                }
+                                formkey.currentState!.reset();
+                              }
+                            }
                           },
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          ))),
+                          child: const Text(
+                            "Add Employee",
+                            style:
+                                TextStyle(fontSize: 18.0, color: Colors.white),
+                          )),
+                    ),
+                  )
                 ],
               ),
             ),
-            content: Form(
-              key: formkey,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10.0),
-                    SizedBox(
-                      // width: MediaQuery.of(context).size.width * 0.3,
-                      child: TextFormField(
-                          textInputAction: TextInputAction.next,
-                          autofocus: true,
-                          controller: nameController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter employee name';
-                            } else {
-                              return null;
-                            }
-                          },
-                          decoration: customInputDecoration(
-                            labelText: "Name",
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    SizedBox(
-                      // width: MediaQuery.of(context).size.width * 0.3,
-                      child: TextFormField(
-                          controller: mobileNoController,
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.next,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your contact number';
-                            }
-                            return null;
-                          },
-                          decoration: customInputDecoration(
-                            labelText: "Contact",
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    SizedBox(
-                      // width: MediaQuery.of(context).size.width * 0.3,
-                      child: TextFormField(
-                          textInputAction: TextInputAction.next,
-                          autofocus: true,
-                          controller: emailController,
-                          validator: (value) {
-                            if (value!.isNotEmpty) {
-                              String emailPattern =
-                                  r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
-                                  r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
-                                  r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
-                                  r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
-                                  r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
-                                  r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
-                                  r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
-                              RegExp regExp = RegExp(emailPattern);
-                              if (!regExp.hasMatch(value)) {
-                                return 'Enter a valid email address';
-                              }
-                            } else if (value.isEmpty) {
-                              return "Enter a  email address";
-                            }
-                          },
-                          decoration: customInputDecoration(
-                            labelText: "Email",
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    SizedBox(
-                      // width: MediaQuery.of(context).size.width * 0.3,
-                      child: TextFormField(
-                          textInputAction: TextInputAction.done,
-                          autofocus: true,
-                          controller: passwordController,
-                          // obscureText: controller.isVisible.value,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your Password ';
-                            }
-                            if (value.length < 6) {
-                              return 'Password should be at least 6 digits';
-                            }
-                            return null;
-                          },
-                          decoration: customInputDecoration(
-                            labelText: "Password",
-                          )),
-                    ),
-                    const SizedBox(height: 20.0),
-                    Center(
-                      child: SizedBox(
-                        // width: Get.size.width * 0.3,
-                        height: 50,
-                        child: ElevatedButton(
-                            onPressed: () async {
-                             if (formkey.currentState!.validate()) {
-                            if (controller.isLoading.value == false) {
-                              controller.isLoading.value = true;
-                              
-
-                              EmployeeAddRequest addRequest =
-                                  EmployeeAddRequest();
-                              addRequest.email = emailController.text;
-                              addRequest.password = passwordController.text;
-                              addRequest.fullName = nameController.text;
-                              addRequest.mobileNumber = mobileNoController.text;
-                              var res =
-                                  await controller.saveEmployee(addRequest);
-                             
-                              if (res != null) {
-                                await controller.initData();
-                                //  Get.back();
-                                // Get.offAndToNamed(Routes.EMPLOYEE_MANAGEMENT);
-                              }
-                              formkey.currentState!.reset();
-                            }
-                          }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff596cff),
-                            ),
-                            child: const Text(
-                              "Add Employee",
-                              style: TextStyle(fontSize: 18.0),
-                            )),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-         
+          ),
         );
       }
     });
@@ -562,6 +594,7 @@ class MyDataSource extends DataTableSource {
       cells: <DataCell>[
         DataCell(Text('${index + 1}')),
         DataCell(Text(employeeDetails[index].fullName ?? "")),
+        DataCell(Text(employeeDetails[index].jobTitle ?? "")),
         DataCell(Text(employeeDetails[index].email ?? "")),
         DataCell(Text(employeeDetails[index].mobileNumber ?? "")),
         DataCell(Text(employeeDetails[index].createdAt ?? "")),
@@ -578,7 +611,7 @@ class MyDataSource extends DataTableSource {
                   TextButton(
                       onPressed: () async {
                         var res = await controller
-                            .deactivate(employeeDetails[index].id??0);
+                            .deactivate(employeeDetails[index].id ?? 0);
                         Get.back();
                         if (res != null) {
                           await controller.initData();
@@ -596,7 +629,7 @@ class MyDataSource extends DataTableSource {
                   TextButton(
                       onPressed: () async {
                         var res = await controller
-                            .activate(employeeDetails[index].id??0);
+                            .activate(employeeDetails[index].id ?? 0);
                         Get.back();
                         if (res != null) {
                           await controller.initData();
@@ -643,7 +676,7 @@ class MyDataSource extends DataTableSource {
                         TextButton(
                             onPressed: () async {
                               var res = await controller
-                                  .delete(employeeDetails[index].id??0);
+                                  .delete(employeeDetails[index].id ?? 0);
 
                               Get.back();
                               if (res != null) {
@@ -663,8 +696,7 @@ class MyDataSource extends DataTableSource {
                   size: 16.0,
                 ),
                 onPressed: () async {
-                  controller.selectedEmployeeDetail.value =
-                      employeeDetails[index];
+                  controller.selectedEmployeeDetail.value =employeeDetails[index];
                   controller.nameController.text =
                       controller.selectedEmployeeDetail.value.fullName ?? "";
                   controller.emailController.text =
@@ -672,12 +704,21 @@ class MyDataSource extends DataTableSource {
                   controller.mobileNumberController.text =
                       controller.selectedEmployeeDetail.value.mobileNumber ??
                           "";
+                  controller.jobTitleController.text =
+                      controller.selectedEmployeeDetail.value.jobTitle ?? "";
+
                   Get.dialog(employeeUpdateForm());
 
                   // var context;
                   // Get.dialog(updateEmployeeForm(context));
                 },
               ),
+              IconButton(
+                  onPressed: () {
+                    Get.to(MapScreen(
+                        userId: employeeDetails[index].id.toString()));
+                  },
+                  icon: const Icon(Icons.map))
             ],
           ),
         ),
@@ -699,12 +740,10 @@ class MyDataSource extends DataTableSource {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Update Employee",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18.0)),
+                  const Text(
+                    "Update Employee",
+                    textAlign: TextAlign.center,
+                  ),
                   CircleAvatar(
                       backgroundColor: const Color(0xff596cff),
                       child: IconButton(
@@ -734,6 +773,15 @@ class MyDataSource extends DataTableSource {
                         height: 20.0,
                       ),
                       TextFormField(
+                        textInputAction: TextInputAction.next,
+                        controller: controller.jobTitleController,
+                        decoration:
+                            customInputDecoration(labelText: "Job Title"),
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      TextFormField(
                         textInputAction: TextInputAction.done,
                         controller: controller.mobileNumberController,
                         keyboardType: TextInputType.number,
@@ -745,7 +793,7 @@ class MyDataSource extends DataTableSource {
                             return 'Contact number should contain only numeric characters';
                           }
 
-                          if (value.length < 10) {
+                          if (value.length < 9) {
                             return 'Contact number should be at least 10 digits';
                           }
                           return null;
@@ -777,8 +825,9 @@ class MyDataSource extends DataTableSource {
                                       controller.mobileNumberController.text;
                                   updateRequest.id = controller
                                       .selectedEmployeeDetail.value.id!;
-                                  var res = await controller
-                                      .updateEmployee(updateRequest);
+                                  updateRequest.jobTitle =
+                                      controller.jobTitleController.text;
+                                  var res = await controller.updateEmployee(updateRequest);
                                   Get.back();
                                   if (res != null) {
                                     Get.offAllNamed(Routes.EMPLOYEE_MANAGEMENT);
@@ -789,7 +838,8 @@ class MyDataSource extends DataTableSource {
                             },
                             child: const Text(
                               "Update Employee",
-                              style: TextStyle(fontSize: 18.0),
+                              style: TextStyle(
+                                  fontSize: 18.0, color: Colors.white),
                             )),
                       )
                     ],
@@ -808,12 +858,10 @@ class MyDataSource extends DataTableSource {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Update Employee",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18.0)),
+                  const Text(
+                    "Update Employee",
+                    textAlign: TextAlign.center,
+                  ),
                   CircleAvatar(
                       backgroundColor: const Color(0xff596cff),
                       child: IconButton(
@@ -844,6 +892,16 @@ class MyDataSource extends DataTableSource {
                         height: 20.0,
                       ),
                       TextFormField(
+                        textInputAction: TextInputAction.next,
+                        autofocus: true,
+                        controller: controller.jobTitleController,
+                        decoration:
+                            customInputDecoration(labelText: "Job Title"),
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      TextFormField(
                         textInputAction: TextInputAction.done,
                         autofocus: true,
                         controller: controller.mobileNumberController,
@@ -856,7 +914,7 @@ class MyDataSource extends DataTableSource {
                             return 'Contact number should contain only numeric characters';
                           }
 
-                          if (value.length < 10) {
+                          if (value.length < 9) {
                             return 'Contact number should be at least 10 digits';
                           }
                           return null;
@@ -887,6 +945,7 @@ class MyDataSource extends DataTableSource {
                                         controller.nameController.text;
                                     updateRequest.mobileNumber =
                                         controller.mobileNumberController.text;
+                                    updateRequest.jobTitle =controller.jobTitleController.text;
                                     updateRequest.id = controller
                                         .selectedEmployeeDetail.value.id!;
                                     var res = await controller
@@ -902,7 +961,8 @@ class MyDataSource extends DataTableSource {
                               },
                               child: const Text(
                                 "Update Employee",
-                                style: TextStyle(fontSize: 18.0),
+                                style: TextStyle(
+                                    fontSize: 18.0, color: Colors.white),
                               )),
                         ),
                       )

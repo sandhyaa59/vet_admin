@@ -232,7 +232,7 @@ final _formKey = GlobalKey<FormState>();
                       ),
                       child: const Text(
                         "Make Payment",
-                        style: TextStyle(fontSize: 18.0),
+                          style: TextStyle(fontSize: 18.0,color: Colors.white),
                       )),
                 ),
               )

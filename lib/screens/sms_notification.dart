@@ -3,11 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
-import 'package:vet_pharma/controller/customer_controller.dart';
 import 'package:vet_pharma/controller/smscount_controller.dart';
 import 'package:vet_pharma/model/customer_list_response.dart';
 import 'package:vet_pharma/model/sms_Count_request.dart';
@@ -196,7 +194,7 @@ class SmsNoificationCount extends StatelessWidget {
                                                             ),
                                                             child: const Text(
                                                               "Send",
-                                                              style: TextStyle(
+                                                              style: TextStyle(color: Colors.white,
                                                                   fontSize: 18.0),
                                                             )),
                                                       ),
@@ -352,15 +350,11 @@ class SmsNoificationCount extends StatelessWidget {
                                               ),
                                               child: const Text(
                                                 "Send",
-                                                style: TextStyle(fontSize: 18.0),
+                                                style: TextStyle(fontSize: 18.0,color: Colors.white),
                                               )),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: 10.0,
-                                      ),
-
-                                      
+                                    
                                     ],
                                   ),
                                 ),

@@ -138,6 +138,12 @@ class Task extends StatelessWidget {
               ),
               DataColumn(
                 label: Text(
+                  'Job Title',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              DataColumn(
+                label: Text(
                   'Employee Email',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
@@ -185,10 +191,7 @@ class Task extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Add Task",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18.0)),
+                 ),
                 CircleAvatar(
                     backgroundColor: const Color(0xff596cff),
                     child: IconButton(
@@ -220,7 +223,7 @@ class Task extends StatelessWidget {
                           value: value,
                           child: Text(
                             value.fullName ?? "",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.w500,color: Colors.black),
                           ),
                         );
                       }).toList(),
@@ -229,7 +232,7 @@ class Task extends StatelessWidget {
                     height: 20.0,
                   ),
                   SizedBox(
-                    // width: Get.size.width * 0.3,
+                    width: Get.size.width * 0.3,
                     child: TextFormField(
                         maxLines: 5,
                         maxLength: 6200,
@@ -269,7 +272,7 @@ class Task extends StatelessWidget {
                           ),
                           child: const Text(
                             "Add Task",
-                            style: TextStyle(fontSize: 18.0),
+                            style: TextStyle(fontSize: 18.0,color: Colors.white),
                           )),
                     ),
                   )
@@ -290,10 +293,7 @@ class Task extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Add Task",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18.0)),
+                   ),
                 CircleAvatar(
                     backgroundColor: const Color(0xff596cff),
                     child: IconButton(
@@ -325,7 +325,7 @@ class Task extends StatelessWidget {
                           value: value,
                           child: Text(
                             value.fullName ?? "",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
                           ),
                         );
                       }).toList(),
@@ -334,7 +334,7 @@ class Task extends StatelessWidget {
                     height: 20.0,
                   ),
                   SizedBox(
-                    // width: Get.size.width * 0.3,
+                    width: Get.size.width * 0.3,
                     child: TextFormField(
                         controller: taskController,
                         maxLines: 5,
@@ -413,6 +413,14 @@ class MyDataSource extends DataTableSource {
           // width: Get.width * 0.15,
           child: Text(
             tasklist[index].employeeName ?? "",
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          ),
+        )),
+        DataCell(SizedBox(
+          // width: Get.width * 0.15,
+          child: Text(
+            tasklist[index].jobTitle ?? "",
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
           ),
@@ -565,10 +573,7 @@ class MyDataSource extends DataTableSource {
           children: [
             const Text("Assigned Task",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18.0)),
+                ),
             CircleAvatar(
                 backgroundColor: const Color(0xff596cff),
                 child: IconButton(
@@ -585,7 +590,9 @@ class MyDataSource extends DataTableSource {
       content:  SizedBox(
              width: Get.size.width * 0.2,
             height:  Get.size.height * 0.15,
-            child: SingleChildScrollView( scrollDirection: Axis.vertical,child: Text(task))),
+            child: SingleChildScrollView( scrollDirection: Axis.vertical,child: Text(task, style: const TextStyle(
+                color: Colors.black
+              )))),
       
     );
   }

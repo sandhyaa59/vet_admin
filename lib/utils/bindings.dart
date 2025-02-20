@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:vet_pharma/controller/admin_controller.dart';
+import 'package:vet_pharma/controller/catgeory_controller.dart';
+import 'package:vet_pharma/controller/discount_controller.dart';
+import 'package:vet_pharma/controller/product_controller.dart';
 import 'package:vet_pharma/controller/smscount_controller.dart';
 import 'package:vet_pharma/controller/task_controller.dart';
 import 'package:vet_pharma/controller/bill_details_controller.dart';
@@ -144,6 +147,39 @@ class AdminBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<AdminController>(() => AdminController());
+  }
+}
+
+
+
+
+class ProductBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<ProductController>(() => ProductController());
+  }
+}
+
+
+class ProductDetailBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<ProductController>(() => ProductController());
+  }
+}
+
+class CategoryBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<CategoryController>(() => CategoryController());
+  }
+}
+
+
+class DiscountBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<DiscountController>(() => DiscountController());
   }
 }
 

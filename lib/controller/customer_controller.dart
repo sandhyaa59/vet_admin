@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:vet_pharma/controller/smscount_controller.dart';
 import 'package:vet_pharma/model/customer_add_request.dart';
 import 'package:vet_pharma/model/customer_list_response.dart';
 import 'package:vet_pharma/model/customer_update_request.dart';

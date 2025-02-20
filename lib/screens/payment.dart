@@ -215,10 +215,7 @@ class PaymentScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Make Payment",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18.0)),
+                  ),
                 CircleAvatar(
                     backgroundColor: const Color(0xff596cff),
                     child: IconButton(
@@ -378,7 +375,7 @@ class PaymentScreen extends StatelessWidget {
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(value,     style: TextStyle(color: Colors.black),),
                         );
                       }).toList(),
                       decoration: customInputDecoration()),
@@ -474,7 +471,7 @@ class PaymentScreen extends StatelessWidget {
                           ),
                           child: const Text(
                             "Make Payment",
-                            style: TextStyle(fontSize: 18.0),
+                               style: TextStyle(fontSize: 18.0,color: Colors.white),
                           )),
                     ),
                   )

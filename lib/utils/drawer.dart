@@ -13,10 +13,14 @@ class MyDrawer extends StatefulWidget {
 class _MyDrawerState extends State<MyDrawer> {
   bool isExpanded = false;
   OrganizationController controller = Get.put(OrganizationController());
+  
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
+       shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(2.0)
+       ),
       elevation: 2.0,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -79,7 +83,46 @@ class _MyDrawerState extends State<MyDrawer> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
+            const Divider(), ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.CATEGORY);
+              },
+              leading: const Icon(
+                Icons.category,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                'Catgeory List',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Divider(), ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.PRODUCT);
+              },
+              leading: const Icon(
+                Icons.production_quantity_limits_sharp,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                'Product List',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
             const Divider(),
+            ListTile(
+              onTap: () {
+                Get.offAndToNamed(Routes.DISCOUNT);
+              },
+              leading: const Icon(
+                Icons.discount,
+                color: Color(0xff596cff),
+              ),
+              title: const Text(
+                'Discount List',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),  const Divider(),
              ListTile(
               onTap: () {
                 Get.offAndToNamed(Routes.ORGANIZATION);
@@ -220,20 +263,8 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             const Divider(),
-            // ListTile(
-            //   onTap: () {
-            //     Get.offAndToNamed(Routes.ADMIN);
-            //   },
-            //   leading: const Icon(
-            //     Icons.person,
-            //     color: Color(0xff596cff),
-            //   ),
-            //   title: const Text(
-            //     'Admin List',
-            //     style: TextStyle(fontWeight: FontWeight.bold),
-            //   ),
-            // ),
-            // const Divider(),
+           
+           
           ],
         ),
       ),

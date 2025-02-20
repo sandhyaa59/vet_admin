@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 
 
       Widget askConfirmation(String content,TextButton no,TextButton yes) {
     return AlertDialog(
       content: Text(content,
       style: const TextStyle(
-        fontWeight: FontWeight.w700
+        color: Colors.black,
+        fontWeight: FontWeight.w500
       ),),
       actions: <Widget>[
         no,yes

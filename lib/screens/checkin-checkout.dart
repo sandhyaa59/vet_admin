@@ -73,7 +73,19 @@ class CheckInCheckOutScreen extends StatelessWidget {
               ),
               DataColumn(
                 label: Text(
+                  'Job Title',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              DataColumn(
+                label: Text(
                   'CheckIn At',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+                DataColumn(
+                label: Text(
+                  'CheckIn Location',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -92,6 +104,12 @@ class CheckInCheckOutScreen extends StatelessWidget {
               DataColumn(
                 label: Text(
                   'Description',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              DataColumn(
+                label: Text(
+                  'Check out Location',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -123,7 +141,10 @@ class MyDataSource extends DataTableSource {
       cells: <DataCell>[
         DataCell(Text('${index + 1}')),
         DataCell(Text(check[index].employeeName ?? "")),
+        DataCell(Text(check[index].jobTitle ?? "")),
         DataCell(Text(check[index].checkInTime ?? "")),
+          DataCell( Text(check[index].checkInLocation ?? "",
+             )),
         DataCell( SizedBox(width: Get.size.width * 0.2,
           child: InkWell(
                 onTap: () {
@@ -143,7 +164,9 @@ class MyDataSource extends DataTableSource {
                         check[index].checkoutDescription ?? ""));
                   },
                   child: Text(check[index].checkoutDescription ?? ""))),
-        )
+        ),
+        DataCell( Text(check[index].checkoutLocation ?? "",
+              ))
       ],
     );
   }
@@ -161,10 +184,7 @@ class MyDataSource extends DataTableSource {
           children: [
             const Text("Description",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18.0)),
+               ),
             CircleAvatar(
                 backgroundColor: const Color(0xff596cff),
                 child: IconButton(
@@ -181,7 +201,10 @@ class MyDataSource extends DataTableSource {
       content:  SizedBox(
              width: Get.size.width * 0.2,
             height:  Get.size.height * 0.15,
-            child: SingleChildScrollView( scrollDirection: Axis.vertical,child: Text(descritption))),
+            child: SingleChildScrollView( scrollDirection: Axis.vertical,child: Text(descritption,
+            style: const TextStyle(
+                color: Colors.black
+              ),))),
       
     );
   }

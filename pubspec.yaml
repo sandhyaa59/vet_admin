@@ -41,11 +41,14 @@ dependencies:
   get_storage: ^2.1.1
   url_launcher: ^6.2.3
   flutter_typeahead: ^4.0.0
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.1
+  screenshot: ^2.5.0
+  file_picker: ^8.0.0+1
+  universal_html: ^2.2.4
+  # google_maps_flutter_web: ^0.5.4+3
 
-  # google_maps_flutter: ^2.0.10
-  # geolocator: ^7.0.3
-  # flutter_map: ^6.1.0
-  # google_maps_flutter_web: ^0.10.6
+  # google_maps_flutter: ^2.5.3
 
 
 dev_dependencies:

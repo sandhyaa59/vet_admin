@@ -14,21 +14,42 @@ import 'package:vet_pharma/widgets/cancel.dart';
 import 'package:vet_pharma/widgets/text.dart';
 
 // ignore: must_be_immutable
-class OrderDetailsScreen extends StatelessWidget {
+class OrderDetailsScreen extends StatefulWidget {
   OrderDetailsScreen({super.key});
 
-  final controller = Get.find<OrderController>();
-  // final billingController = Get.find<BillingController>();
+  @override
+  State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
+}
 
+class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+  final controller = Get.find<OrderController>();
+
+  // final billingController = Get.find<BillingController>();
   final formKey = GlobalKey<FormState>();
 
   final TextEditingController nameController = TextEditingController();
+
   final TextEditingController contactController = TextEditingController();
+
   final TextEditingController billController = TextEditingController();
+
   final TextEditingController taxController = TextEditingController();
+
   final TextEditingController grandTotalController = TextEditingController();
+
   final TextEditingController subtotalController = TextEditingController();
+
   final TextEditingController discountController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    taxController.text=(controller.selectedOrder.value.tax.toString());
+    grandTotalController.text=(controller.selectedOrder.value.grandTotal.toString());
+    subtotalController.text=(controller.selectedOrder.value.subTotal.toString());
+    discountController.text=(controller.selectedOrder.value.discountAmount.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -287,6 +308,21 @@ class OrderDetailsScreen extends StatelessWidget {
                     "Quantity",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
+                    DataColumn(
+                      label: Text(
+                    "Unit",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    "Price",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    "Amount",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
                 ],
                 rows: List.generate(inHand.length, (index) {
                   return DataRow(cells: <DataCell>[
@@ -297,34 +333,77 @@ class OrderDetailsScreen extends StatelessWidget {
                       maxLines: 3),
                     )),
                     DataCell(Text(inHand[index].quantity.toString())),
+                     DataCell(Text(inHand[index].unit??"")),
+                     DataCell(Text(inHand[index].price.toString())),
+                      DataCell(Text(inHand[index].amount.toString())),
                   ]);
                 })),
           ),
         ),
         const SizedBox(height: 10.0),
-        const Text("Description: ",
-            style: TextStyle(
-                fontSize: 16.0,
-                color: Color(0xff004792),
-                fontWeight: FontWeight.bold)),
-        const SizedBox(height: 6.0),
-        Container(
-          // height: 70,
-          padding: const EdgeInsets.all(12.0),
-          decoration: BoxDecoration(
-              border: Border.all(
-                color:const Color(0xff004792),
-              ),
-              borderRadius: BorderRadius.circular(8.0)),
-          child: Text(controller.selectedOrder.value.description ?? "",
-              style:
-                  const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600)),
+    if ((controller.selectedOrder.value.description ?? "").isNotEmpty) ...[
+  const Text(
+    "Description: ",
+    style: TextStyle(
+      fontSize: 16.0,
+      color: Color(0xff004792),
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  const SizedBox(height: 6.0),
+  Container(
+    padding: const EdgeInsets.all(12.0),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: const Color(0xff004792),
+      ),
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+    child: Text(
+      controller.selectedOrder.value.description!,
+      style: const TextStyle(
+        fontSize: 16.0,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  ),
+]
+,
+         Container(
+          alignment: AlignmentDirectional.bottomEnd,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              showTitleContent("Sub Total : ",
+                  controller.selectedOrder.value.subTotal.toString()),
+              const SizedBox(height: 8.0),
+              showTitleContent("Discount : ",
+                  controller.selectedOrder.value.discountAmount.toString()),
+              const SizedBox(height: 8.0),
+              
+              showTitleContent(
+                  "Tax : ", controller.selectedOrder.value.tax.toString()),
+              const SizedBox(height: 8.0),
+              showTitleContent(
+                  "TaxableAmount : ", controller.selectedOrder.value.taxableAmount.toString()),
+              const SizedBox(height: 8.0),
+               showTitleContent(
+                  "Non TaxableAmount : ", controller.selectedOrder.value.nonTaxableAmount.toString()),
+              // const SizedBox(height: 8.0),
+              //  showTitleContent(
+              //     "Received : ", controller.selectedOrder.value.received.toString()),
+              const SizedBox(height: 8.0),
+              showTitleContent("Grand Total : ",
+                  controller.selectedOrder.value.grandTotal.toString()),
+            ],
+          ),
         ),
       ],
     );
   }
 
   BillAddRequest addRequest = BillAddRequest();
+
   Widget createBillForm(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       if (constraints.maxWidth > 600) {
@@ -339,10 +418,7 @@ class OrderDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Create Bill",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18.0)),
+                   ),
                 CircleAvatar(
                     backgroundColor: const Color(0xff596cff),
                     child: IconButton(
@@ -363,19 +439,19 @@ class OrderDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10.0),
-                  SizedBox(
-                    child: TextFormField(
-                      controller: billController,
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Enter Bill Number";
-                        }
-                      },
-                      decoration:
-                          customInputDecoration(labelText: "Bill Number"),
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
+                  // SizedBox(
+                  //   child: TextFormField(
+                  //     controller: billController,
+                  //     validator: (val) {
+                  //       if (val!.isEmpty) {
+                  //         return "Enter Bill Number";
+                  //       }
+                  //     },
+                  //     decoration:
+                  //         customInputDecoration(labelText: "Bill Number"),
+                  //   ),
+                  // ),
+                
                   SizedBox(
                     child: TextFormField(
                       keyboardType: TextInputType.number,
@@ -475,7 +551,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         ),
                         child: const Text(
                           "Create Bill",
-                          style: TextStyle(fontSize: 18.0),
+                          style: TextStyle(fontSize: 18.0,color: Colors.white),
                         )),
                   ),
                 ],
@@ -495,10 +571,7 @@ class OrderDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Create Bill",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18.0)),
+                   ),
                 CircleAvatar(
                     backgroundColor: const Color(0xff596cff),
                     child: IconButton(
@@ -519,19 +592,19 @@ class OrderDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10.0),
-                  SizedBox(
-                    child: TextFormField(
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Enter Bill Number";
-                        }
-                      },
-                      controller: billController,
-                      decoration:
-                          customInputDecoration(labelText: "Bill Number"),
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
+                  // SizedBox(
+                  //   child: TextFormField(
+                  //     validator: (val) {
+                  //       if (val!.isEmpty) {
+                  //         return "Enter Bill Number";
+                  //       }
+                  //     },
+                  //     controller: billController,
+                  //     decoration:
+                  //         customInputDecoration(labelText: "Bill Number"),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 20.0),
                   SizedBox(
                     child: TextFormField(keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
@@ -631,7 +704,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           ),
                           child: const Text(
                             "Create Bill",
-                            style: TextStyle(fontSize: 18.0),
+                            style: TextStyle(fontSize: 18.0,color: Colors.white),
                           )),
                     ),
                   ),

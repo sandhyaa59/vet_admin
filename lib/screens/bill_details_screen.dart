@@ -36,158 +36,306 @@ class BillDetailsScreen extends StatelessWidget {
         return LoadingOverlay(
           isLoading: controller.isLoading.value,
           child: SingleChildScrollView(
-            child:  Align(
-                alignment: Alignment.center,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    controller.billDetails.value.isVoid == false
-                        ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Flexible(
-                                  child: SizedBox(
-                                    // width: 80,
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                          Get.dialog(paymentForm(context));
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                side: const BorderSide(
-                                                  color: Color(0xff596cff),
-                                                ))),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Text(
-                                            'Make Payment',
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Color(0xff596cff),
-                                            ),
-                                          ),
-                                        )),
-                                  ),
-                                ),
-                                const SizedBox(width: 20.0),
-                                SizedBox(
-                                  // width: 80,
-                                  child: ElevatedButton(
-                                      onPressed: () async {
-                                        Get.dialog(askConfirmation(
-                                            "Are you sure you want to cancel bill ?",
-                                            TextButton(
-                                                onPressed: () {
-                                                  Get.back();
-                                                },
-                                                child: const Text("No")),
-                                            TextButton(
-                                                onPressed: () async {
-                                                  var res = await controller
-                                                      .cancel(controller
-                                                          .billDetails.value.id!);
-                                                          Get.back();
-                                                  if (res != null) {
-                                                    
-                        
-                                                    Get.offAllNamed(
-                                                        Routes.BILLING);
-                                                  }
-                                                },
-                                                child: const Text("Yes"))));
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              side: const BorderSide(
-                                                  color: Colors.red))),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(16.0),
-                                        child: Text(
-                                          'Cancel Bill',
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                              ],
-                            ),
-                        )
-                        : const SizedBox(),
-                    const SizedBox(height: 20.0),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Card(
-                          elevation: 1.0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0)),
-                          child: LayoutBuilder(builder: (context, constraints) {
-                            if (constraints.maxWidth > 600) {
-                              return Container(
-                                width: Get.width * 0.85,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.0)),
-                                padding: const EdgeInsets.all(kPadding),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    billEmployeeDetails(),
-                                    const Divider(),
-                                    const SizedBox(height: 10.0),
-                                    billCustomerDetails(),
-                                    const Divider(),
-                                    const SizedBox(height: 10.0),
-                                    orderStatus(),
-                                    const Divider(),
-                                    const SizedBox(height: 10.0),
-                                    billDetails(true),
-                                    const Divider(),
-                                    billListable(controller.billList)
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return Container(
-                                padding: const EdgeInsets.all(kPadding),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    billEmployeeDetails(),
-                                    const Divider(),
-                                    const SizedBox(height: 10.0),
-                                    billCustomerDetails(),
-                                    const Divider(),
-                                    const SizedBox(height: 10.0),
-                                    orderStatus(),
-                                    const Divider(),
-                                    const SizedBox(height: 10.0),
-                                    billDetails(false),
-                                    const Divider(),
-                                    const SizedBox(height: 10.0),
-                                    billListable(controller.billList)
-                                  ],
-                                ),
-                              );
-                            }
-                          })),
-                    ),
-                  ],
-                
+            child: Align(
+              alignment: Alignment.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  controller.billDetails.value.isVoid == false
+                      ?Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: buildButton())
+                      : const SizedBox(),
+                  const SizedBox(height: 10.0),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Card(
+                        elevation: 1.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: LayoutBuilder(builder: (context, constraints) {
+                          if (constraints.maxWidth > 600) {
+                            return Container(
+                              width: Get.width * 0.85,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0)),
+                              padding: const EdgeInsets.all(kPadding),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  billEmployeeDetails(),
+                                  const Divider(),
+                                  const SizedBox(height: 10.0),
+                                  billCustomerDetails(),
+                                  const Divider(),
+                                  const SizedBox(height: 10.0),
+                                  orderStatus(),
+                                  const Divider(),
+                                  const SizedBox(height: 10.0),
+                                  billDetails(true),
+                                  const Divider(),
+                                  billListable(controller.billList)
+                                ],
+                              ),
+                            );
+                          } else {
+                            return Container(
+                              padding: const EdgeInsets.all(kPadding),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  billEmployeeDetails(),
+                                  const Divider(),
+                                  const SizedBox(height: 10.0),
+                                  billCustomerDetails(),
+                                  const Divider(),
+                                  const SizedBox(height: 10.0),
+                                  orderStatus(),
+                                  const Divider(),
+                                  const SizedBox(height: 10.0),
+                                  billDetails(false),
+                                  const Divider(),
+                                  const SizedBox(height: 10.0),
+                                  billListable(controller.billList)
+                                ],
+                              ),
+                            );
+                          }
+                        })),
+                  ),
+                ],
               ),
             ),
           ),
         );
       }),
     );
+  }
+
+  Widget buildButton() {
+    return LayoutBuilder(builder: (context, constraints) {
+      if (constraints.maxWidth > 600) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+        SizedBox(
+          // width: 80,
+          child: ElevatedButton(
+              onPressed: () {
+                Get.dialog(paymentForm(context));
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: const BorderSide(
+                        color: Color(0xff596cff),
+                      ))),
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Make Payment',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Color(0xff596cff),
+                  ),
+                ),
+              )),
+        ),
+        const SizedBox(width: 20.0),
+        SizedBox(
+          // width: 80,
+          child: ElevatedButton(
+              onPressed: () async {
+                Get.dialog(askConfirmation(
+                    "Are you sure you want to cancel bill ?",
+                    TextButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: const Text("No")),
+                    TextButton(
+                        onPressed: () async {
+                          var res = await controller
+                              .cancel(controller.billDetails.value.id!);
+                          Get.back();
+                          if (res != null) {
+                            Get.offAllNamed(Routes.BILLING);
+                          }
+                        },
+                        child: const Text("Yes"))));
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: const BorderSide(color: Colors.red))),
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Cancel Bill',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.red,
+                  ),
+                ),
+              )),
+        ),
+        // const SizedBox(width: 20.0),
+        // SizedBox(
+        //   // width: 80,
+        //   child: ElevatedButton(
+        //       onPressed: () async {
+        //         // Get.dialog(askConfirmation(
+        //         //     "Are you sure you want to cancel bill ?",
+        //         //     TextButton(
+        //         //         onPressed: () {
+        //         //           Get.back();
+        //         //         },
+        //         //         child: const Text("No")),
+        //         //     TextButton(
+        //         //         onPressed: () async {
+        //         //           var res = await controller
+        //         //               .cancel(controller
+        //         //                   .billDetails.value.id!);
+        //         //                   Get.back();
+        //         //           if (res != null) {
+
+        //         //             Get.offAllNamed(
+        //         //                 Routes.BILLING);
+        //         //           }
+        //         //         },
+        //         //         child: const Text("Yes"))));
+        //       },
+        //       style: ElevatedButton.styleFrom(
+        //           backgroundColor: Colors.white,
+        //           shape: RoundedRectangleBorder(
+        //               borderRadius: BorderRadius.circular(8),
+        //               side: const BorderSide(color: Colors.red))),
+        //       child: const Padding(
+        //         padding: EdgeInsets.all(16.0),
+        //         child: Text(
+        //           'Print Bill',
+        //           style: TextStyle(
+        //             fontSize: 16.0,
+        //             color: Colors.red,
+        //           ),
+        //         ),
+        //       )),
+        // )
+      ]);
+      
+    }
+    else{ return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+ SizedBox(
+          // width: 80,
+          child: ElevatedButton(
+              onPressed: () {
+                Get.dialog(paymentForm(context));
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: const BorderSide(
+                        color: Color(0xff596cff),
+                      ))),
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Make Payment',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Color(0xff596cff),
+                  ),
+                ),
+              )),
+        ),
+        const SizedBox(height: 20.0),
+         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+           children: [
+             ElevatedButton(
+                  onPressed: () async {
+                    Get.dialog(askConfirmation(
+                        "Are you sure you want to cancel bill ?",
+                        TextButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: const Text("No")),
+                        TextButton(
+                            onPressed: () async {
+                              var res = await controller
+                                  .cancel(controller.billDetails.value.id!);
+                              Get.back();
+                              if (res != null) {
+                                Get.offAllNamed(Routes.BILLING);
+                              }
+                            },
+                            child: const Text("Yes"))));
+                  },
+                  style: ElevatedButton.styleFrom(
+                   
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: const BorderSide(color: Colors.red))),
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Cancel Bill',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.red,
+                      ),
+                    ),
+                  )),
+            //  ElevatedButton(
+            //       onPressed: () async {
+            //         // Get.dialog(askConfirmation(
+            //         //     "Are you sure you want to cancel bill ?",
+            //         //     TextButton(
+            //         //         onPressed: () {
+            //         //           Get.back();
+            //         //         },
+            //         //         child: const Text("No")),
+            //         //     TextButton(
+            //         //         onPressed: () async {
+            //         //           var res = await controller
+            //         //               .cancel(controller
+            //         //                   .billDetails.value.id!);
+            //         //                   Get.back();
+            //         //           if (res != null) {
+             
+            //         //             Get.offAllNamed(
+            //         //                 Routes.BILLING);
+            //         //           }
+            //         //         },
+            //         //         child: const Text("Yes"))));
+            //       },
+            //       style: ElevatedButton.styleFrom(
+            //           backgroundColor: Colors.white,
+            //           shape: RoundedRectangleBorder(
+            //               borderRadius: BorderRadius.circular(8),
+            //               side: const BorderSide(color: Colors.red))),
+            //       child: const Padding(
+            //         padding: EdgeInsets.all(16.0),
+            //         child: Text(
+            //           'Print Bill',
+            //           style: TextStyle(
+            //             fontSize: 16.0,
+            //             color: Colors.red,
+            //           ),
+            //         ),
+            //       )),
+           ],
+         ),
+     
+     
+      ],
+    );}});
   }
 
   Widget billCustomerDetails() {
@@ -205,23 +353,26 @@ class BillDetailsScreen extends StatelessWidget {
                   children: [
                     showTitleContent(
                       "Customer Name : ",
-                      controller.billDetails.value.customerName??"",
+                      controller.billDetails.value.customerName ?? "",
                     ),
                     const SizedBox(height: 8.0),
                     showTitleContent(
                       "Email : ",
-                      controller.billDetails.value.customerEmail??"",
+                      controller.billDetails.value.customerEmail ?? "",
                     ),
                     const SizedBox(height: 8.0),
                     showTitleContent(
                       "Shop Name : ",
-                      controller.billDetails.value.orderResponse?.shopName ??""
-                          "",
+                      controller.billDetails.value.orderResponse?.shopName ??
+                          ""
+                              "",
                       // controller.billDetails.value.??"",
-                    ),const SizedBox(height: 8.0),
+                    ),
+                    const SizedBox(height: 8.0),
                     showTitleContent(
                       "Customer Pan : ",
-                      controller.billDetails.value.orderResponse?.customerPan??"",
+                      controller.billDetails.value.orderResponse?.customerPan ??
+                          "",
                     ),
                   ],
                 ),
@@ -229,7 +380,7 @@ class BillDetailsScreen extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: showTitleContent(
                     "Contact : ",
-                    controller.billDetails.value.customerMobileNo??"",
+                    controller.billDetails.value.customerMobileNo ?? "",
                   ),
                 ),
               ],
@@ -258,11 +409,12 @@ class BillDetailsScreen extends StatelessWidget {
             showTitleContent(
               "Shop Name : ",
               controller.billDetails.value.orderResponse?.shopName ?? "",
-            ),const SizedBox(height: 10.0),
-             showTitleContent(
-                      "Customer Pan : ",
-                     controller.billDetails.value.orderResponse?.customerPan??"",
-                    ),
+            ),
+            const SizedBox(height: 10.0),
+            showTitleContent(
+              "Customer Pan : ",
+              controller.billDetails.value.orderResponse?.customerPan ?? "",
+            ),
           ],
         );
       }
@@ -403,34 +555,62 @@ class BillDetailsScreen extends StatelessWidget {
                     "Quantity",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
+                   DataColumn(
+                      label: Text(
+                    "Unit",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    "Price",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+                  //  DataColumn(
+                  //     label: Text(
+                  //   "Amount",
+                  //   style: TextStyle(fontWeight: FontWeight.bold),
+                  // )),
                 ],
                 rows: List.generate(inHand.length, (index) {
                   return DataRow(cells: <DataCell>[
                     DataCell(Text(inHand[index].title ?? "")),
                     DataCell(Text(inHand[index].quantity.toString())),
+                     DataCell(Text(inHand[index].unit??"")),
+                    DataCell(Text(inHand[index].price.toString())),
+                    //  DataCell(Text(inHand[index].amount.toString())),
                   ]);
                 })),
           ),
         ),
-        const SizedBox(height: 10.0),
-        const Text("Description ",
-            style: TextStyle(
-                fontSize: 16.0,
-                color: Color(0xff004792),
-                fontWeight: FontWeight.bold)),
-        const SizedBox(height: 6.0),
-        Container(
-          padding: const EdgeInsets.all(12.0),
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey.shade200,
-              ),
-              borderRadius: BorderRadius.circular(8.0)),
-          child: Text(
-              controller.billDetails.value.orderResponse?.description ?? "",
-              style:
-                  const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600)),
-        ),
+        if (( controller.billDetails.value.orderResponse?.description ?? "").isNotEmpty) ...[
+  const Text(
+    "Description: ",
+    style: TextStyle(
+      fontSize: 16.0,
+      color: Color(0xff004792),
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  const SizedBox(height: 6.0),
+  Container(
+    padding: const EdgeInsets.all(12.0),
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: const Color(0xff004792),
+      ),
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+    child: Text(
+     controller.billDetails.value.orderResponse?.description ?? "",
+      style: const TextStyle(
+        fontSize: 16.0,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  ),
+]
+
+       ,
         Container(
           alignment: AlignmentDirectional.bottomEnd,
           child: Column(
@@ -448,8 +628,8 @@ class BillDetailsScreen extends StatelessWidget {
               showTitleContent(
                   "Due : ", controller.billDetails.value.dueAmount.toString()),
               const SizedBox(height: 8.0),
-               showTitleContent(
-                  "Received : ", controller.billDetails.value.received.toString()),
+              showTitleContent("Received : ",
+                  controller.billDetails.value.received.toString()),
               const SizedBox(height: 8.0),
               showTitleContent("Grand Total : ",
                   controller.billDetails.value.grandTotal.toString()),
@@ -475,6 +655,8 @@ class BillDetailsScreen extends StatelessWidget {
       }
     }
 
+    String amt = controller.billDetails.value.grandTotal.toString();
+    amountController.text = amt;
     return LayoutBuilder(builder: (context, constraints) {
       if (constraints.maxWidth > 600) {
         return AlertDialog(
@@ -487,11 +669,9 @@ class BillDetailsScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Make Payment",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18.0)),
+                const Text(
+                  "Make Payment",
+                ),
                 CircleAvatar(
                     backgroundColor: const Color(0xff596cff),
                     child: IconButton(
@@ -514,12 +694,13 @@ class BillDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 10.0),
                   TextFormField(
                     controller: amountController,
+                    readOnly: true,
                     keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            textInputAction: TextInputAction.next,
-                          autofocus: true,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    textInputAction: TextInputAction.next,
+                    autofocus: true,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Enter amount';
@@ -541,7 +722,10 @@ class BillDetailsScreen extends StatelessWidget {
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(
+                            value,
+                            style: TextStyle(color: Colors.black),
+                          ),
                         );
                       }).toList(),
                       decoration: customInputDecoration()),
@@ -563,11 +747,11 @@ class BillDetailsScreen extends StatelessWidget {
                   TextFormField(
                     controller: contactController,
                     keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            textInputAction: TextInputAction.next,
-                          autofocus: true,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    textInputAction: TextInputAction.next,
+                    autofocus: true,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Enter contact details';
@@ -622,9 +806,8 @@ class BillDetailsScreen extends StatelessWidget {
 
                               var res = await controller.paymentController
                                   .savePayment(saveRequest);
-                               Get.back();
-                              if (res != null) { 
-                                
+                              Get.back();
+                              if (res != null) {
                                 Get.offAndToNamed(Routes.PAYMENT);
                               }
                               formkey.currentState!.reset();
@@ -636,7 +819,7 @@ class BillDetailsScreen extends StatelessWidget {
                         ),
                         child: const Text(
                           "Make Payment",
-                          style: TextStyle(fontSize: 18.0),
+                          style: TextStyle(fontSize: 18.0, color: Colors.white),
                         )),
                   ),
                 ],
@@ -644,8 +827,7 @@ class BillDetailsScreen extends StatelessWidget {
             ),
           ),
         );
-      } 
-      else {
+      } else {
         return AlertDialog(
           titlePadding: const EdgeInsets.all(0),
           title: Container(
@@ -684,11 +866,11 @@ class BillDetailsScreen extends StatelessWidget {
                   TextFormField(
                     controller: amountController,
                     keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            textInputAction: TextInputAction.next,
-                          autofocus: true,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    textInputAction: TextInputAction.next,
+                    autofocus: true,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Enter amount';
@@ -731,12 +913,13 @@ class BillDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20.0),
                   TextFormField(
-                    controller: contactController,keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            textInputAction: TextInputAction.next,
-                          autofocus: true,
+                    controller: contactController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    textInputAction: TextInputAction.next,
+                    autofocus: true,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Enter contact details';
@@ -750,7 +933,8 @@ class BillDetailsScreen extends StatelessWidget {
                   Obx(() => Visibility(
                         visible:
                             controller.selectedPaymentMethod.value != 'Cash',
-                        child: TextFormField(textInputAction: TextInputAction.done,
+                        child: TextFormField(
+                          textInputAction: TextInputAction.done,
                           controller: bankNameController,
                           validator: (value) {
                             if (value!.isEmpty) {

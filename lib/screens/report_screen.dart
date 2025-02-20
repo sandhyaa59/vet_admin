@@ -120,11 +120,22 @@ class ReportScreen extends StatelessWidget {
                   ),
                   DataColumn(
                     label: Text(
+                      'Job Title',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
                       'Customer',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  
+                   DataColumn(
+                    label: Text(
+                      'Shop Name',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                   DataColumn(
                     label: Text(
                       'Description',
@@ -176,7 +187,9 @@ class MyDataSource extends DataTableSource {
       cells: <DataCell>[
         DataCell(Text('${index + 1}')),
         DataCell(Text(report[index].employeeName ?? "")),
+        DataCell(Text(report[index].jobTitle ?? "")),
         DataCell(Text(report[index].customerName ?? "")),
+         DataCell(Text(report[index].shopName ?? "")),
         DataCell(SizedBox(
           width: Get.size.width * 0.12,
           child: Text(
