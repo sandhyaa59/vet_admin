@@ -515,45 +515,50 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   const SizedBox(
                     height: 20.0,
                   ),
-                  SizedBox(
-                    width: Get.size.width * 0.3,
-                    height: 50,
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          if (formKey.currentState!.validate()) {
-                            formKey.currentState!.save();
-                            if (controller.billingController.isLoading.value ==
-                                false) {
-                              controller.billingController.isLoading.value =
-                                  true;
-                              BillAddRequest addRequest = BillAddRequest();
-                              addRequest.customer = nameController.text;
-                              addRequest.grandTotal = grandTotalController.text;
-                              addRequest.subTotal = subtotalController.text;
-                              addRequest.tax = taxController.text;
-                              addRequest.billNo = billController.text;
-                              addRequest.discounts = discountController.text;
-                              addRequest.orderId =
-                                  controller.selectedOrder.value.id;
-                              var res = await controller.billingController.saveBill(addRequest);
-                               Get.back();
-                              if (res != null) {
-                               
-                                // await controller.initData();
-                                Get.offAndToNamed(Routes.ORDER);
-                              }
-                              formKey.currentState!.reset();
-                            }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff596cff),
-                        ),
-                        child: const Text(
-                          "Create Bill",
-                          style: TextStyle(fontSize: 18.0,color: Colors.white),
-                        )),
-                  ),
+                 SizedBox(
+  width: Get.size.width * 0.3,
+  height: 50,
+  child: Obx(() => ElevatedButton(
+        onPressed: () async {
+          if (formKey.currentState!.validate()) {
+            formKey.currentState!.save();
+            if (!controller.billingController.isLoading.value) {
+              controller.billingController.isLoading.value = true;
+              
+              BillAddRequest addRequest = BillAddRequest();
+              addRequest.customer = nameController.text;
+              addRequest.grandTotal = grandTotalController.text;
+              addRequest.subTotal = subtotalController.text;
+              addRequest.tax = taxController.text;
+              addRequest.billNo = billController.text;
+              addRequest.discounts = discountController.text;
+              addRequest.orderId = controller.selectedOrder.value.id;
+
+              var res = await controller.billingController.saveBill(addRequest);
+              Get.back();
+              
+              if (res != null) {
+                await controller.initData();
+                Get.offAndToNamed(Routes.ORDER);
+              }
+              
+              formKey.currentState!.reset();
+              controller.billingController.isLoading.value = false;
+            }
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xff596cff),
+        ),
+        child: controller.billingController.isLoading.value
+            ? const CircularProgressIndicator(color: Colors.white)
+            : const Text(
+                "Create Bill",
+                style: TextStyle(fontSize: 18.0, color: Colors.white),
+              ),
+      )),
+)
+
                 ],
               ),
             ),
@@ -592,19 +597,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10.0),
-                  // SizedBox(
-                  //   child: TextFormField(
-                  //     validator: (val) {
-                  //       if (val!.isEmpty) {
-                  //         return "Enter Bill Number";
-                  //       }
-                  //     },
-                  //     controller: billController,
-                  //     decoration:
-                  //         customInputDecoration(labelText: "Bill Number"),
-                  //   ),
-                  // ),
-                  // const SizedBox(height: 20.0),
+                
                   SizedBox(
                     child: TextFormField(keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
@@ -692,7 +685,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                     .saveBill(addRequest);
                                 print(res);  Get.back();
                                 if (res != null) {
-                                  // await controller.initData();
+                                  await controller.initData();
                                   Get.offAndToNamed(Routes.ORDER);
                                 }
                                 formKey.currentState!.reset();

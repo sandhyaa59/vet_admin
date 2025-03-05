@@ -17,7 +17,7 @@ class BillDetailsResponse {
     
     OrderResponse? orderResponse;
     String? customerMobileNo;
-    int? grandTotal;
+    double? grandTotal;
     int? subTotal;
     int? discounts;
     int? tax;

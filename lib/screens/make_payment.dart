@@ -221,6 +221,7 @@ final _formKey = GlobalKey<FormState>();
                             var res = await controller.savePayment(saveRequest);
                             Get.back();
                             if (res != null) {
+                              await controller.paymentLists();
                               Get.offAndToNamed(Routes.PAYMENT);
                             }
                             _formKey.currentState!.reset();

@@ -41,10 +41,12 @@ class BillDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  controller.billDetails.value.isVoid == false
-                      ?Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: buildButton())
+                  controller.billDetails.value.isVoid == false &&
+                          controller.billDetails.value.received! < controller.billDetails.value.grandTotal!
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: buildButton(),
+                        )
                       : const SizedBox(),
                   const SizedBox(height: 10.0),
                   Align(
@@ -115,183 +117,136 @@ class BillDetailsScreen extends StatelessWidget {
   Widget buildButton() {
     return LayoutBuilder(builder: (context, constraints) {
       if (constraints.maxWidth > 600) {
+        return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          SizedBox(
+            // width: 80,
+            child: ElevatedButton(
+                onPressed: () {
+                  Get.dialog(paymentForm(context));
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: const BorderSide(
+                          color: Color(0xff596cff),
+                        ))),
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Make Payment',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Color(0xff596cff),
+                    ),
+                  ),
+                )),
+          ),
+          const SizedBox(width: 20.0),
+          SizedBox(
+            // width: 80,
+            child: ElevatedButton(
+                onPressed: () async {
+                  Get.dialog(askConfirmation(
+                      "Are you sure you want to cancel bill ?",
+                      TextButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: const Text("No")),
+                      TextButton(
+                          onPressed: () async {
+                            var res = await controller
+                                .cancel(controller.billDetails.value.id!);
+                            Get.back();
+                            if (res != null) {
+                              Get.offAllNamed(Routes.BILLING);
+                            }
+                          },
+                          child: const Text("Yes"))));
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: const BorderSide(color: Colors.red))),
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Cancel Bill',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.red,
+                    ),
+                  ),
+                )),
+          ),
+        ]);
+      } else {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-        SizedBox(
-          // width: 80,
-          child: ElevatedButton(
-              onPressed: () {
-                Get.dialog(paymentForm(context));
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: const BorderSide(
-                        color: Color(0xff596cff),
-                      ))),
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Make Payment',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Color(0xff596cff),
-                  ),
-                ),
-              )),
-        ),
-        const SizedBox(width: 20.0),
-        SizedBox(
-          // width: 80,
-          child: ElevatedButton(
-              onPressed: () async {
-                Get.dialog(askConfirmation(
-                    "Are you sure you want to cancel bill ?",
-                    TextButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        child: const Text("No")),
-                    TextButton(
-                        onPressed: () async {
-                          var res = await controller
-                              .cancel(controller.billDetails.value.id!);
-                          Get.back();
-                          if (res != null) {
-                            Get.offAllNamed(Routes.BILLING);
-                          }
-                        },
-                        child: const Text("Yes"))));
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: const BorderSide(color: Colors.red))),
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Cancel Bill',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.red,
-                  ),
-                ),
-              )),
-        ),
-        // const SizedBox(width: 20.0),
-        // SizedBox(
-        //   // width: 80,
-        //   child: ElevatedButton(
-        //       onPressed: () async {
-        //         // Get.dialog(askConfirmation(
-        //         //     "Are you sure you want to cancel bill ?",
-        //         //     TextButton(
-        //         //         onPressed: () {
-        //         //           Get.back();
-        //         //         },
-        //         //         child: const Text("No")),
-        //         //     TextButton(
-        //         //         onPressed: () async {
-        //         //           var res = await controller
-        //         //               .cancel(controller
-        //         //                   .billDetails.value.id!);
-        //         //                   Get.back();
-        //         //           if (res != null) {
-
-        //         //             Get.offAllNamed(
-        //         //                 Routes.BILLING);
-        //         //           }
-        //         //         },
-        //         //         child: const Text("Yes"))));
-        //       },
-        //       style: ElevatedButton.styleFrom(
-        //           backgroundColor: Colors.white,
-        //           shape: RoundedRectangleBorder(
-        //               borderRadius: BorderRadius.circular(8),
-        //               side: const BorderSide(color: Colors.red))),
-        //       child: const Padding(
-        //         padding: EdgeInsets.all(16.0),
-        //         child: Text(
-        //           'Print Bill',
-        //           style: TextStyle(
-        //             fontSize: 16.0,
-        //             color: Colors.red,
-        //           ),
-        //         ),
-        //       )),
-        // )
-      ]);
-      
-    }
-    else{ return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
- SizedBox(
-          // width: 80,
-          child: ElevatedButton(
-              onPressed: () {
-                Get.dialog(paymentForm(context));
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: const BorderSide(
-                        color: Color(0xff596cff),
-                      ))),
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Make Payment',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Color(0xff596cff),
-                  ),
-                ),
-              )),
-        ),
-        const SizedBox(height: 20.0),
-         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-           children: [
-             ElevatedButton(
-                  onPressed: () async {
-                    Get.dialog(askConfirmation(
-                        "Are you sure you want to cancel bill ?",
-                        TextButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            child: const Text("No")),
-                        TextButton(
-                            onPressed: () async {
-                              var res = await controller
-                                  .cancel(controller.billDetails.value.id!);
-                              Get.back();
-                              if (res != null) {
-                                Get.offAllNamed(Routes.BILLING);
-                              }
-                            },
-                            child: const Text("Yes"))));
+            SizedBox(
+              // width: 80,
+              child: ElevatedButton(
+                  onPressed: () {
+                    Get.dialog(paymentForm(context));
                   },
                   style: ElevatedButton.styleFrom(
-                   
                       backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
-                          side: const BorderSide(color: Colors.red))),
+                          side: const BorderSide(
+                            color: Color(0xff596cff),
+                          ))),
                   child: const Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Text(
-                      'Cancel Bill',
+                      'Make Payment',
                       style: TextStyle(
                         fontSize: 16.0,
-                        color: Colors.red,
+                        color: Color(0xff596cff),
                       ),
                     ),
                   )),
+            ),
+            const SizedBox(width: 20.0),
+
+            ElevatedButton(
+                onPressed: () async {
+                  Get.dialog(askConfirmation(
+                      "Are you sure you want to cancel bill ?",
+                      TextButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: const Text("No")),
+                      TextButton(
+                          onPressed: () async {
+                            var res = await controller
+                                .cancel(controller.billDetails.value.id!);
+                            Get.back();
+                            if (res != null) {
+                              Get.offAllNamed(Routes.BILLING);
+                            }
+                          },
+                          child: const Text("Yes"))));
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: const BorderSide(color: Colors.red))),
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Cancel Bill',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.red,
+                    ),
+                  ),
+                )),
             //  ElevatedButton(
             //       onPressed: () async {
             //         // Get.dialog(askConfirmation(
@@ -308,7 +263,7 @@ class BillDetailsScreen extends StatelessWidget {
             //         //                   .billDetails.value.id!);
             //         //                   Get.back();
             //         //           if (res != null) {
-             
+
             //         //             Get.offAllNamed(
             //         //                 Routes.BILLING);
             //         //           }
@@ -330,12 +285,10 @@ class BillDetailsScreen extends StatelessWidget {
             //           ),
             //         ),
             //       )),
-           ],
-         ),
-     
-     
-      ],
-    );}});
+          ],
+        );
+      }
+    });
   }
 
   Widget billCustomerDetails() {
@@ -555,7 +508,7 @@ class BillDetailsScreen extends StatelessWidget {
                     "Quantity",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
-                   DataColumn(
+                  DataColumn(
                       label: Text(
                     "Unit",
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -575,42 +528,41 @@ class BillDetailsScreen extends StatelessWidget {
                   return DataRow(cells: <DataCell>[
                     DataCell(Text(inHand[index].title ?? "")),
                     DataCell(Text(inHand[index].quantity.toString())),
-                     DataCell(Text(inHand[index].unit??"")),
+                    DataCell(Text(inHand[index].unit ?? "")),
                     DataCell(Text(inHand[index].price.toString())),
                     //  DataCell(Text(inHand[index].amount.toString())),
                   ]);
                 })),
           ),
         ),
-        if (( controller.billDetails.value.orderResponse?.description ?? "").isNotEmpty) ...[
-  const Text(
-    "Description: ",
-    style: TextStyle(
-      fontSize: 16.0,
-      color: Color(0xff004792),
-      fontWeight: FontWeight.bold,
-    ),
-  ),
-  const SizedBox(height: 6.0),
-  Container(
-    padding: const EdgeInsets.all(12.0),
-    decoration: BoxDecoration(
-      border: Border.all(
-        color: const Color(0xff004792),
-      ),
-      borderRadius: BorderRadius.circular(8.0),
-    ),
-    child: Text(
-     controller.billDetails.value.orderResponse?.description ?? "",
-      style: const TextStyle(
-        fontSize: 16.0,
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-  ),
-]
-
-       ,
+        if ((controller.billDetails.value.orderResponse?.description ?? "")
+            .isNotEmpty) ...[
+          const Text(
+            "Description: ",
+            style: TextStyle(
+              fontSize: 16.0,
+              color: Color(0xff004792),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 6.0),
+          Container(
+            padding: const EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color(0xff004792),
+              ),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Text(
+              controller.billDetails.value.orderResponse?.description ?? "",
+              style: const TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
         Container(
           alignment: AlignmentDirectional.bottomEnd,
           child: Column(
@@ -724,7 +676,7 @@ class BillDetailsScreen extends StatelessWidget {
                           value: value,
                           child: Text(
                             value,
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                           ),
                         );
                       }).toList(),
@@ -753,11 +705,12 @@ class BillDetailsScreen extends StatelessWidget {
                     textInputAction: TextInputAction.next,
                     autofocus: true,
                     validator: (value) {
-                      if (value!.isEmpty) {
+                      if (value == null || value.isEmpty) {
                         return 'Enter contact details';
-                      } else {
-                        return null;
+                      } else if (value.length < 10) {
+                        return 'Enter a valid 10-digit number';
                       }
+                      return null;
                     },
                     decoration: customInputDecoration(labelText: "Contact No"),
                   ),
@@ -784,37 +737,41 @@ class BillDetailsScreen extends StatelessWidget {
                     width: Get.size.width * 0.3,
                     height: 50,
                     child: ElevatedButton(
-                        onPressed: () async {
-                          if (formkey.currentState!.validate()) {
-                            if (controller.paymentController.isLoading.value ==
-                                false) {
-                              controller.paymentController.isLoading.value =
-                                  true;
-                              PaymentSaveRequest saveRequest =
-                                  PaymentSaveRequest();
-                              saveRequest.amount = amountController.text;
-                              saveRequest.bankName = bankNameController.text;
-                              saveRequest.paymentMethod =
-                                  controller.selectedPaymentMethod.value;
-                              saveRequest.mobileNumber = contactController.text;
-                              saveRequest.paymentNumber =
-                                  paymentNumberController.text;
-                              // saveRequest.employeeId = controller
-                              //     .billDetails.value.orderResponse?.employeeId!;
-                              saveRequest.billId =
-                                  controller.billDetails.value.id!;
+                      onPressed: () async {
+  if (formkey.currentState!.validate()) {
+    if (!controller.paymentController.isLoading.value) {
+      controller.paymentController.isLoading.value = true;
+      
+      // Show loading dialog
+      Get.dialog(
+        Center(child: CircularProgressIndicator()),
+        barrierDismissible: false, // Prevent user from closing
+      );
 
-                              var res = await controller.paymentController
-                                  .savePayment(saveRequest);
-                              Get.back();
-                              if (res != null) {
-                                Get.offAndToNamed(Routes.PAYMENT);
-                              }
-                              formkey.currentState!.reset();
-                            }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
+      PaymentSaveRequest saveRequest = PaymentSaveRequest();
+      saveRequest.amount = amountController.text;
+      saveRequest.bankName = bankNameController.text;
+      saveRequest.paymentMethod = controller.selectedPaymentMethod.value;
+      saveRequest.mobileNumber = contactController.text;
+      saveRequest.paymentNumber = paymentNumberController.text;
+      saveRequest.billId = controller.billDetails.value.id!;
+
+      var res = await controller.paymentController.savePayment(saveRequest);
+
+      // Close the dialogs after the operation is done
+      Get.back(); // Close loading dialog
+      Get.back(); // Close payment dialog
+
+      if (res != null) {
+        await controller.paymentController.loadMore();
+        Get.offAndToNamed(Routes.PAYMENT);
+      }
+      formkey.currentState!.reset();
+      controller.paymentController.isLoading.value = false;
+    }
+  }
+}
+,   style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xff596cff),
                         ),
                         child: const Text(
@@ -921,11 +878,12 @@ class BillDetailsScreen extends StatelessWidget {
                     textInputAction: TextInputAction.next,
                     autofocus: true,
                     validator: (value) {
-                      if (value!.isEmpty) {
+                      if (value == null || value.isEmpty) {
                         return 'Enter contact details';
-                      } else {
-                        return null;
+                      } else if (value.length < 10) {
+                        return 'Enter a valid 10-digit number';
                       }
+                      return null;
                     },
                     decoration: customInputDecoration(labelText: "Contact No"),
                   ),
@@ -953,39 +911,41 @@ class BillDetailsScreen extends StatelessWidget {
                       // width: Get.size.width * 0.3,
                       height: 50,
                       child: ElevatedButton(
-                          onPressed: () async {
-                            if (formkey.currentState!.validate()) {
-                              if (controller
-                                      .paymentController.isLoading.value ==
-                                  false) {
-                                controller.paymentController.isLoading.value =
-                                    true;
-                                PaymentSaveRequest saveRequest =
-                                    PaymentSaveRequest();
-                                saveRequest.amount = amountController.text;
-                                saveRequest.bankName = bankNameController.text;
-                                saveRequest.paymentMethod =
-                                    controller.selectedPaymentMethod.value;
-                                saveRequest.mobileNumber =
-                                    contactController.text;
-                                saveRequest.paymentNumber =
-                                    paymentNumberController.text;
-                                // saveRequest.employeeId = controller.billDetails
-                                //     .value.orderResponse?.employeeId!;
-                                saveRequest.billId =
-                                    controller.billDetails.value.id!;
+                     onPressed: () async {
+  if (formkey.currentState!.validate()) {
+    if (!controller.paymentController.isLoading.value) {
+      controller.paymentController.isLoading.value = true;
+      
+      // Show loading dialog
+      Get.dialog(
+        Center(child: CircularProgressIndicator()),
+        barrierDismissible: false, // Prevent user from closing
+      );
 
-                                var res = await controller.paymentController
-                                    .savePayment(saveRequest);
-                                Get.back();
-                                if (res != null) {
-                                  Get.offAndToNamed(Routes.PAYMENT);
-                                }
-                                formkey.currentState!.reset();
-                              }
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
+      PaymentSaveRequest saveRequest = PaymentSaveRequest();
+      saveRequest.amount = amountController.text;
+      saveRequest.bankName = bankNameController.text;
+      saveRequest.paymentMethod = controller.selectedPaymentMethod.value;
+      saveRequest.mobileNumber = contactController.text;
+      saveRequest.paymentNumber = paymentNumberController.text;
+      saveRequest.billId = controller.billDetails.value.id!;
+
+      var res = await controller.paymentController.savePayment(saveRequest);
+
+      // Close the dialogs after the operation is done
+      Get.back(); // Close loading dialog
+      Get.back(); // Close payment dialog
+
+      if (res != null) {
+        await controller.paymentController.loadMore();
+        Get.offAndToNamed(Routes.PAYMENT);
+      }
+      formkey.currentState!.reset();
+      controller.paymentController.isLoading.value = false;
+    }
+  }
+}
+,     style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xff596cff),
                           ),
                           child: const Text(

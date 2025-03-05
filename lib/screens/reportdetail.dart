@@ -158,8 +158,9 @@ class ReportDetail extends StatelessWidget {
               "Customer Pan : ",
               controller.selectedData.value.customerPan??"",
             ),
-            const Divider(),
-            const SizedBox(height: 10.0),
+            // const Divider(),
+            // const SizedBox(height: 10.0),
+            if ((controller.selectedData.value.description ?? "").isNotEmpty) ...[
             const Text("Description ",
                 style: TextStyle(
                     fontSize: 16.0,
@@ -176,7 +177,7 @@ class ReportDetail extends StatelessWidget {
               child: Text(controller.selectedData.value.description ?? "",
                   style: const TextStyle(
                       fontSize: 16.0, fontWeight: FontWeight.w600)),
-            ),
+            ),]
           ],
         );
       } else {
@@ -206,6 +207,7 @@ class ReportDetail extends StatelessWidget {
           const SizedBox(height: 8.0),
           const Divider(),
           const SizedBox(height: 10.0),
+          if ((controller.selectedData.value.description ?? "").isNotEmpty) ...[
           const Text("Description ",
               style: TextStyle(
                   fontSize: 16.0,
@@ -222,7 +224,7 @@ class ReportDetail extends StatelessWidget {
             child: Text(controller.selectedData.value.description ?? "",
                 style: const TextStyle(
                     fontSize: 16.0, fontWeight: FontWeight.w600)),
-          ),
+          ),]
         ]);
       }
     });

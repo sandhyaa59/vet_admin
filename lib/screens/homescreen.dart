@@ -220,10 +220,11 @@ class HomeScreen extends StatelessWidget {
                     buildStatCard('Total Revenue', (controller.reportStat.value.totalRevenue??0.0).toString(), 150),
                     buildStatCard('Total Discount', (controller.reportStat.value.totalDiscount??0.0).toString(), 150),
                     buildStatCard('Total Tax', (controller.reportStat.value.totalTax??0.0).toString(), 150),
-                       ...(controller.reportStat.value.mostOrderedItems??[]).map((item) {
-                      return buildMostOrderedItemCard(item, cardWidth);
-                    }).toList(),  ],
-                       ),
+                        ]),
+                    //    ...(controller.reportStat.value.mostOrderedItems??[]).map((item) {
+                    //   return buildMostOrderedItemCard(item, cardWidth);
+                    // }).toList(),  ],
+                      //  ),
                     // Build Most Ordered Items in a horizontal list
                     // ...(controller.reportStat.value.mostOrderedItems??[]).map((item) {
                     //   return buildMostOrderedItemCard(item, cardWidth);
@@ -380,29 +381,29 @@ class HomeScreen extends StatelessWidget {
   }
 
   // Card builder for most ordered items
-  Widget buildMostOrderedItemCard( item, double width) {
-    return Container(
-      width: width,
-      margin: const EdgeInsets.all(8.0),
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.blue,
-      ),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Item: ',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          Text('Quantity: '),
-          Text('Price: '),
-        ],
-      ),
-    );
-  }
+  // Widget buildMostOrderedItemCard( item, double width) {
+  //   return Container(
+  //     width: width,
+  //     margin: const EdgeInsets.all(8.0),
+  //     padding: const EdgeInsets.all(16.0),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(12),
+  //       color: Colors.blue,
+  //     ),
+  //     child: const Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Text(
+  //           'Item: ',
+  //           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  //         ),
+  //         SizedBox(height: 8),
+  //         Text('Quantity: '),
+  //         Text('Price: '),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget checkInCheckOutTable(BoxConstraints constraints) {
     return SingleChildScrollView(

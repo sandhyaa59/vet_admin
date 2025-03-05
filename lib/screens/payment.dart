@@ -244,8 +244,7 @@ class PaymentScreen extends StatelessWidget {
                         iconButton: IconButton(
                           onPressed: () async {
                             if (searchController.text.isNotEmpty) {
-                              await controller
-                                  .billSearch(searchController.text.trim());
+                              await controller.billSearch(searchController.text.trim());
                               searchController.text =
                                   "${searchController.text} ";
                             }
@@ -460,6 +459,7 @@ class PaymentScreen extends StatelessWidget {
                                     await controller.savePayment(saveRequest);
                                 Get.back();
                                 if (res != null) {
+                                  await controller.loadMore();
                                   Get.offAndToNamed(Routes.PAYMENT);
                                 }
                                 formkey.currentState!.reset();
