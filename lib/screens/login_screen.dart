@@ -20,8 +20,11 @@ class LoginScreen extends StatelessWidget {
         child: Center(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              double cardHeight = constraints.maxHeight > 400 ? 400 : constraints.maxWidth * 0.8;
-              double cardWidth = constraints.maxWidth > 400 ? 400 : constraints.maxWidth * 0.8;
+              double cardHeight = constraints.maxHeight > 400
+                  ? 400
+                  : constraints.maxWidth * 0.8;
+              double cardWidth =
+                  constraints.maxWidth > 400 ? 400 : constraints.maxWidth * 0.8;
 
               return SingleChildScrollView(
                 child: Card(
@@ -40,14 +43,16 @@ class LoginScreen extends StatelessWidget {
                           children: [
                             const Text(
                               'Login',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 20),
                             TextFormField(
-                              autofocus: false, 
+                              autofocus: false,
                               textInputAction: TextInputAction.next,
                               controller: emailController,
-                              validator: (value) => value!.isEmpty ? 'Enter your Email' : null,
+                              validator: (value) =>
+                                  value!.isEmpty ? 'Enter your Email' : null,
                               decoration: customInputDecoration(
                                 labelText: "Email",
                                 hintText: "abc@gmail.com",
@@ -55,64 +60,71 @@ class LoginScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             Obx(() => TextFormField(
-                                 autofocus: false,
-                              // textInputAction: TextInputAction.done,
-                              controller: passwordController,
-                              obscureText: !controller.isVisible.value,
-                              validator: (value) => value!.isEmpty ? 'Enter your Password' : null,
-                              decoration: customInputDecoration(
-                                iconButton: IconButton(
-                                  onPressed: () => controller.isVisible.toggle(),
-                                  icon: Icon(
-                                    controller.isVisible.value 
-                                      ? Icons.visibility_off 
-                                      : Icons.visibility,
-                                    color: const Color(0xff596cff),
+                                  autofocus: false,
+                                  // textInputAction: TextInputAction.done,
+                                  controller: passwordController,
+                                  obscureText: !controller.isVisible.value,
+                                  validator: (value) => value!.isEmpty
+                                      ? 'Enter your Password'
+                                      : null,
+                                  decoration: customInputDecoration(
+                                    iconButton: IconButton(
+                                      onPressed: () =>
+                                          controller.isVisible.toggle(),
+                                      icon: Icon(
+                                        controller.isVisible.value
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
+                                        color: const Color(0xff596cff),
+                                      ),
+                                    ),
+                                    labelText: "Password",
+                                    hintText: "*******",
                                   ),
-                                ),
-                                labelText: "Password",
-                                hintText: "*******",
-                              ),
-                            )),
+                                )),
                             const SizedBox(height: 20),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.3,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xff596cff),
-                                  padding: const EdgeInsets.all(16),
-                                ),
-                                onPressed: () async {
-                                  
-                                  if (_formKey.currentState!.validate()) {
-  //                                    FocusScope.of(context).unfocus();
-  // FocusScope.of(context).requestFocus(FocusNode());
-
-                                    if (controller.isLoading.isFalse) {
-                                      controller.isLoading.value = true;
-                                      try {
-                                        final res = await controller.login(
-                                          emailController.text,
-                                          passwordController.text
-                                        );
-                                        if (res != null ) {
-                                          Get.offAllNamed(Routes.HOME);
+                              child: Obx(() => ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xff596cff),
+                                      padding: const EdgeInsets.all(16),
+                                    ),
+                                    onPressed: () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        if (controller.isLoading.isFalse) {
+                                          controller.isLoading.value = true;
+                                          try {
+                                            final res = await controller.login(
+                                                emailController.text,
+                                                passwordController.text);
+                                            if (res != null) {
+                                              Get.offAllNamed(Routes.HOME);
+                                            }
+                                          } finally {
+                                            controller.isLoading.value = false;
+                                          }
                                         }
-                                      } finally {
-                                        controller.isLoading.value = false;
                                       }
-                                    }
-                                  }
-                                },
-                                child: const Text(
-                                  "LOGIN",
-                                  style: TextStyle(fontSize: 20.0, color: Colors.white),
-                                ),
-                              ),
+                                    },
+                                    child: controller.isLoading.value
+                                        ? const CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.white),
+                                          )
+                                        : const Text(
+                                            "LOGIN",
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Colors.white),
+                                          ),
+                                  )),
                             ),
                             const SizedBox(height: 10),
                             ElevatedButton(
-                              onPressed: () => Get.dialog(const Dialog(child: QRscreen())),
+                              onPressed: () =>
+                                  Get.dialog(const Dialog(child: QRscreen())),
                               child: const Text(
                                 "Show QR",
                                 style: TextStyle(color: Colors.white),
