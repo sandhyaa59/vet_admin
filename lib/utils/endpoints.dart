@@ -49,7 +49,8 @@ class EndPoints {
   static const String CUSTOMER_ADD = "$BASEURL/admin/customer/save";
   static const String CUSTOMER_UPDATE = "$BASEURL/admin/customer/update";
   static const String CUSTOMER_SEARCH = "$BASEURL/admin/customer/search/";
- static const String CUSTOMER_DOWNLOAD = "$BASEURL/admin/customer/download/excel";
+  static const String CUSTOMER_DOWNLOAD =
+      "$BASEURL/admin/customer/download/excel";
   static const String CUSTOMER_UPLOAD = "$BASEURL/admin/customer/upload/excel";
   //payment...
   static const String PAYMENT_LIST = "$BASEURL/admin/payment";
@@ -77,18 +78,20 @@ class EndPoints {
 
   static const String AddCategory = "$BASEURL/admin/category/add";
   static const String listCategory = "$BASEURL/admin/category/list";
-  static const String CategoryOnly = "$BASEURL/admin/category/only";
-  static const String Category_Update= "$BASEURL/admin/category/update";
-   static const String Category_Deactivate= "$BASEURL/admin/category/deactivate/";
-    static const String Category_Activate= "$BASEURL/admin/category/reactivate/";
-
+  static const String CategoryOnly =
+      "$BASEURL/admin/category/only"; //produt screen ma dekhaune catko lagi
+  static const String Category_Update = "$BASEURL/admin/category/update";
+  static const String Category_Deactivate =
+      "$BASEURL/admin/category/deactivate/";
+  static const String Category_Activate = "$BASEURL/admin/category/reactivate/";
 
   static const String Product = "$BASEURL/admin/products/list";
   static const String Product_Add = "$BASEURL/admin/products/add";
-   static const String Product_update = "$BASEURL/admin/products/update";
-  static const String product_deactivate = "$BASEURL/admin/products/deactivate/";
-   static const String product_activate = "$BASEURL/admin/products/reactivate/";
+  static const String Product_update = "$BASEURL/admin/products/update";
+  static const String product_deactivate =
+      "$BASEURL/admin/products/deactivate/";
+  static const String product_activate = "$BASEURL/admin/products/reactivate/";
 
   static const String Discount = "$BASEURL/admin/discounts";
-   static const String Discount_Update = "$BASEURL/admin/discounts/update/";
+  static const String Discount_Update = "$BASEURL/admin/discounts/update/";
 }

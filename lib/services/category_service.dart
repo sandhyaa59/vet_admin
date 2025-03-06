@@ -8,19 +8,15 @@ import 'package:vet_pharma/utils/helper.dart';
 import 'package:vet_pharma/utils/local_storage.dart';
 
 class CategoryService {
-  
-
   Future<bool> addCategory(CategoryRequest cat) async {
-          var token = await StorageUtil.getValue("token");
+    var token = await StorageUtil.getValue("token");
 
-    final response = await http.post(
-      Uri.parse(EndPoints.AddCategory),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-         'Authorization': "Bearer $token"
-      },
-      body: categoryRequestToJson(cat)
-    );
+    final response = await http.post(Uri.parse(EndPoints.AddCategory),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': "Bearer $token"
+        },
+        body: categoryRequestToJson(cat));
 
     if (response.statusCode == 201) {
       return true;
@@ -29,7 +25,8 @@ class CategoryService {
     }
   }
 
-  Future<bool> addSubCategory(String title, String description, int parentCategoryId) async {
+  Future<bool> addSubCategory(
+      String title, String description, int parentCategoryId) async {
     final response = await http.post(
       Uri.parse(EndPoints.AddCategory),
       headers: <String, String>{
@@ -50,38 +47,32 @@ class CategoryService {
   }
 
   Future<dynamic> fetchCategories() async {
-    var token=await StorageUtil.getValue("token");
-     var headers = {
-        "Access-Control-Allow-Origin": "*",
-       
-        'Accept': "*/*",
-        'Authorization':"Bearer $token"
-      };
-    final response = await http.get(Uri.parse(EndPoints.CategoryOnly),headers: headers);
+    var token = await StorageUtil.getValue("token");
+    var headers = {
+      "Access-Control-Allow-Origin": "*",
+      'Accept': "*/*",
+      'Authorization': "Bearer $token"
+    };
+    final response =
+        await http.get(Uri.parse(EndPoints.listCategory), headers: headers);
 
-   if (response.statusCode == 200) {
-    List<CategoryListResponse> responseList=[];
-    var res= handleResponse(response);
-           if(res!=null){
-            for (var element in jsonDecode(res)) {
-        CategoryListResponse categoryListResponse=CategoryListResponse.fromJson(element);
-        responseList.add(categoryListResponse);
-    }
- return responseList;
-           }
-           else{
-            return;
-           }
-    
-    
+    if (response.statusCode == 200) {
+      List<CategoryListResponse> responseList = [];
+      var res = handleResponse(response);
+      if (res != null) {
+        for (var element in jsonDecode(res)) {
+          CategoryListResponse categoryListResponse =
+              CategoryListResponse.fromJson(element);
+          responseList.add(categoryListResponse);
+        }
+        return responseList;
+      } else {
+        return;
+      }
     } else {
       throw Exception('Failed to load categories');
     }
   }
-   
-  
-
-
 
   static Future<dynamic> activateCategory(int id) async {
     try {
@@ -95,13 +86,12 @@ class CategoryService {
       };
 
       var response = await http.get(uri, headers: headers);
-     var res=handleResponse(response);
-     if(res!=null){
-      return res;
-     }
-     else{
-      return;
-     }
+      var res = handleResponse(response);
+      if (res != null) {
+        return res;
+      } else {
+        return;
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -118,19 +108,16 @@ class CategoryService {
         'Authorization': "Bearer $token"
       };
       var response = await http.get(uri, headers: headers);
-      var res=handleResponse(response);
-     if(res!=null){
-      return res;
-     }
-     else{
-      return;
-     }
+      var res = handleResponse(response);
+      if (res != null) {
+        return res;
+      } else {
+        return;
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
   }
-
- 
 
   static Future<dynamic> updateCategory(updatecategory) async {
     try {
@@ -142,16 +129,14 @@ class CategoryService {
         'authorization': 'Bearer $token'
       };
       var response = await http.post(uri,
-          headers: headers,
-          body: categoryListResponseToJson(updatecategory));
+          headers: headers, body: categoryListResponseToJson(updatecategory));
 
-      var res=handleResponse(response);
-     if(res!=null){
-      return res;
-     }
-     else{
-      return;
-     }
+      var res = handleResponse(response);
+      if (res != null) {
+        return res;
+      } else {
+        return;
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
