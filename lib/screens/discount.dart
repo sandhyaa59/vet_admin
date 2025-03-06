@@ -9,7 +9,6 @@ import 'package:vet_pharma/utils/loading_overlay.dart';
 import 'package:vet_pharma/utils/route.dart';
 import 'package:vet_pharma/utils/theme.dart';
 import 'package:vet_pharma/widgets/appbar.dart';
-import 'package:vet_pharma/widgets/cancel.dart';
 
 class DiscountList extends StatelessWidget {
   DiscountList({super.key});
@@ -120,9 +119,11 @@ class DiscountList extends StatelessWidget {
         return Center(child: CircularProgressIndicator());
       } else {
         return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
           child: SizedBox(
             width: Get.size.width,
             child: DataTable(
+              columnSpacing: 15.0, // A
               columns: const <DataColumn>[
                 DataColumn(
                   label: Text(

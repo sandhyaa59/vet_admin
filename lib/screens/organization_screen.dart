@@ -23,24 +23,29 @@ class OrganozationScreen extends StatelessWidget {
             isLoading: controller.isLoading.value,
             child: LayoutBuilder(builder: (context, constraints) {
               if (constraints.maxWidth > 600) {
-                return Center(
-                  child: Container(
-                    width: Get.width * 0.85,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(8.0),),
-                    padding: const EdgeInsets.all(kPadding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [organizationDetail(true)],
+                return SingleChildScrollView(
+                  child: Center(
+                    child: Container(
+                      width: Get.width * 0.85,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      padding: const EdgeInsets.all(kPadding),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [organizationDetail(true)],
+                      ),
                     ),
                   ),
                 );
               } else {
-                return Container(
-                  padding: const EdgeInsets.all(kPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [organizationDetail(false)],
+                return SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.all(kPadding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [organizationDetail(false)],
+                    ),
                   ),
                 );
               }
@@ -62,13 +67,14 @@ class OrganozationScreen extends StatelessWidget {
           showTitleContent(
               "Pan No : ", controller.organizationDetail.value.panNo ?? ""),
           const Divider(),
-           const   Text("Details",
+          const Text(
+            "Details",
             style: TextStyle(
-            color: Color(0xff004792),
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0
-            ),),
-           const SizedBox(height: 8.0),
+                color: Color(0xff004792),
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0),
+          ),
+          const SizedBox(height: 8.0),
           showTitleContent(
               "Email : ", controller.organizationDetail.value.email ?? ""),
           const SizedBox(height: 8.0),
@@ -76,13 +82,14 @@ class OrganozationScreen extends StatelessWidget {
               "Contact : ", controller.organizationDetail.value.phoneNo ?? ""),
           const SizedBox(height: 8.0),
           const Divider(),
-       const   Text("Package",
+          const Text(
+            "Package",
             style: TextStyle(
-            color: Color(0xff004792),
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0
-            ),
-          ), const SizedBox(height: 8.0),
+                color: Color(0xff004792),
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0),
+          ),
+          const SizedBox(height: 8.0),
           showTitleContent("Package Name : ",
               controller.organizationDetail.value.packageName ?? ""),
           const SizedBox(height: 8.0),
@@ -93,11 +100,11 @@ class OrganozationScreen extends StatelessWidget {
                     showTitleContent(
                         "Duration : ",
                         controller.organizationDetail.value.duration
-                                .toString() ),
+                            .toString()),
                     showTitleContent(
                         "Expires On : ",
-                        controller.organizationDetail.value.expiryDate.toString()
-                               ),
+                        controller.organizationDetail.value.expiryDate
+                            .toString()),
                   ],
                 )
               : Column(
@@ -106,22 +113,22 @@ class OrganozationScreen extends StatelessWidget {
                     showTitleContent(
                         "Duration : ",
                         controller.organizationDetail.value.duration
-                                .toString()),
+                            .toString()),
                     const SizedBox(height: 8.0),
                     showTitleContent(
                         "Expires On : ",
                         controller.organizationDetail.value.expiryDate
-                                .toString() 
-                            ),
+                            .toString()),
                   ],
                 ),
           const Divider(),
-           const   Text("Sms Service ",
+          const Text(
+            "Sms Service ",
             style: TextStyle(
-            color: Color(0xff004792),
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0
-            ),),
+                color: Color(0xff004792),
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0),
+          ),
           const SizedBox(height: 8.0),
           flag
               ? Row(
@@ -130,37 +137,39 @@ class OrganozationScreen extends StatelessWidget {
                       showTitleContent(
                           "Sms Count : ",
                           controller.organizationDetail.value.smsCount
-                                  .toString() ),
+                              .toString()),
                       const SizedBox(height: 8.0),
                       showTitleContent(
                           "Remaining Sms Count : ",
                           controller.organizationDetail.value.remainingSmsCount
-                                  .toString() 
-                        ),
+                              .toString()),
                     ])
               : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  showTitleContent(
-                      "Sms Count : ",
-                      controller.organizationDetail.value.smsCount.toString() ),
+                  showTitleContent("Sms Count : ",
+                      controller.organizationDetail.value.smsCount.toString()),
                   const SizedBox(height: 8.0),
                   showTitleContent(
                       "Remaining Sms Count : ",
                       controller.organizationDetail.value.remainingSmsCount
-                              .toString() ),
+                          .toString()),
                 ]),
           const SizedBox(height: 8.0),
-          showTitleContent(
-              "Employee Count : ",
-              controller.organizationDetail.value.employeeCount.toString() 
-                  ),
-                  const SizedBox(height: 10.0,),
-                              ElevatedButton(onPressed: (){
-                                Get.dialog(const Dialog(child: QRscreen(),));
-                              }, child:const Text("Show QR",
-                              style: TextStyle(
-                color: Colors.white
-              ),),
-                              )
+          showTitleContent("Employee Count : ",
+              controller.organizationDetail.value.employeeCount.toString()),
+          const SizedBox(
+            height: 10.0,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Get.dialog(const Dialog(
+                child: QRscreen(),
+              ));
+            },
+            child: const Text(
+              "Show QR",
+              style: TextStyle(color: Colors.white),
+            ),
+          )
         ],
       ),
     );

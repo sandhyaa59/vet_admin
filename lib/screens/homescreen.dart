@@ -21,7 +21,9 @@ class HomeScreen extends StatelessWidget {
             isLoading: controller.isLoading.value,
             child: SingleChildScrollView(
               child: LayoutBuilder(builder: (context, constraints) {
-                double cardWidth = constraints.maxWidth > 600 ? (constraints.maxWidth / 4) : constraints.maxWidth;
+                double cardWidth = constraints.maxWidth > 600
+                    ? (constraints.maxWidth / 4)
+                    : constraints.maxWidth;
                 if (constraints.maxWidth > 600) {
                   return Container(
                     // padding: const EdgeInsets.all(kPadding),
@@ -32,21 +34,37 @@ class HomeScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: organizationDetails(),
                         ),
-                        const SizedBox(height: 10.0,),
-                       Wrap(spacing: 5,runSpacing: 5,
-                        children: [
-                            buildStatCard('Total Orders', (controller.reportStat.value.totalOrders??0).toString(), 200),
-                    buildStatCard('Total Revenue', (controller.reportStat.value.totalRevenue??0.0).toString(), 200),
-                    buildStatCard('Total Discount', (controller.reportStat.value.totalDiscount??0.0).toString(), 200),
-                    buildStatCard('Total Tax', (controller.reportStat.value.totalTax??0.0).toString(), 200),
-                   
-                    // ...(controller.reportStat.value.mostOrderedItems??[]).map((item) {
-                    //   return buildMostOrderedItemCard(item, cardWidth);
-                    // }).toList(),   
-                      ],
-                       ),
-                    // Build Most Ordered Items in a horizontal list
-                    // buildMostOrderedItemCard('item', 200),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Wrap(
+                          spacing: 5,
+                          runSpacing: 5,
+                          children: [
+                            buildStatCard(
+                                'Total Orders',
+                                (controller.reportStat.value.totalOrders ?? 0)
+                                    .toString(),
+                                200),
+                            buildStatCard(
+                                'Total Revenue',
+                                (controller.reportStat.value.totalRevenue ??
+                                        0.0)
+                                    .toString(),
+                                200),
+                            buildStatCard(
+                                'Total Discount',
+                                (controller.reportStat.value.totalDiscount ??
+                                        0.0)
+                                    .toStringAsFixed(2),
+                                200),
+                            buildStatCard(
+                                'Total Tax',
+                                (controller.reportStat.value.totalTax ?? 0.0)
+                                    .toStringAsFixed(2),
+                                200),
+                          ],
+                        ),
                         const SizedBox(
                           height: 50.0,
                         ),
@@ -75,7 +93,8 @@ class HomeScreen extends StatelessWidget {
                                         const SizedBox(width: 10.0),
                                         TextButton(
                                             onPressed: () {
-                                              Get.toNamed(Routes.CHECKINCHECKOUT);
+                                              Get.toNamed(
+                                                  Routes.CHECKINCHECKOUT);
                                             },
                                             child: const Text(
                                               "View All ",
@@ -88,7 +107,8 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                     Card(
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8)),
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
                                       elevation: 2.0,
                                       child: LayoutBuilder(
                                           builder: (context, constraints) {
@@ -151,8 +171,8 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                             Expanded(
-                               child: Container(
+                            Expanded(
+                              child: Container(
                                 width: Get.size.width * 0.3,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8.0)),
@@ -193,12 +213,13 @@ class HomeScreen extends StatelessWidget {
                                           return Container(
                                               width: Get.size.width * 0.45,
                                               padding: const EdgeInsets.all(12),
-                                              child: mostOrderItemTable(constraints));
+                                              child: mostOrderItemTable(
+                                                  constraints));
                                         })),
                                   ],
                                 ),
-                                                           ),
-                             ),
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -213,22 +234,39 @@ class HomeScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Center(child: organizationDetails()),
                       ),
-                      const SizedBox(height: 10.0,),
-                       Wrap(spacing: 2,runSpacing: 5,
-                        children: [
-                           buildStatCard('Total Orders', (controller.reportStat.value.totalOrders??0).toString(), 150),
-                    buildStatCard('Total Revenue', (controller.reportStat.value.totalRevenue??0.0).toString(), 150),
-                    buildStatCard('Total Discount', (controller.reportStat.value.totalDiscount??0.0).toString(), 150),
-                    buildStatCard('Total Tax', (controller.reportStat.value.totalTax??0.0).toString(), 150),
-                        ]),
-                    //    ...(controller.reportStat.value.mostOrderedItems??[]).map((item) {
-                    //   return buildMostOrderedItemCard(item, cardWidth);
-                    // }).toList(),  ],
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Wrap(spacing: 2, runSpacing: 5, children: [
+                        buildStatCard(
+                            'Total Orders',
+                            (controller.reportStat.value.totalOrders ?? 0)
+                                .toString(),
+                            150),
+                        buildStatCard(
+                            'Total Revenue',
+                            (controller.reportStat.value.totalRevenue ?? 0.0)
+                                .toStringAsFixed(2),
+                            150),
+                        buildStatCard(
+                            'Total Discount',
+                            (controller.reportStat.value.totalDiscount ?? 0.0)
+                                .toStringAsFixed(2),
+                            150),
+                        buildStatCard(
+                            'Total Tax',
+                            (controller.reportStat.value.totalTax ?? 0.0)
+                                .toStringAsFixed(2),
+                            150),
+                      ]),
+                      //    ...(controller.reportStat.value.mostOrderedItems??[]).map((item) {
+                      //   return buildMostOrderedItemCard(item, cardWidth);
+                      // }).toList(),  ],
                       //  ),
-                    // Build Most Ordered Items in a horizontal list
-                    // ...(controller.reportStat.value.mostOrderedItems??[]).map((item) {
-                    //   return buildMostOrderedItemCard(item, cardWidth);
-                    // }).toList(),
+                      // Build Most Ordered Items in a horizontal list
+                      // ...(controller.reportStat.value.mostOrderedItems??[]).map((item) {
+                      //   return buildMostOrderedItemCard(item, cardWidth);
+                      // }).toList(),
                       SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -308,7 +346,7 @@ class HomeScreen extends StatelessWidget {
                                 child: orderTable(constraints))),
                       ])),
 
-                       SingleChildScrollView(
+                      SingleChildScrollView(
                           child: Column(children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -355,22 +393,24 @@ class HomeScreen extends StatelessWidget {
 
   Widget buildStatCard(String title, String value, double width) {
     return Container(
-      width: width,alignment: Alignment.center,
-      height:Get.size.height*0.18,
+      width: width,
+      alignment: Alignment.center,
+      height: Get.size.height * 0.18,
       margin: const EdgeInsets.all(8.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: Colors.blueAccent,
       ),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             title,
-            style: const TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
           ),
-         
           Text(
             value,
             style: const TextStyle(fontSize: 24, color: Colors.white),
@@ -408,9 +448,9 @@ class HomeScreen extends StatelessWidget {
   Widget checkInCheckOutTable(BoxConstraints constraints) {
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: DataTable( columnSpacing: 15, 
+        child: DataTable(
+            columnSpacing: 15,
             columns: const <DataColumn>[
-             
               DataColumn(
                 label: Text(
                   'Employee Name',
@@ -444,15 +484,14 @@ class HomeScreen extends StatelessWidget {
             ],
             rows: List.generate(controller.checkInOut.length, (index) {
               return DataRow(cells: <DataCell>[
-               
                 DataCell(SizedBox(
                     // width: constraints.maxWidth * 0.3,
                     child: SingleChildScrollView(
                         child: Text(
-                      controller.checkInOut[index].employeeName ?? "",
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    )))),
+                  controller.checkInOut[index].employeeName ?? "",
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                )))),
                 DataCell(Text(controller.checkInOut[index].checkInTime ?? "")),
                 DataCell(SizedBox(
                     width: constraints.maxWidth * 0.25,
@@ -501,8 +540,9 @@ class HomeScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text("Description",
-               ),
+            const Text(
+              "Description",
+            ),
             CircleAvatar(
                 backgroundColor: const Color(0xff596cff),
                 child: IconButton(
@@ -516,12 +556,15 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      content:SizedBox(
-             width: Get.size.width * 0.2,
-            height:  Get.size.height * 0.15,
-            child: SingleChildScrollView( scrollDirection: Axis.vertical,child: Text(descritption,style: const TextStyle(
-              color: Colors.black,fontSize: 14.0
-            ),))),
+      content: SizedBox(
+          width: Get.size.width * 0.2,
+          height: Get.size.height * 0.15,
+          child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Text(
+                descritption,
+                style: const TextStyle(color: Colors.black, fontSize: 14.0),
+              ))),
     );
   }
 
@@ -529,9 +572,8 @@ class HomeScreen extends StatelessWidget {
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
-          columnSpacing: 10,
+            columnSpacing: 10,
             columns: const <DataColumn>[
-             
               DataColumn(
                 label: SizedBox(
                   child: Text(
@@ -561,9 +603,7 @@ class HomeScreen extends StatelessWidget {
             ],
             rows: List.generate(controller.orderList.length, (index) {
               return DataRow(
-                
                 cells: <DataCell>[
-                 
                   DataCell(SizedBox(
                       width: constraints.maxWidth * 0.25,
                       child: Text(
@@ -590,72 +630,70 @@ class HomeScreen extends StatelessWidget {
             })));
   }
 
-
   Widget mostOrderItemTable(BoxConstraints constraints) {
-  final mostOrderedItems = controller.reportStat.value.mostOrderedItems;
+    final mostOrderedItems = controller.reportStat.value.mostOrderedItems;
 
-  if (mostOrderedItems == null || mostOrderedItems.isEmpty) {
-    return Container(
-      height: 100,
-      alignment: Alignment.center,
-      child: const Text(
-        'No data available',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    if (mostOrderedItems == null || mostOrderedItems.isEmpty) {
+      return Container(
+        height: 100,
+        alignment: Alignment.center,
+        child: const Text(
+          'No data available',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        columnSpacing: 10,
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text(
+              'Item',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Qty',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Price',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+        rows: List.generate(mostOrderedItems.length, (index) {
+          return DataRow(
+            cells: <DataCell>[
+              DataCell(SizedBox(
+                width: constraints.maxWidth * 0.25,
+                child: Text(
+                  mostOrderedItems[index].name ?? "",
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              )),
+              DataCell(SizedBox(
+                width: constraints.maxWidth * 0.25,
+                child: Text(
+                  mostOrderedItems[index].quantity.toString(),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              )),
+              DataCell(Text(
+                mostOrderedItems[index].price.toString(),
+              )),
+            ],
+          );
+        }),
       ),
     );
   }
-
-  return SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: DataTable(
-      columnSpacing: 10,
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Text(
-            'Item',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Qty',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Price',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
-      rows: List.generate(mostOrderedItems.length, (index) {
-        return DataRow(
-          cells: <DataCell>[
-            DataCell(SizedBox(
-              width: constraints.maxWidth * 0.25,
-              child: Text(
-                mostOrderedItems[index].name ?? "",
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            )),
-            DataCell(SizedBox(
-              width: constraints.maxWidth * 0.25,
-              child: Text(
-                mostOrderedItems[index].quantity.toString(),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            )),
-            DataCell(Text(
-              mostOrderedItems[index].price.toString(),
-            )),
-          ],
-        );
-      }),
-    ),
-  );
-}
-
 }

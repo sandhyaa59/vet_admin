@@ -122,11 +122,12 @@ class SmsNoificationCount extends StatelessWidget {
                                                     ),
                                                     Center(
                                                       child: SizedBox(
-                                                        width:
-                                                            Get.size.width * 0.3,
+                                                        width: Get.size.width *
+                                                            0.3,
                                                         height: 50,
                                                         child: ElevatedButton(
-                                                            onPressed: () async {
+                                                            onPressed:
+                                                                () async {
                                                               if (formKey
                                                                   .currentState!
                                                                   .validate()) {
@@ -134,7 +135,8 @@ class SmsNoificationCount extends StatelessWidget {
                                                                     .selectedCustomer
                                                                     .isEmpty) {
                                                                   showToastMessage(
-                                                                      Colors.red,
+                                                                      Colors
+                                                                          .red,
                                                                       "select customer",
                                                                       "Error");
                                                                   return;
@@ -166,10 +168,9 @@ class SmsNoificationCount extends StatelessWidget {
                                                                   smsCountRequest
                                                                           .mobileNumber =
                                                                       mobileNumber;
-                                                                  var res =
-                                                                      await controller
-                                                                          .sendSms(
-                                                                              smsCountRequest);
+                                                                  var res = await controller
+                                                                      .sendSms(
+                                                                          smsCountRequest);
                                                                   if (res !=
                                                                       null) {
                                                                     // await controller.initData();
@@ -186,16 +187,20 @@ class SmsNoificationCount extends StatelessWidget {
                                                                     .reset();
                                                               }
                                                             },
-                                                            style: ElevatedButton
-                                                                .styleFrom(
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
                                                               backgroundColor:
                                                                   const Color(
                                                                       0xff596cff),
                                                             ),
                                                             child: const Text(
                                                               "Send",
-                                                              style: TextStyle(color: Colors.white,
-                                                                  fontSize: 18.0),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      18.0),
                                                             )),
                                                       ),
                                                     ),
@@ -306,7 +311,8 @@ class SmsNoificationCount extends StatelessWidget {
                                                 if (formKey.currentState!
                                                     .validate()) {
                                                   if (controller
-                                                      .selectedCustomer.isEmpty) {
+                                                      .selectedCustomer
+                                                      .isEmpty) {
                                                     showToastMessage(
                                                         Colors.red,
                                                         "select customer",
@@ -325,21 +331,25 @@ class SmsNoificationCount extends StatelessWidget {
                                                         messageController.text;
                                                     List<String> mobileNumber =
                                                         <String>[];
-                                                    for (var element in controller
-                                                        .selectedCustomer) {
-                                                      mobileNumber.add(
-                                                          element.mobileNumber!);
+                                                    for (var element
+                                                        in controller
+                                                            .selectedCustomer) {
+                                                      mobileNumber.add(element
+                                                          .mobileNumber!);
                                                     }
-                                                    smsCountRequest.mobileNumber =
+                                                    smsCountRequest
+                                                            .mobileNumber =
                                                         mobileNumber;
                                                     var res = await controller
-                                                        .sendSms(smsCountRequest);
+                                                        .sendSms(
+                                                            smsCountRequest);
                                                     if (res != null) {
                                                       // await controller.initData();
                                                       Get.offAndToNamed(Routes
                                                           .EMPLOYEE_MANAGEMENT);
                                                     }
-                                                    formKey.currentState!.reset();
+                                                    formKey.currentState!
+                                                        .reset();
                                                   }
                                                   formKey.currentState!.reset();
                                                 }
@@ -350,36 +360,37 @@ class SmsNoificationCount extends StatelessWidget {
                                               ),
                                               child: const Text(
                                                 "Send",
-                                                style: TextStyle(fontSize: 18.0,color: Colors.white),
+                                                style: TextStyle(
+                                                    fontSize: 18.0,
+                                                    color: Colors.white),
                                               )),
                                         ),
                                       ),
-                                    
                                     ],
                                   ),
                                 ),
-                                 SizedBox(
-                                      height: Get.size.height*0.1,
-                                      child: Obx(() => ListView.builder(
-                                            itemCount: controller
-                                                .selectedCustomer.length,
-                                            shrinkWrap: true,
-                                            physics:
-                                                const AlwaysScrollableScrollPhysics(),
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                title: Text(controller
-                                                        .selectedCustomer[index]
-                                                        .shopName ??
-                                                    ""),
-                                                subtitle: Text(controller
-                                                        .selectedCustomer[index]
-                                                        .mobileNumber ??
-                                                    ""),
-                                              );
-                                            },
-                                          )),
-                                    ),
+                                SizedBox(
+                                  height: Get.size.height * 0.1,
+                                  child: Obx(() => ListView.builder(
+                                        itemCount:
+                                            controller.selectedCustomer.length,
+                                        shrinkWrap: true,
+                                        physics:
+                                            const AlwaysScrollableScrollPhysics(),
+                                        itemBuilder: (context, index) {
+                                          return ListTile(
+                                            title: Text(controller
+                                                    .selectedCustomer[index]
+                                                    .shopName ??
+                                                ""),
+                                            subtitle: Text(controller
+                                                    .selectedCustomer[index]
+                                                    .mobileNumber ??
+                                                ""),
+                                          );
+                                        },
+                                      )),
+                                ),
                                 customerTable()
                               ],
                             ),
@@ -543,8 +554,12 @@ class MyDataSource extends DataTableSource {
                   //   controller.selectedCustomer.add(customerLists[index]);
                   // },
                   child: Obx(() => customerLists[index].isSelected == false
-                      ? const Text("Select")
-                      : const Text("Selected")));
+                      ? const Text(
+                          "Select",
+                          style: TextStyle(color: Colors.white),
+                        )
+                      : const Text("Selected",
+                          style: TextStyle(color: Colors.white))));
             }))
       ],
     );

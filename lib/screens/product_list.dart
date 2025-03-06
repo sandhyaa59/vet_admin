@@ -30,47 +30,49 @@ class ProductList extends StatelessWidget {
     return Scaffold(
       drawer: MyDrawer(),
       appBar: AppBars(context),
-      body: SingleChildScrollView(
-        child: Obx(() {
-          return LoadingOverlay(
-            isLoading: controller.isLoading.value,
+      body: Obx(() {
+        return LoadingOverlay(
+          isLoading: controller.isLoading.value,
+          child: SingleChildScrollView(
             child: LayoutBuilder(builder: (context, constraints) {
               if (constraints.maxWidth > 600) {
                 return Padding(
-                  padding: const EdgeInsets.all(kPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Get.to(() =>ProductAddForm());
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              side: const BorderSide(
-                                color: Color(0xff596cff),
+                    padding: const EdgeInsets.all(kPadding),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Get.to(() => ProductAddForm());
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  side: const BorderSide(
+                                    color: Color(0xff596cff),
+                                  ),
+                                ),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: Text(
+                                  'Add Product',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Color(0xff596cff),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text(
-                              'Add Product',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color: Color(0xff596cff),
-                              ),
-                            ),
-                          ),
-                        ),
+                          productTable()
+                        ],
                       ),
-                      productTable()
-                    ],
-                  ),
-                );
+                    ));
               } else {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,9 +111,9 @@ class ProductList extends StatelessWidget {
                 );
               }
             }),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 
@@ -121,6 +123,7 @@ class ProductList extends StatelessWidget {
       child: SizedBox(
         width: Get.size.width,
         child: PaginatedDataTable(
+          columnSpacing: 20,
           header: const Text(
             "Product List",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
@@ -129,7 +132,6 @@ class ProductList extends StatelessWidget {
               controller.productList.value.totalData ?? 0),
           initialFirstRowIndex: 0,
           rowsPerPage: controller.pageSize.value,
-         
           columns: const <DataColumn>[
             DataColumn(
               label: Text(
@@ -166,7 +168,8 @@ class ProductList extends StatelessWidget {
                 'Unit',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-            ), DataColumn(
+            ),
+            DataColumn(
               label: Text(
                 'Brand',
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -213,17 +216,17 @@ class MyDataSource extends DataTableSource {
         )),
         DataCell(Text(datum[index].title ?? "")),
         DataCell(Text(datum[index].categoryName ?? "")),
-        DataCell(Text(datum[index].price.toString() )),
+        DataCell(Text(datum[index].price.toString())),
         DataCell(Text(
           datum[index].discountPercentage.toString(),
         )),
         DataCell(Text(
           datum[index].unit.toString(),
-        )), DataCell(Text(
+        )),
+        DataCell(Text(
           datum[index].brand.toString(),
         )),
-
-          DataCell(InkWell(
+        DataCell(InkWell(
           onTap: () async {
             if (datum[index].isActive == true) {
               await Get.dialog(askConfirmation(
@@ -235,8 +238,8 @@ class MyDataSource extends DataTableSource {
                       child: const Text('No')),
                   TextButton(
                       onPressed: () async {
-                        var res = await controller
-                            .deactivate(datum[index].id ?? 0);
+                        var res =
+                            await controller.deactivate(datum[index].id ?? 0);
                         Get.back();
                         if (res != null) {
                           await controller.initData();
@@ -253,8 +256,9 @@ class MyDataSource extends DataTableSource {
                       child: const Text('No')),
                   TextButton(
                       onPressed: () async {
-                        var res = await controller.activate(datum[index].id ?? 0);
-                           Get.back();
+                        var res =
+                            await controller.activate(datum[index].id ?? 0);
+                        Get.back();
                         if (res != null) {
                           await controller.initData();
                         }
@@ -273,15 +277,13 @@ class MyDataSource extends DataTableSource {
                     borderRadius: BorderRadius.circular(18.0)),
 
                 child: Text(
-                  (datum[index].isActive ?? false)
-                      ? "Active"
-                      : "In-Active",
+                  (datum[index].isActive ?? false) ? "Active" : "In-Active",
                   style: const TextStyle(fontSize: 13.0, color: Colors.white),
                 ),
               )),
         )),
-     
-        DataCell( Row(
+        DataCell(
+          Row(
             children: [
               IconButton(
                   icon: const Icon(
@@ -320,25 +322,22 @@ class MyDataSource extends DataTableSource {
                   size: 16.0,
                 ),
                 onPressed: () async {
-                 
-                  Get.to(() => ProductAddForm(
-   productData:{
-                      'id': datum[index].id,
-                      'title': datum[index].title,
-                      'category':datum[index].categoryName,
-                      'stock':datum[index].stock,
-                      'unit':datum[index].unit,
-                      'price':datum[index].price,
-                      'brand':datum[index].brand,
-                      'description':datum[index].description,
-                      'costPrice':datum[index].costPrice,
+                  Get.to(() => ProductAddForm(productData: {
+                        'id': datum[index].id,
+                        'title': datum[index].title,
+                        'category': datum[index].categoryName,
+                        'stock': datum[index].stock,
+                        'unit': datum[index].unit,
+                        'price': datum[index].price,
+                        'brand': datum[index].brand,
+                        'description': datum[index].description,
+                        'costPrice': datum[index].costPrice,
 
-                      // 'address': customer.address,
-                      // 'email': customer.email,
-                      // 'phone': customer.phone,
-                      // 'panNumber': customer.panNumber
-                    }
-  ));
+                        // 'address': customer.address,
+                        // 'email': customer.email,
+                        // 'phone': customer.phone,
+                        // 'panNumber': customer.panNumber
+                      }));
                   // controller.selectedEmployeeDetail.value =
                   //     employeeDetails[index];
                   // controller.nameController.text =
@@ -357,9 +356,9 @@ class MyDataSource extends DataTableSource {
                   // Get.dialog(updateEmployeeForm(context));
                 },
               ),
-            
             ],
-          ),)
+          ),
+        )
       ],
     );
   }
