@@ -150,8 +150,19 @@ class CategoryList extends StatelessWidget {
       scrollDirection: Axis.horizontal, // Enable horizontal scrolling
       child: SizedBox(
         width: Get.size.width, // Set the width to full screen
-        child: DataTable(
-          columnSpacing: 20.0, // Adjust spacing between columns
+        child: PaginatedDataTable(
+          columnSpacing: 20,
+          header: const Text(
+            "Category List",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+          ),
+          source: MyDataSource(controllers.dataList as List<CategoryData>,
+              controllers.categoryList.value.totalData ?? 0, context),
+          initialFirstRowIndex: 0,
+          rowsPerPage: controllers.pageSize.value,
+          onPageChanged: (newPage) async {
+            await controllers.loadMoreData();
+          },
           columns: const <DataColumn>[
             DataColumn(
               label: Text(
@@ -190,112 +201,6 @@ class CategoryList extends StatelessWidget {
               ),
             ),
           ],
-          rows: List.generate(
-            controllers.categories.length,
-            (index) => DataRow(
-              cells: <DataCell>[
-                DataCell(Text('${index + 1}')),
-                DataCell(Text(controllers.categories[index].title ?? "")),
-                // DataCell(Text(
-                //     controllers.categories[index].parentCategoryName ?? "")),
-                DataCell(
-                  SizedBox(
-                    // width: Get.size.width *
-                    //     0.3, // Adjust width for better readability
-                    child:
-                        Text(controllers.categories[index].description ?? ""),
-                  ),
-                ),
-                DataCell(
-                  InkWell(
-                    onTap: () async {
-                      if (controllers.categories[index].isActive == true) {
-                        await Get.dialog(
-                          askConfirmation(
-                            "Are you sure you want to deactivate this category?",
-                            TextButton(
-                              onPressed: () => Get.back(),
-                              child: const Text('No'),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                var res = await controllers.deactivate(
-                                    controllers.categories[index].id ?? 0);
-                                Get.back();
-                                if (res != null) {
-                                  await controllers.fetchCategories();
-                                }
-                              },
-                              child: const Text('Yes'),
-                            ),
-                          ),
-                        );
-                      } else {
-                        await Get.dialog(
-                          askConfirmation(
-                            "Are you sure you want to activate this category?",
-                            TextButton(
-                              onPressed: () => Get.back(),
-                              child: const Text('No'),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                var res = await controllers.activateCategory(
-                                    controllers.categories[index].id ?? 0);
-                                Get.back();
-                                if (res != null) {
-                                  await controllers.fetchCategories();
-                                }
-                              },
-                              child: const Text('Yes'),
-                            ),
-                          ),
-                        );
-                      }
-                      Get.offAllNamed(Routes.CATEGORY);
-                    },
-                    child: Obx(
-                      () => Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color:
-                              (controllers.categories[index].isActive ?? false)
-                                  ? Colors.green
-                                  : Colors.red,
-                          borderRadius: BorderRadius.circular(18.0),
-                        ),
-                        child: Text(
-                          (controllers.categories[index].isActive ?? false)
-                              ? "Active"
-                              : "Inactive",
-                          style: const TextStyle(
-                              fontSize: 13.0, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataCell(
-                  IconButton(
-                    icon: const Icon(
-                      Icons.edit,
-                      color: Colors.blue,
-                      size: 16.0,
-                    ),
-                    onPressed: () {
-                      controllers.parentCategory.value =
-                          controllers.categories[index];
-                      titleController.text =
-                          controllers.categories[index].title ?? "";
-                      desecriptionController.text =
-                          controllers.categories[index].description ?? "";
-                      Get.dialog(updateCategoryForm(context));
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );
@@ -389,10 +294,10 @@ class CategoryList extends StatelessWidget {
                                   await controllers.addCategory(addRequest);
                               Get.back();
                               if (res != null) {
-                                await controllers.fetchCategories();
+                                await controllers.initData();
                                 Get.offAndToNamed(Routes.CATEGORY);
                               }
-                              controllers.fetchCategories();
+                              controllers.initData();
                               formKeys.currentState!.reset();
                             }
                           }
@@ -496,9 +401,9 @@ class CategoryList extends StatelessWidget {
 
                               Get.back();
                               if (res != null) {
-                                await controllers.fetchCategories();
+                                await controllers.initData();
                               }
-                              controllers.fetchCategories();
+                              controllers.initData();
                               formKeys.currentState!.reset();
                             }
                           }
@@ -519,8 +424,135 @@ class CategoryList extends StatelessWidget {
       }
     });
   }
+}
 
-  Widget updateCategoryForm(BuildContext context) {
+class MyDataSource extends DataTableSource {
+  final List<CategoryData> categories;
+  final int totalData;
+  final BuildContext context;
+
+  MyDataSource(this.categories, this.totalData, this.context);
+  CategoryController controllers = Get.find<CategoryController>();
+
+  @override
+  DataRow? getRow(int index) {
+    if (index >= categories.length) {
+      return null;
+    }
+    return DataRow(
+      cells: <DataCell>[
+        DataCell(Text('${index + 1}')),
+        DataCell(Text(categories[index].title ?? "")),
+        // DataCell(Text(
+        //     categories[index].parentCategoryName ?? "")),
+        DataCell(
+          SizedBox(
+            // width: Get.size.width *
+            //     0.3, // Adjust width for better readability
+            child: Text(categories[index].description ?? ""),
+          ),
+        ),
+        DataCell(
+          InkWell(
+            onTap: () async {
+              if (categories[index].isActive == true) {
+                await Get.dialog(
+                  askConfirmation(
+                    "Are you sure you want to deactivate this category?",
+                    TextButton(
+                      onPressed: () => Get.back(),
+                      child: const Text('No'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        var res = await controllers
+                            .deactivate(categories[index].id ?? 0);
+                        Get.back();
+                        if (res != null) {
+                          await controllers.initData();
+                        }
+                      },
+                      child: const Text('Yes'),
+                    ),
+                  ),
+                );
+              } else {
+                await Get.dialog(
+                  askConfirmation(
+                    "Are you sure you want to activate this category?",
+                    TextButton(
+                      onPressed: () => Get.back(),
+                      child: const Text('No'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        var res = await controllers
+                            .activateCategory(categories[index].id ?? 0);
+                        Get.back();
+                        if (res != null) {
+                          await controllers.initData();
+                        }
+                      },
+                      child: const Text('Yes'),
+                    ),
+                  ),
+                );
+              }
+              Get.offAllNamed(Routes.CATEGORY);
+            },
+            child: Obx(
+              () => Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: (categories[index].isActive ?? false)
+                      ? Colors.green
+                      : Colors.red,
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                child: Text(
+                  (categories[index].isActive ?? false) ? "Active" : "Inactive",
+                  style: const TextStyle(fontSize: 13.0, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ),
+        DataCell(
+          IconButton(
+            icon: const Icon(
+              Icons.edit,
+              color: Colors.blue,
+              size: 16.0,
+            ),
+            onPressed: () {
+              titleController.text = categories[index].title ?? "";
+              desecriptionController.text = categories[index].description ?? "";
+              Get.dialog(updateCategoryForm(context));
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  int get rowCount {
+    return totalData;
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get selectedRowCount => 0;
+
+  final formKeys = GlobalKey<FormState>();
+
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController desecriptionController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
+
+  Widget updateCategoryForm(context) {
     return AlertDialog(
       titlePadding: const EdgeInsets.all(0),
       title: Container(
@@ -589,39 +621,41 @@ class CategoryList extends StatelessWidget {
               const SizedBox(
                 height: 20.0,
               ),
-              SizedBox(
-                width: Get.size.width * 0.3,
-                height: 50,
-                child: ElevatedButton(
-                    onPressed: () async {
-                      if (formKeys.currentState!.validate()) {
-                        if (controllers.isLoading.value == false) {
-                          controllers.isLoading.value = true;
-                          CategoryListResponse addRequest =
-                              CategoryListResponse();
-                          addRequest.title = titleController.text;
-                          addRequest.description = desecriptionController.text;
+              Center(
+                child: SizedBox(
+                  width: Get.size.width * 0.3,
+                  height: 50,
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        if (formKeys.currentState!.validate()) {
+                          if (controllers.isLoading.value == false) {
+                            controllers.isLoading.value = true;
+                            CategoryData addRequest = CategoryData();
+                            addRequest.title = titleController.text;
+                            addRequest.description =
+                                desecriptionController.text;
 
-                          var res =
-                              await controllers.updateCategory(addRequest);
-                          Get.back();
-                          if (res != null) {
-                            print('update catgeory');
+                            var res =
+                                await controllers.updateCategory(addRequest);
+                            Get.back();
+                            if (res != null) {
+                              print('update catgeory');
 
-                            Get.offAndToNamed(Routes.CATEGORY);
+                              Get.offAndToNamed(Routes.CATEGORY);
+                            }
+                            await controllers.initData();
+                            formKeys.currentState!.reset();
                           }
-                          await controllers.fetchCategories();
-                          formKeys.currentState!.reset();
                         }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff596cff),
-                    ),
-                    child: const Text(
-                      "Update Categroy",
-                      style: TextStyle(fontSize: 18.0, color: Colors.white),
-                    )),
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff596cff),
+                      ),
+                      child: const Text(
+                        "Update Categroy",
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      )),
+                ),
               )
             ],
           ),

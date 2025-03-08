@@ -1,9 +1,7 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vet_pharma/controller/product_controller.dart';
-import 'package:vet_pharma/model/category_list_response.dart';
+import 'package:vet_pharma/model/catgeory_list.dart';
 import 'package:vet_pharma/model/productadd_request.dart';
 import 'package:vet_pharma/utils/route.dart';
 import 'package:vet_pharma/utils/theme.dart';
@@ -44,34 +42,33 @@ class _ProductAddFormState extends State<ProductAddForm> {
   final ProductController productController = Get.find<ProductController>();
 
   @override
-void initState() {
-  super.initState();
-  productController.fetchCategory().then((_) {
-    if (widget.productData != null) {
-      nameController.text = widget.productData!['title'] ?? '';
-      descriptionController.text = widget.productData!['description'] ?? '';
-      priceController.text = widget.productData!["price"]?.toString() ?? "";
-      stockController.text = widget.productData!["stock"]?.toString() ?? "";
-      costPriceController.text = widget.productData!["costPrice"]?.toString() ?? "";
-      brandController.text = widget.productData!["brand"]?.toString() ?? "";
-      unitController.text = widget.productData!["unit"] ?? "";
-      
-      String categoryName = widget.productData!["category"] ?? "";
+  void initState() {
+    super.initState();
+    productController.fetchCategory().then((_) {
+      if (widget.productData != null) {
+        nameController.text = widget.productData!['title'] ?? '';
+        descriptionController.text = widget.productData!['description'] ?? '';
+        priceController.text = widget.productData!["price"]?.toString() ?? "";
+        stockController.text = widget.productData!["stock"]?.toString() ?? "";
+        costPriceController.text =
+            widget.productData!["costPrice"]?.toString() ?? "";
+        brandController.text = widget.productData!["brand"]?.toString() ?? "";
+        unitController.text = widget.productData!["unit"] ?? "";
 
-      if (productController.category.isNotEmpty) {
-        final selectedCategory = productController.category.firstWhere(
-          (element) => element.title == categoryName,
-          orElse: () => productController.category.first, 
-          
-        );
-        productController.selectedCategory.value = selectedCategory;
-        print("Selected category: ${productController.selectedCategory.value.title}");
+        String categoryName = widget.productData!["category"] ?? "";
 
+        if (productController.category.isNotEmpty) {
+          final selectedCategory = productController.category.firstWhere(
+            (element) => element.title == categoryName,
+            orElse: () => productController.category.first,
+          );
+          productController.selectedCategory.value = selectedCategory;
+          print(
+              "Selected category: ${productController.selectedCategory.value.title}");
+        }
       }
-    }
-  });
-}
-
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -264,15 +261,14 @@ void initState() {
 
   Widget _buildCategoryDropdown() {
     return Obx(() {
-      return DropdownButtonFormField<CategoryListResponse>(
+      return DropdownButtonFormField<CategoryLists>(
         decoration: customInputDecoration(labelText: "Category"),
         value: productController.selectedCategory.value,
-        onChanged: (CategoryListResponse? value) {
-          productController.selectedCategory.value =
-              value ?? CategoryListResponse();
+        onChanged: (CategoryLists? value) {
+          productController.selectedCategory.value = value ?? CategoryLists();
         },
         items: productController.category.map((value) {
-          return DropdownMenuItem<CategoryListResponse>(
+          return DropdownMenuItem<CategoryLists>(
             value: value,
             child: Text(
               value.title ?? "",

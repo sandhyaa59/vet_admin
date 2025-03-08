@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:vet_pharma/model/category.dart';
 import 'package:vet_pharma/model/category_list_response.dart';
+import 'package:vet_pharma/model/catgeory_list.dart';
+import 'package:vet_pharma/model/pagination_request.dart';
 import 'package:vet_pharma/utils/endpoints.dart';
 import 'package:vet_pharma/utils/helper.dart';
 import 'package:vet_pharma/utils/local_storage.dart';
@@ -46,7 +48,36 @@ class CategoryService {
     }
   }
 
-  Future<dynamic> fetchCategories() async {
+  static Future<dynamic> fetchCategories(PaginationRequest request) async {
+    try {
+      var token = await StorageUtil.getValue("token");
+      Uri uri = Uri.parse(
+          '${EndPoints.listCategory}?page=${request.page}&pageSize=${request.pageSize}');
+      var headers = {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        'Accept': "*/*",
+        'Authorization': "Bearer $token"
+      };
+
+      var response = await http.get(
+        uri,
+        headers: headers,
+      );
+      var res = handleResponse(response);
+      if (res != null) {
+        CategoryResponse categoryResponse = categoryResponseFromJson(res);
+        return categoryResponse;
+      } else {
+        return;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  // }
+  Future<dynamic> fetchCategoriesOnly() async {
     var token = await StorageUtil.getValue("token");
     var headers = {
       "Access-Control-Allow-Origin": "*",
@@ -54,16 +85,15 @@ class CategoryService {
       'Authorization': "Bearer $token"
     };
     final response =
-        await http.get(Uri.parse(EndPoints.listCategory), headers: headers);
+        await http.get(Uri.parse(EndPoints.CategoryOnly), headers: headers);
 
     if (response.statusCode == 200) {
-      List<CategoryListResponse> responseList = [];
+      List<CategoryLists> responseList = [];
       var res = handleResponse(response);
       if (res != null) {
         for (var element in jsonDecode(res)) {
-          CategoryListResponse categoryListResponse =
-              CategoryListResponse.fromJson(element);
-          responseList.add(categoryListResponse);
+          CategoryLists categoryList = CategoryLists.fromJson(element);
+          responseList.add(categoryList);
         }
         return responseList;
       } else {
@@ -129,7 +159,7 @@ class CategoryService {
         'authorization': 'Bearer $token'
       };
       var response = await http.post(uri,
-          headers: headers, body: categoryListResponseToJson(updatecategory));
+          headers: headers, body: categoryResponseToJson(updatecategory));
 
       var res = handleResponse(response);
       if (res != null) {
