@@ -217,78 +217,43 @@ class BillDetailsScreen extends StatelessWidget {
                       )),
                 ),
                 const SizedBox(width: 20.0),
-                ElevatedButton(
-                    onPressed: () async {
-                      Get.dialog(askConfirmation(
-                          "Are you sure you want to cancel bill ?",
-                          TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: const Text("No")),
-                          TextButton(
-                              onPressed: () async {
-                                var res = await controller
-                                    .cancel(controller.billDetails.value.id!);
-                                Get.back();
-                                if (res != null) {
-                                  Get.offAllNamed(Routes.BILLING);
-                                }
-                              },
-                              child: const Text("Yes"))));
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: const BorderSide(color: Colors.red))),
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        'Cancel Bill',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.red,
-                        ),
-                      ),
-                    )),
+                //   ElevatedButton(
+                //       onPressed: () async {
+                //         Get.dialog(askConfirmation(
+                //             "Are you sure you want to cancel bill ?",
+                //             TextButton(
+                //                 onPressed: () {
+                //                   Get.back();
+                //                 },
+                //                 child: const Text("No")),
+                //             TextButton(
+                //                 onPressed: () async {
+                //                   var res = await controller
+                //                       .cancel(controller.billDetails.value.id!);
+                //                   Get.back();
+                //                   if (res != null) {
+                //                     Get.offAllNamed(Routes.BILLING);
+                //                   }
+                //                 },
+                //                 child: const Text("Yes"))));
+                //       },
+                //       style: ElevatedButton.styleFrom(
+                //           backgroundColor: Colors.white,
+                //           shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.circular(8),
+                //               side: const BorderSide(color: Colors.red))),
+                //       child: const Padding(
+                //         padding: EdgeInsets.all(16.0),
+                //         child: Text(
+                //           'Cancel Bill',
+                //           style: TextStyle(
+                //             fontSize: 16.0,
+                //             color: Colors.red,
+                //           ),
+                //         ),
+                //       )),
               ],
             ),
-            ElevatedButton(
-                onPressed: () async {
-                  Get.dialog(askConfirmation(
-                      "Are you sure you want to cancel bill ?",
-                      TextButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          child: const Text("No")),
-                      TextButton(
-                          onPressed: () async {
-                            var res = await controller
-                                .cancel(controller.billDetails.value.id!);
-                            Get.back();
-                            if (res != null) {
-                              Get.offAllNamed(Routes.BILLING);
-                            }
-                          },
-                          child: const Text("Yes"))));
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        side: const BorderSide(color: Colors.red))),
-                child: const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Print Bill',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.red,
-                    ),
-                  ),
-                )),
           ],
         );
       }
