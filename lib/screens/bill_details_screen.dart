@@ -556,7 +556,7 @@ class BillDetailsScreen extends StatelessWidget {
                   controller.billDetails.value.grandTotal.toString()),
               ElevatedButton(
                   onPressed: () async {
-                    await BillPdfGenerator.generateAndPrintBill(
+                    await generateAndPrintBill(
                       controller.billDetails.value,
                     );
                   },
