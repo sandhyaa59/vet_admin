@@ -135,6 +135,7 @@ class PaymentScreen extends StatelessWidget {
             onPageChanged: (newPage) async {
               await controller.loadMore();
             },
+            columnSpacing: 20,
             columns: const <DataColumn>[
               DataColumn(
                 label: Text(
@@ -204,74 +205,76 @@ class PaymentScreen extends StatelessWidget {
       }
     }
 
-    return  AlertDialog(
-          titlePadding: const EdgeInsets.all(0),
-          title: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: Color(0xff596cff),
+    return AlertDialog(
+      titlePadding: const EdgeInsets.all(0),
+      title: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(
+          color: Color(0xff596cff),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Make Payment",
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Make Payment",
-                  ),
-                CircleAvatar(
-                    backgroundColor: const Color(0xff596cff),
-                    child: IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                        ))),
-              ],
-            ),
-          ),
-          content: Form(
-            key: formkey,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10.0),
-                  TypeAheadField<Bill>(
-                    textFieldConfiguration: TextFieldConfiguration(
-                      controller: searchController,
-                      decoration: customInputDecoration(
-                        hintText: 'Search bill...',
-                        iconButton: IconButton(
-                          onPressed: () async {
-                            if (searchController.text.isNotEmpty) {
-                              await controller.billSearch(searchController.text.trim());
-                              searchController.text =
-                                  "${searchController.text} ";
-                            }
-                          },
-                          icon: const Icon(Icons.search),
-                        ),
-                      ),
+            CircleAvatar(
+                backgroundColor: const Color(0xff596cff),
+                child: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ))),
+          ],
+        ),
+      ),
+      content: Form(
+        key: formkey,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10.0),
+              TypeAheadField<Bill>(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: searchController,
+                  decoration: customInputDecoration(
+                    hintText: 'Search bill...',
+                    iconButton: IconButton(
+                      onPressed: () async {
+                        if (searchController.text.isNotEmpty) {
+                          await controller
+                              .billSearch(searchController.text.trim());
+                          searchController.text = "${searchController.text} ";
+                        }
+                      },
+                      icon: const Icon(Icons.search),
                     ),
-                    suggestionsCallback: (pattern) {
-                      return controller.billList.value;
-                    },
-                    itemBuilder: (context, suggestion) {
-                      return ListTile(
-                        title: Text(suggestion.billNo ?? ""),
-                        trailing: Text(suggestion.createdAt ?? ""),
-                      );
-                    },
-                    onSuggestionSelected: (suggestion) {
-                      controller.selectedBill.value = suggestion;
-                      controller.update();
-                    },
                   ),
-                    GetBuilder<PaymentController>(
-                      init: controller,
-                      initState: (_) {},
-                      builder: (_) {
-                        return(controller.selectedBill.value.id != null)? Card(
+                ),
+                suggestionsCallback: (pattern) {
+                  return controller.billList.value;
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion.billNo ?? ""),
+                    trailing: Text(suggestion.createdAt ?? ""),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  controller.selectedBill.value = suggestion;
+                  controller.update();
+                },
+              ),
+              GetBuilder<PaymentController>(
+                init: controller,
+                initState: (_) {},
+                builder: (_) {
+                  return (controller.selectedBill.value.id != null)
+                      ? Card(
                           child: ListTile(
                             title: Text(
                               controller.selectedBill.value.billNo ?? "",
@@ -294,397 +297,400 @@ class PaymentScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                        ):Container();
-                      },
-                    ),
-
-                  // TextFormField(
-                  //   // autofillHints: [
-                  //   //   controller.bill.value.billNo.toString()
-                  //   // ],
-                  //   controller: searchController,
-                  //   onFieldSubmitted: (v) {
-                  //     if (searchController.text.isNotEmpty) {
-                  //       controller.billSearch(searchController.text);
-                  //     }
-                  //   },
-                  //   decoration: customInputDecoration(
-                  //     hintText: 'Search bill...',
-                  //     iconButton: IconButton(
-                  //         onPressed: () {
-                  //           if (searchController.text.isNotEmpty) {
-                  //             controller.billSearch(searchController.text);
-                  //           }
-                  //         },
-                  //         icon: const Icon(Icons.search)),
-                  //   ),
-                  // ),
-
-                  //  Expanded(
-                  //    child: Column(
-                  //      children: [
-                  //        Obx(() {
-                  //           return  ListView.builder(
-                  //               // shrinkWrap: true,
-                  //               scrollDirection: Axis.vertical,
-                  //               physics:const ScrollPhysics(),
-                  //                 itemCount: controller.billList.length,
-                  //                 itemBuilder: (context, index) {
-                  //                   return ListTile(
-                  //                     title: Text(controller
-                  //                         .billList[index].billNo
-                  //                         .toString()),
-                  //                     subtitle: Text(controller
-                  //                         .billList[index].createdAt
-                  //                         .toString()),
-                  //                   );
-                  //                 },
-                  //           );
-                  //         }),
-                  //      ],
-                  //    ),
-                  //  ),
-                  //     : SizedBox(),
-                  const SizedBox(height: 20.0),
-                  TextFormField(
-                    controller: amountController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Enter amount';
-                      } else {
-                        return null;
-                      }
-                    },
-                    decoration: customInputDecoration(labelText: "Amount"),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  DropdownButtonFormField<String>(
-                      value: controller.selectedPaymentMethod.value,
-                      onChanged: (String? newValue) {
-                        controller.selectedPaymentMethod.value = newValue!;
-                      },
-                      items: ['Cash', 'Cheque', 'Bank Deposit']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value,     style: TextStyle(color: Colors.black),),
-                        );
-                      }).toList(),
-                      decoration: customInputDecoration()),
-                  const SizedBox(height: 20.0),
-                  TextFormField(
-                    controller: paymentNumberController,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Enter payment number';
-                      } else {
-                        return null;
-                      }
-                    },
-                    decoration: customInputDecoration(
-                      labelText: getLabelText("Payment Number"),
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  TextFormField(
-                    controller: contactController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Enter contact details';
-                      } else {
-                        return null;
-                      }
-                    },
-                    decoration: customInputDecoration(labelText: "Contact No"),
-                  ),
-                  const SizedBox(height: 10.0),
-                  Obx(() => Visibility(
-                        visible:
-                            controller.selectedPaymentMethod.value != 'Cash',
-                        child: TextFormField(
-                          textInputAction: TextInputAction.done,
-                          controller: bankNameController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter bank name';
-                            } else {
-                              return null;
-                            }
-                          },
-                          decoration:
-                              customInputDecoration(labelText: "Bank Name"),
-                        ),
-                      )),
-                  const SizedBox(height: 20.0),
-                  Center(
-                    child: SizedBox(
-                      width:  (constraints.maxWidth > 600)?Get.size.width * 0.3:null,
-                      height: 50,
-                      child: ElevatedButton(
-                          onPressed: () async {
-                            if (formkey.currentState!.validate()) {
-                              if (controller.selectedBill.value.id == null) {
-                      showToastMessage(Colors.red, "select bill", "Error");
-                      return;
-                    }
-                              if (controller.isLoading.value == false) {
-                                controller.isLoading.value = true;
-                                PaymentSaveRequest saveRequest =
-                                    PaymentSaveRequest();
-                                saveRequest.amount = amountController.text;
-                                saveRequest.bankName = bankNameController.text;
-                                saveRequest.paymentMethod =
-                                    controller.selectedPaymentMethod.value;
-                                saveRequest.mobileNumber =
-                                    contactController.text;
-                                saveRequest.paymentNumber =
-                                    paymentNumberController.text;
-                                // saveRequest.employeeId = controller
-                                //     .billDetails.value.orderResponse?.employeeId!;
-                                saveRequest.billId =controller.selectedBill.value.id!;
-
-                                var res =
-                                    await controller.savePayment(saveRequest);
-                                Get.back();
-                                if (res != null) {
-                                  await controller.loadMore();
-                                  Get.offAndToNamed(Routes.PAYMENT);
-                                }
-                                formkey.currentState!.reset();
-                              }
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff596cff),
-                          ),
-                          child: const Text(
-                            "Make Payment",
-                               style: TextStyle(fontSize: 18.0,color: Colors.white),
-                          )),
-                    ),
-                  )
-                ],
+                        )
+                      : Container();
+                },
               ),
-            ),
+
+              // TextFormField(
+              //   // autofillHints: [
+              //   //   controller.bill.value.billNo.toString()
+              //   // ],
+              //   controller: searchController,
+              //   onFieldSubmitted: (v) {
+              //     if (searchController.text.isNotEmpty) {
+              //       controller.billSearch(searchController.text);
+              //     }
+              //   },
+              //   decoration: customInputDecoration(
+              //     hintText: 'Search bill...',
+              //     iconButton: IconButton(
+              //         onPressed: () {
+              //           if (searchController.text.isNotEmpty) {
+              //             controller.billSearch(searchController.text);
+              //           }
+              //         },
+              //         icon: const Icon(Icons.search)),
+              //   ),
+              // ),
+
+              //  Expanded(
+              //    child: Column(
+              //      children: [
+              //        Obx(() {
+              //           return  ListView.builder(
+              //               // shrinkWrap: true,
+              //               scrollDirection: Axis.vertical,
+              //               physics:const ScrollPhysics(),
+              //                 itemCount: controller.billList.length,
+              //                 itemBuilder: (context, index) {
+              //                   return ListTile(
+              //                     title: Text(controller
+              //                         .billList[index].billNo
+              //                         .toString()),
+              //                     subtitle: Text(controller
+              //                         .billList[index].createdAt
+              //                         .toString()),
+              //                   );
+              //                 },
+              //           );
+              //         }),
+              //      ],
+              //    ),
+              //  ),
+              //     : SizedBox(),
+              const SizedBox(height: 20.0),
+              TextFormField(
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                textInputAction: TextInputAction.next,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter amount';
+                  } else {
+                    return null;
+                  }
+                },
+                decoration: customInputDecoration(labelText: "Amount"),
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              DropdownButtonFormField<String>(
+                  value: controller.selectedPaymentMethod.value,
+                  onChanged: (String? newValue) {
+                    controller.selectedPaymentMethod.value = newValue!;
+                  },
+                  items: ['Cash', 'Cheque', 'Bank Deposit']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    );
+                  }).toList(),
+                  decoration: customInputDecoration()),
+              const SizedBox(height: 20.0),
+              TextFormField(
+                controller: paymentNumberController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter payment number';
+                  } else {
+                    return null;
+                  }
+                },
+                decoration: customInputDecoration(
+                  labelText: getLabelText("Payment Number"),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              TextFormField(
+                controller: contactController,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                textInputAction: TextInputAction.next,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter contact details';
+                  } else {
+                    return null;
+                  }
+                },
+                decoration: customInputDecoration(labelText: "Contact No"),
+              ),
+              const SizedBox(height: 10.0),
+              Obx(() => Visibility(
+                    visible: controller.selectedPaymentMethod.value != 'Cash',
+                    child: TextFormField(
+                      textInputAction: TextInputAction.done,
+                      controller: bankNameController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter bank name';
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: customInputDecoration(labelText: "Bank Name"),
+                    ),
+                  )),
+              const SizedBox(height: 20.0),
+              Center(
+                child: SizedBox(
+                  width: (constraints.maxWidth > 600)
+                      ? Get.size.width * 0.3
+                      : null,
+                  height: 50,
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        if (formkey.currentState!.validate()) {
+                          if (controller.selectedBill.value.id == null) {
+                            showToastMessage(
+                                Colors.red, "select bill", "Error");
+                            return;
+                          }
+                          if (controller.isLoading.value == false) {
+                            controller.isLoading.value = true;
+                            PaymentSaveRequest saveRequest =
+                                PaymentSaveRequest();
+                            saveRequest.amount = amountController.text;
+                            saveRequest.bankName = bankNameController.text;
+                            saveRequest.paymentMethod =
+                                controller.selectedPaymentMethod.value;
+                            saveRequest.mobileNumber = contactController.text;
+                            saveRequest.paymentNumber =
+                                paymentNumberController.text;
+                            // saveRequest.employeeId = controller
+                            //     .billDetails.value.orderResponse?.employeeId!;
+                            saveRequest.billId =
+                                controller.selectedBill.value.id!;
+
+                            var res = await controller.savePayment(saveRequest);
+                            Get.back();
+                            if (res != null) {
+                              await controller.loadMore();
+                              Get.offAndToNamed(Routes.PAYMENT);
+                            }
+                            formkey.currentState!.reset();
+                          }
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff596cff),
+                      ),
+                      child: const Text(
+                        "Make Payment",
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      )),
+                ),
+              )
+            ],
           ),
-        );
-      }
-      //  else {
-      //   return AlertDialog(
-      //     titlePadding: const EdgeInsets.all(0),
-      //     title: Container(
-      //       padding: const EdgeInsets.all(12),
-      //       decoration: const BoxDecoration(
-      //         color: Color(0xff596cff),
-      //       ),
-      //       child: Row(
-      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //         children: [
-      //           const Text("Make Payment",
-      //               style: TextStyle(
-      //                   color: Colors.white,
-      //                   fontWeight: FontWeight.w800,
-      //                   fontSize: 18.0)),
-      //           CircleAvatar(
-      //               backgroundColor: const Color(0xff596cff),
-      //               child: IconButton(
-      //                   onPressed: () {
-      //                     Get.back();
-      //                   },
-      //                   icon: const Icon(
-      //                     Icons.close,
-      //                     color: Colors.white,
-      //                   ))),
-      //         ],
-      //       ),
-      //     ),
-      //     content: Form(
-      //       key: formkey,
-      //       child: SingleChildScrollView(
-      //         child: Column(
-      //           crossAxisAlignment: CrossAxisAlignment.start,
-      //           children: [
-      //             const SizedBox(height: 10.0),
-      //             TextFormField(
-      //               controller: searchController,
-      //               onFieldSubmitted: (v) {
-      //                 if (searchController.text.isNotEmpty) {
-      //                   controller.billSearch(searchController.text);
-      //                 }
-      //               },
-      //               onChanged: (v) {
-      //                 if (searchController.text.isEmpty) {
-      //                   controller.bill.value =
-      //                       (controller.billResponse.value.data ?? []) as Bill;
-      //                 }
-      //               },
-      //               decoration: customInputDecoration(
-      //                 hintText: 'Search bill...',
-      //                 iconButton: IconButton(
-      //                     onPressed: () {
-      //                       if (searchController.text.isNotEmpty) {
-      //                         controller.billSearch(searchController.text);
-      //                       }
-      //                     },
-      //                     icon: const Icon(Icons.search)),
-      //               ),
-      //             ),
-      //             const SizedBox(
-      //               height: 20.0,
-      //             ),
-      //             TextFormField(
-      //               controller: searchController,
-      //               decoration: customInputDecoration(
-      //                   labelText: "Search ",
-      //                   iconButton: IconButton(
-      //                       onPressed: () {}, icon: const Icon(Icons.search))),
-      //             ),
-      //             const SizedBox(
-      //               height: 20.0,
-      //             ),
-      //             TextFormField(
-      //               controller: amountController,
-      //               keyboardType: TextInputType.number,
-      //               inputFormatters: <TextInputFormatter>[
-      //                 FilteringTextInputFormatter.digitsOnly
-      //               ],
-      //               textInputAction: TextInputAction.next,
-      //               validator: (value) {
-      //                 if (value!.isEmpty) {
-      //                   return 'Enter amount';
-      //                 } else {
-      //                   return null;
-      //                 }
-      //               },
-      //               decoration: customInputDecoration(labelText: "Amount"),
-      //             ),
-      //             const SizedBox(height: 20.0),
-      //             DropdownButtonFormField<String>(
-      //                 value: controller.selectedPaymentMethod.value,
-      //                 onChanged: (String? newValue) {
-      //                   controller.selectedPaymentMethod.value = newValue!;
-      //                 },
-      //                 items: ['Cash', 'Cheque', 'Bank Deposit']
-      //                     .map<DropdownMenuItem<String>>((String value) {
-      //                   return DropdownMenuItem<String>(
-      //                     value: value,
-      //                     child: Text(value),
-      //                   );
-      //                 }).toList(),
-      //                 decoration: customInputDecoration()),
-      //             const SizedBox(height: 20.0),
-      //             TextFormField(
-      //               controller: paymentNumberController,
-      //               validator: (value) {
-      //                 if (value!.isEmpty) {
-      //                   return 'Enter payment number';
-      //                 } else {
-      //                   return null;
-      //                 }
-      //               },
-      //               decoration: customInputDecoration(
-      //                 labelText:
-      //                     getLabelText(controller.selectedPaymentMethod.value),
-      //               ),
-      //             ),
-      //             const SizedBox(height: 20.0),
-      //             TextFormField(
-      //               controller: contactController,
-      //               keyboardType: TextInputType.number,
-      //               inputFormatters: <TextInputFormatter>[
-      //                 FilteringTextInputFormatter.digitsOnly
-      //               ],
-      //               textInputAction: TextInputAction.next,
-      //               validator: (value) {
-      //                 if (value!.isEmpty) {
-      //                   return 'Enter contact details';
-      //                 } else {
-      //                   return null;
-      //                 }
-      //               },
-      //               decoration: customInputDecoration(labelText: "Contact No"),
-      //             ),
-      //             const SizedBox(height: 10.0),
-      //             Obx(() => Visibility(
-      //                   visible:
-      //                       controller.selectedPaymentMethod.value != 'Cash',
-      //                   child: TextFormField(
-      //                     textInputAction: TextInputAction.done,
-      //                     controller: bankNameController,
-      //                     validator: (value) {
-      //                       if (value!.isEmpty) {
-      //                         return 'Enter bank name';
-      //                       } else {
-      //                         return null;
-      //                       }
-      //                     },
-      //                     decoration:
-      //                         customInputDecoration(labelText: "Bank Name"),
-      //                   ),
-      //                 )),
-      //             const SizedBox(height: 20.0),
-      //             Center(
-      //               child: SizedBox(
-      //                 // width: Get.size.width * 0.3,
-      //                 height: 50,
-      //                 child: ElevatedButton(
-      //                     onPressed: () async {
-      //                       if (formkey.currentState!.validate()) {
-      //                         if (controller.isLoading.value == false) {
-      //                           controller.isLoading.value = true;
-      //                           PaymentSaveRequest saveRequest =
-      //                               PaymentSaveRequest();
-      //                           saveRequest.amount = amountController.text;
-      //                           saveRequest.bankName = bankNameController.text;
-      //                           saveRequest.paymentMethod =
-      //                               controller.selectedPaymentMethod.value;
-      //                           saveRequest.mobileNumber =
-      //                               contactController.text;
-      //                           saveRequest.paymentNumber =
-      //                               paymentNumberController.text;
-      //                           // saveRequest.employeeId = controller.billDetails
-      //                           //     .value.orderResponse?.employeeId!;
-      //                           saveRequest.billId =
-      //                               controller.billDetails.value.id!;
+        ),
+      ),
+    );
+  }
+  //  else {
+  //   return AlertDialog(
+  //     titlePadding: const EdgeInsets.all(0),
+  //     title: Container(
+  //       padding: const EdgeInsets.all(12),
+  //       decoration: const BoxDecoration(
+  //         color: Color(0xff596cff),
+  //       ),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           const Text("Make Payment",
+  //               style: TextStyle(
+  //                   color: Colors.white,
+  //                   fontWeight: FontWeight.w800,
+  //                   fontSize: 18.0)),
+  //           CircleAvatar(
+  //               backgroundColor: const Color(0xff596cff),
+  //               child: IconButton(
+  //                   onPressed: () {
+  //                     Get.back();
+  //                   },
+  //                   icon: const Icon(
+  //                     Icons.close,
+  //                     color: Colors.white,
+  //                   ))),
+  //         ],
+  //       ),
+  //     ),
+  //     content: Form(
+  //       key: formkey,
+  //       child: SingleChildScrollView(
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             const SizedBox(height: 10.0),
+  //             TextFormField(
+  //               controller: searchController,
+  //               onFieldSubmitted: (v) {
+  //                 if (searchController.text.isNotEmpty) {
+  //                   controller.billSearch(searchController.text);
+  //                 }
+  //               },
+  //               onChanged: (v) {
+  //                 if (searchController.text.isEmpty) {
+  //                   controller.bill.value =
+  //                       (controller.billResponse.value.data ?? []) as Bill;
+  //                 }
+  //               },
+  //               decoration: customInputDecoration(
+  //                 hintText: 'Search bill...',
+  //                 iconButton: IconButton(
+  //                     onPressed: () {
+  //                       if (searchController.text.isNotEmpty) {
+  //                         controller.billSearch(searchController.text);
+  //                       }
+  //                     },
+  //                     icon: const Icon(Icons.search)),
+  //               ),
+  //             ),
+  //             const SizedBox(
+  //               height: 20.0,
+  //             ),
+  //             TextFormField(
+  //               controller: searchController,
+  //               decoration: customInputDecoration(
+  //                   labelText: "Search ",
+  //                   iconButton: IconButton(
+  //                       onPressed: () {}, icon: const Icon(Icons.search))),
+  //             ),
+  //             const SizedBox(
+  //               height: 20.0,
+  //             ),
+  //             TextFormField(
+  //               controller: amountController,
+  //               keyboardType: TextInputType.number,
+  //               inputFormatters: <TextInputFormatter>[
+  //                 FilteringTextInputFormatter.digitsOnly
+  //               ],
+  //               textInputAction: TextInputAction.next,
+  //               validator: (value) {
+  //                 if (value!.isEmpty) {
+  //                   return 'Enter amount';
+  //                 } else {
+  //                   return null;
+  //                 }
+  //               },
+  //               decoration: customInputDecoration(labelText: "Amount"),
+  //             ),
+  //             const SizedBox(height: 20.0),
+  //             DropdownButtonFormField<String>(
+  //                 value: controller.selectedPaymentMethod.value,
+  //                 onChanged: (String? newValue) {
+  //                   controller.selectedPaymentMethod.value = newValue!;
+  //                 },
+  //                 items: ['Cash', 'Cheque', 'Bank Deposit']
+  //                     .map<DropdownMenuItem<String>>((String value) {
+  //                   return DropdownMenuItem<String>(
+  //                     value: value,
+  //                     child: Text(value),
+  //                   );
+  //                 }).toList(),
+  //                 decoration: customInputDecoration()),
+  //             const SizedBox(height: 20.0),
+  //             TextFormField(
+  //               controller: paymentNumberController,
+  //               validator: (value) {
+  //                 if (value!.isEmpty) {
+  //                   return 'Enter payment number';
+  //                 } else {
+  //                   return null;
+  //                 }
+  //               },
+  //               decoration: customInputDecoration(
+  //                 labelText:
+  //                     getLabelText(controller.selectedPaymentMethod.value),
+  //               ),
+  //             ),
+  //             const SizedBox(height: 20.0),
+  //             TextFormField(
+  //               controller: contactController,
+  //               keyboardType: TextInputType.number,
+  //               inputFormatters: <TextInputFormatter>[
+  //                 FilteringTextInputFormatter.digitsOnly
+  //               ],
+  //               textInputAction: TextInputAction.next,
+  //               validator: (value) {
+  //                 if (value!.isEmpty) {
+  //                   return 'Enter contact details';
+  //                 } else {
+  //                   return null;
+  //                 }
+  //               },
+  //               decoration: customInputDecoration(labelText: "Contact No"),
+  //             ),
+  //             const SizedBox(height: 10.0),
+  //             Obx(() => Visibility(
+  //                   visible:
+  //                       controller.selectedPaymentMethod.value != 'Cash',
+  //                   child: TextFormField(
+  //                     textInputAction: TextInputAction.done,
+  //                     controller: bankNameController,
+  //                     validator: (value) {
+  //                       if (value!.isEmpty) {
+  //                         return 'Enter bank name';
+  //                       } else {
+  //                         return null;
+  //                       }
+  //                     },
+  //                     decoration:
+  //                         customInputDecoration(labelText: "Bank Name"),
+  //                   ),
+  //                 )),
+  //             const SizedBox(height: 20.0),
+  //             Center(
+  //               child: SizedBox(
+  //                 // width: Get.size.width * 0.3,
+  //                 height: 50,
+  //                 child: ElevatedButton(
+  //                     onPressed: () async {
+  //                       if (formkey.currentState!.validate()) {
+  //                         if (controller.isLoading.value == false) {
+  //                           controller.isLoading.value = true;
+  //                           PaymentSaveRequest saveRequest =
+  //                               PaymentSaveRequest();
+  //                           saveRequest.amount = amountController.text;
+  //                           saveRequest.bankName = bankNameController.text;
+  //                           saveRequest.paymentMethod =
+  //                               controller.selectedPaymentMethod.value;
+  //                           saveRequest.mobileNumber =
+  //                               contactController.text;
+  //                           saveRequest.paymentNumber =
+  //                               paymentNumberController.text;
+  //                           // saveRequest.employeeId = controller.billDetails
+  //                           //     .value.orderResponse?.employeeId!;
+  //                           saveRequest.billId =
+  //                               controller.billDetails.value.id!;
 
-      //                           var res =
-      //                               await controller.savePayment(saveRequest);
-      //                           Get.back();
-      //                           if (res != null) {
-      //                             Get.offAndToNamed(Routes.PAYMENT);
-      //                           }
-      //                           formkey.currentState!.reset();
-      //                         }
-      //                       }
-      //                     },
-      //                     style: ElevatedButton.styleFrom(
-      //                       backgroundColor: const Color(0xff596cff),
-      //                     ),
-      //                     child: const Text(
-      //                       "Make Payment",
-      //                       style: TextStyle(fontSize: 18.0),
-      //                     )),
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //     ),
-      //   );
-      // }
-
+  //                           var res =
+  //                               await controller.savePayment(saveRequest);
+  //                           Get.back();
+  //                           if (res != null) {
+  //                             Get.offAndToNamed(Routes.PAYMENT);
+  //                           }
+  //                           formkey.currentState!.reset();
+  //                         }
+  //                       }
+  //                     },
+  //                     style: ElevatedButton.styleFrom(
+  //                       backgroundColor: const Color(0xff596cff),
+  //                     ),
+  //                     child: const Text(
+  //                       "Make Payment",
+  //                       style: TextStyle(fontSize: 18.0),
+  //                     )),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 class MyDataSource extends DataTableSource {

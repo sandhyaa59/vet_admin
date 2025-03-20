@@ -25,9 +25,9 @@ class BillingScreen extends StatelessWidget {
           child: SingleChildScrollView(
               child: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > 600) {
-              return Container(
+              return Padding(
                 padding: const EdgeInsets.all(kPadding),
-                alignment: Alignment.center,
+                // alignment: Alignment.center,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -80,6 +80,7 @@ class BillingScreen extends StatelessWidget {
                 onPageChanged: (newPage) async {
                   await controller.loadMoreData();
                 },
+                columnSpacing: 20,
                 // onRowsPerPageChanged: (value) {
                 //   controller.pageSize.value=value!;
                 // },
@@ -110,20 +111,19 @@ class BillingScreen extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                 
                   DataColumn(
                     label: Text(
                       'Bill Number',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                   DataColumn(
+                  DataColumn(
                     label: Text(
                       'Sub Total',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                   DataColumn(
+                  DataColumn(
                     label: Text(
                       'Discount',
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -188,10 +188,9 @@ class MyDataSource extends DataTableSource {
         )),
         DataCell(Text(bills[index].createdAt ?? "")),
         DataCell(Text(bills[index].billNo.toString())),
-         DataCell(Text(bills[index].subTotal.toString())),
-          DataCell(Text(bills[index].discounts.toString())),
+        DataCell(Text(bills[index].subTotal.toString())),
+        DataCell(Text(bills[index].discounts.toString())),
         DataCell(Text(bills[index].grandTotal.toString())),
-       
         DataCell(Text(bills[index].due.toString())),
         DataCell(Text(bills[index].received.toString())),
         DataCell(

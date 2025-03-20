@@ -237,6 +237,7 @@ class CustomerScreen extends StatelessWidget {
           return SizedBox(
             width: Get.size.width,
             child: PaginatedDataTable(
+              controller: ScrollController(),
               header: const Text(
                 "Customers",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),

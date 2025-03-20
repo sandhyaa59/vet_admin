@@ -31,10 +31,9 @@ class ReportScreen extends StatelessWidget {
                     child: reportTable(),
                   ));
             } else {
-              return 
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Center(child: reportTable()),
+              return Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Center(child: reportTable()),
               );
             }
           })),
@@ -82,7 +81,8 @@ class ReportScreen extends StatelessWidget {
                             value: value,
                             child: Text(
                               value.fullName ?? "",
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           );
                         }).toList(),
@@ -105,6 +105,7 @@ class ReportScreen extends StatelessWidget {
                 onPageChanged: (newPage) async {
                   await controller.loadMore();
                 },
+                columnSpacing: 20,
                 columns: const <DataColumn>[
                   DataColumn(
                     label: Text(
@@ -130,7 +131,7 @@ class ReportScreen extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                   DataColumn(
+                  DataColumn(
                     label: Text(
                       'Shop Name',
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -189,7 +190,7 @@ class MyDataSource extends DataTableSource {
         DataCell(Text(report[index].employeeName ?? "")),
         DataCell(Text(report[index].jobTitle ?? "")),
         DataCell(Text(report[index].customerName ?? "")),
-         DataCell(Text(report[index].shopName ?? "")),
+        DataCell(Text(report[index].shopName ?? "")),
         DataCell(SizedBox(
           width: Get.size.width * 0.12,
           child: Text(
